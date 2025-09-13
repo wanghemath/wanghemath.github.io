@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <!-- Central Limit Theorem Preview -->
+  <g id="clt-preview">
+    <rect width="1200" height="800" fill="#f7fafc"/>
+    <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="24" font-weight="bold" fill="#2d3748">Central Limit Theorem</text>
+    
+    <!-- Bell curve -->
+    <path d="M 200 600 Q 400 200, 600 200 T 1000 600" stroke="#667eea" stroke-width="4" fill="none"/>
+    <path d="M 200 600 Q 400 200, 600 200 T 1000 600 L 1000 600 L 200 600 Z" fill="#667eea" opacity="0.2"/>
+    
+    <!-- Sample distributions -->
+    <g opacity="0.6">
+      <rect x="250" y="500" width="30" height="100" fill="#667eea"/>
+      <rect x="290" y="450" width="30" height="150" fill="#667eea"/>
+      <rect x="330" y="400" width="30" height="200" fill="#667eea"/>
+      <rect x="370" y="350" width="30" height="250" fill="#667eea"/>
+      <rect x="410" y="300" width="30" height="300" fill="#667eea"/>
+      <rect x="450" y="280" width="30" height="320" fill="#667eea"/>
+      <rect x="490" y="270" width="30" height="330" fill="#667eea"/>
+      <rect x="530" y="260" width="30" height="340" fill="#667eea"/>
+      <rect x="570" y="250" width="30" height="350" fill="#667eea"/>
+      <rect x="610" y="250" width="30" height="350" fill="#667eea"/>
+      <rect x="650" y="260" width="30" height="340" fill="#667eea"/>
+      <rect x="690" y="270" width="30" height="330" fill="#667eea"/>
+      <rect x="730" y="280" width="30" height="320" fill="#667eea"/>
+      <rect x="770" y="300" width="30" height="300" fill="#667eea"/>
+      <rect x="810" y="350" width="30" height="250" fill="#667eea"/>
+      <rect x="850" y="400" width="30" height="200" fill="#667eea"/>
+      <rect x="890" y="450" width="30" height="150" fill="#667eea"/>
+      <rect x="930" y="500" width="30" height="100" fill="#667eea"/>
+    </g>
+    
+    <!-- Axis -->
+    <line x1="200" y1="600" x2="1000" y2="600" stroke="#4a5568" stroke-width="2"/>
+    <line x1="200" y1="600" x2="200" y2="200" stroke="#4a5568" stroke-width="2"/>
+    
+    <text x="600" y="650" text-anchor="middle" font-family="Arial" font-size="16" fill="#4a5568">Sample Means</text>
+    <text x="100" y="400" text-anchor="middle" font-family="Arial" font-size="16" fill="#4a5568" transform="rotate(-90 100 400)">Frequency</text>
+  </g>
+</svg>
