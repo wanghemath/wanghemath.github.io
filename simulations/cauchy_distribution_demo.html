@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cauchy Distribution from Random Ball Kicks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .demo-area {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .visualization {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+        .controls {
+            width: 250px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+        canvas {
+            border: 2px solid #333;
+            border-radius: 10px;
+            background: #f8f9fa;
+            display: block;
+            margin: 0 auto;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #fff;
+        }
+        input[type="range"] {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(238, 90, 82, 0.4);
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .histogram {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏈 Cauchy Distribution from Random Ball Kicks</h1>
+        
+        <div class="demo-area">
+            <div class="visualization">
+                <canvas id="mainCanvas" width="600" height="400"></canvas>
+                <div class="histogram">
+                    <canvas id="histogramCanvas" width="560" height="200"></canvas>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <label>Distance from Line: <span id="distanceValue">2</span></label>
+                    <input type="range" id="distance" min="0.5" max="5" step="0.1" value="2">
+                </div>
+                
+                <div class="control-group">
+                    <label>Animation Speed: <span id="speedValue">50</span>ms</label>
+                    <input type="range" id="speed" min="10" max="200" step="10" value="50">
+                </div>
+                
+                <button onclick="startAnimation()">🎯 Start Kicking!</button>
+                <button onclick="stopAnimation()">⏹️ Stop</button>
+                <button onclick="clearAll()">🗑️ Clear All</button>
+                <button onclick="showTheory()">📚 Show Theory</button>
+                
+                <div class="stats">
+                    <div class="stat-box">
+                        <div>Kicks</div>
+                        <div id="kickCount">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div>Avg Hit</div>
+                        <div id="avgHit">0.00</div>
+                    </div>
+                </div>
+                
+                <div class="info">
+                    <strong>How it works:</strong><br>
+                    • Person stands at distance d from line<br>
+                    • Kicks ball at random angle θ ∈ [-π/2, π/2]<br>
+                    • Hit position x = d × tan(θ)<br>
+                    • Results in Cauchy distribution!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d');
+        const histCanvas = document.getElementById('histogramCanvas');
+        const histCtx = histCanvas.getContext('2d');
+        
+        let animationId;
+        let hitPoints = [];
+        let kickCount = 0;
+        
+        // Get control elements
+        const distanceSlider = document.getElementById('distance');
+        const speedSlider = document.getElementById('speed');
+        const distanceValue = document.getElementById('distanceValue');
+        const speedValue = document.getElementById('speedValue');
+        const kickCountEl = document.getElementById('kickCount');
+        const avgHitEl = document.getElementById('avgHit');
+        
+        // Update display values
+        distanceSlider.oninput = () => distanceValue.textContent = distanceSlider.value;
+        speedSlider.oninput = () => speedValue.textContent = speedSlider.value;
+        
+        // Canvas dimensions and scale
+        const canvasWidth = 600;
+        const canvasHeight = 400;
+        const scale = 40; // pixels per unit
+        const originX = canvasWidth / 2;
+        const originY = canvasHeight - 50;
+        
+        function drawSetup() {
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            
+            // Draw coordinate system
+            ctx.strokeStyle = '#ddd';
+            ctx.lineWidth = 1;
+            
+            // Grid
+            for (let i = -10; i <= 10; i++) {
+                const x = originX + i * scale;
+                if (x >= 0 && x <= canvasWidth) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, canvasHeight);
+                    ctx.stroke();
+                }
+            }
+            
+            // Draw the line (target)
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(0, 50);
+            ctx.lineTo(canvasWidth, 50);
+            ctx.stroke();
+            
+            // Label the line
+            ctx.fillStyle = '#333';
+            ctx.font = '16px Arial';
+            ctx.fillText('Target Line', canvasWidth - 100, 45);
+            
+            // Draw person position
+            const distance = parseFloat(distanceSlider.value);
+            const personY = originY - distance * scale;
+            
+            ctx.fillStyle = '#ff6b6b';
+            ctx.beginPath();
+            ctx.arc(originX, personY, 8, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Label person
+            ctx.fillStyle = '#333';
+            ctx.font = '14px Arial';
+            ctx.fillText('Person', originX + 15, personY + 5);
+            
+            // Draw distance line
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(originX, personY);
+            ctx.lineTo(originX, 50);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Label distance
+            ctx.fillStyle = '#666';
+            ctx.font = '12px Arial';
+            ctx.fillText(`d = ${distance}`, originX + 10, personY + (50 - personY) / 2);
+        }
+        
+        function drawKick(angle, hitX) {
+            const distance = parseFloat(distanceSlider.value);
+            const personY = originY - distance * scale;
+            
+            // Draw kick trajectory
+            ctx.strokeStyle = '#4CAF50';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(originX, personY);
+            ctx.lineTo(originX + hitX * scale, 50);
+            ctx.stroke();
+            
+            // Draw ball at hit point
+            ctx.fillStyle = '#FFA500';
+            ctx.beginPath();
+            ctx.arc(originX + hitX * scale, 50, 4, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Fade the trajectory after a moment
+            setTimeout(() => {
+                drawSetup();
+                drawAllHits();
+            }, 200);
+        }
+        
+        function drawAllHits() {
+            hitPoints.forEach(hit => {
+                ctx.fillStyle = 'rgba(255, 165, 0, 0.6)';
+                ctx.beginPath();
+                ctx.arc(originX + hit * scale, 50, 3, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+        }
+        
+        function drawHistogram() {
+            if (hitPoints.length === 0) return;
+            
+            histCtx.clearRect(0, 0, histCanvas.width, histCanvas.height);
+            
+            // Create histogram bins
+            const binWidth = 0.5;
+            const minX = Math.min(...hitPoints);
+            const maxX = Math.max(...hitPoints);
+            const range = Math.max(10, maxX - minX);
+            const numBins = Math.ceil(range / binWidth);
+            
+            const bins = new Array(numBins).fill(0);
+            const binStart = -range / 2;
+            
+            hitPoints.forEach(hit => {
+                const binIndex = Math.floor((hit - binStart) / binWidth);
+                if (binIndex >= 0 && binIndex < numBins) {
+                    bins[binIndex]++;
+                }
+            });
+            
+            // Draw histogram
+            const maxBinCount = Math.max(...bins);
+            const histWidth = histCanvas.width;
+            const histHeight = histCanvas.height - 40;
+            const barWidth = histWidth / numBins;
+            
+            histCtx.fillStyle = '#4CAF50';
+            bins.forEach((count, i) => {
+                const barHeight = (count / maxBinCount) * histHeight;
+                const x = i * barWidth;
+                const y = histHeight - barHeight;
+                
+                histCtx.fillRect(x, y, barWidth - 1, barHeight);
+            });
+            
+            // Draw theoretical Cauchy curve
+            if (hitPoints.length > 20) {
+                const distance = parseFloat(distanceSlider.value);
+                histCtx.strokeStyle = '#ff6b6b';
+                histCtx.lineWidth = 3;
+                histCtx.beginPath();
+                
+                for (let i = 0; i < histWidth; i++) {
+                    const x = (i / histWidth) * range + binStart;
+                    const cauchyValue = (1 / (Math.PI * distance)) * (distance * distance) / (distance * distance + x * x);
+                    const scaledValue = cauchyValue * hitPoints.length * binWidth;
+                    const y = histHeight - (scaledValue / maxBinCount) * histHeight;
+                    
+                    if (i === 0) {
+                        histCtx.moveTo(i, y);
+                    } else {
+                        histCtx.lineTo(i, y);
+                    }
+                }
+                histCtx.stroke();
+            }
+            
+            // Labels
+            histCtx.fillStyle = '#333';
+            histCtx.font = '14px Arial';
+            histCtx.fillText('Hit Position Distribution', 10, 20);
+            histCtx.fillStyle = '#ff6b6b';
+            histCtx.fillText('— Theoretical Cauchy', 200, 20);
+        }
+        
+        function performKick() {
+            const distance = parseFloat(distanceSlider.value);
+            
+            // Generate random angle uniformly in [-π/2, π/2]
+            const angle = (Math.random() - 0.5) * Math.PI;
+            
+            // Calculate hit position: x = d * tan(θ)
+            const hitX = distance * Math.tan(angle);
+            
+            // Add to hit points
+            hitPoints.push(hitX);
+            kickCount++;
+            
+            // Update display
+            kickCountEl.textContent = kickCount;
+            const avgHit = hitPoints.reduce((sum, x) => sum + x, 0) / hitPoints.length;
+            avgHitEl.textContent = avgHit.toFixed(2);
+            
+            // Draw the kick
+            drawKick(angle, hitX);
+            
+            // Update histogram
+            drawHistogram();
+        }
+        
+        function startAnimation() {
+            stopAnimation();
+            
+            function animate() {
+                performKick();
+                const speed = parseInt(speedSlider.value);
+                animationId = setTimeout(animate, speed);
+            }
+            
+            animate();
+        }
+        
+        function stopAnimation() {
+            if (animationId) {
+                clearTimeout(animationId);
+                animationId = null;
+            }
+        }
+        
+        function clearAll() {
+            stopAnimation();
+            hitPoints = [];
+            kickCount = 0;
+            kickCountEl.textContent = '0';
+            avgHitEl.textContent = '0.00';
+            drawSetup();
+            histCtx.clearRect(0, 0, histCanvas.width, histCanvas.height);
+        }
+        
+        function showTheory() {
+            alert(`Mathematical Theory:
+
+If a person stands at distance d from a line and kicks a ball at a uniformly random angle θ ∈ [-π/2, π/2], the hit position X = d·tan(θ) follows a Cauchy distribution.
+
+The Cauchy probability density function is:
+f(x) = (1/π) · (γ/((x-x₀)² + γ²))
+
+Where:
+• x₀ = 0 (location parameter, center of distribution)
+• γ = d (scale parameter, related to distance)
+
+Key properties:
+• Heavy tails (extreme values more likely than normal distribution)
+• Undefined mean and variance
+• Median = mode = x₀ = 0
+• The closer to the line (smaller d), the more concentrated the hits`);
+        }
+        
+        // Initialize
+        drawSetup();
+        drawHistogram();
+    </script>
+</body>
+</html>

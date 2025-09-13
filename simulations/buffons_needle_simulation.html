@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Buffon's Needle — Monte Carlo π Estimator</title>
+  <style>
+    :root{
+      --bg:#0b0c10;          /* dark background */
+      --card:#121318;        /* control cards */
+      --ink:#e9eef5;         /* primary text */
+      --muted:#a7b1c2;       /* secondary text */
+      --accent:#76c7ff;      /* accent blue */
+      --accent-2:#6ee7a8;    /* accent green */
+      --danger:#ff7a7a;      /* red */
+      --line:#2a2f3a;        /* canvas grid lines */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font:14px/1.35 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--ink); background:var(--bg);
+      display:grid; grid-template-rows:auto 1fr; gap:14px;
+    }
+    header{
+      padding:14px 18px; border-bottom:1px solid #1b1f27;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    header h1{font-size:18px; margin:0; letter-spacing:.2px}
+    header .sub{color:var(--muted); font-size:13px}
+
+    .wrap{display:grid; grid-template-columns:360px 1fr; gap:14px; padding:0 14px 14px}
+    @media (max-width: 900px){ .wrap{grid-template-columns:1fr; } }
+
+    .card{background:var(--card); border:1px solid #1b1f27; border-radius:14px; padding:14px; box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .card h2{font-size:15px; margin:0 0 10px 0}
+    .row{display:grid; grid-template-columns:1fr auto; align-items:center; gap:10px; margin:8px 0}
+    .row > label{color:var(--muted)}
+    .row input[type="range"]{width:100%}
+    .row input[type="number"]{width:84px; background:#0f1116; border:1px solid #2a2f3a; color:var(--ink); padding:6px 8px; border-radius:8px}
+
+    .btns{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+    button{appearance:none; border:1px solid #273142; background:#152033; color:var(--ink); padding:8px 12px; border-radius:10px; cursor:pointer}
+    button:hover{border-color:#3c4a63}
+    button.primary{background:#14314a; border-color:#275573; color:#cfe9ff}
+    button.success{background:#113a27; border-color:#2d674c; color:#d5ffe8}
+    button.red{background:#2a1414; border-color:#6d3636; color:#ffd7d7}
+
+    canvas{width:100%; height:100%; background:#0c0f15; border:1px solid #1b1f27; border-radius:14px}
+    .canvasWrap{position:relative;}
+    .overlay{position:absolute; inset:0; pointer-events:none; padding:10px}
+    .pill{display:inline-block; padding:4px 8px; background:rgba(0,0,0,.35); border:1px solid #1b1f27; border-radius:999px; color:#d7e1f0; margin:3px; font-size:12px}
+
+    table.stats{width:100%; border-collapse:collapse;}
+    table.stats td{padding:4px 0}
+    table.stats td.k{color:var(--muted)}
+    code{background:#0e1118; border:1px solid #273142; padding:2px 6px; border-radius:6px}
+    small{color:var(--muted)}
+    .note{color:var(--muted); margin-top:8px}
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Buffon's Needle — Monte Carlo π</h1>
+      <div class="sub">Drop random needles on parallel lines. Estimate π from the crossing frequency.</div>
+    </div>
+    <div class="sub">Interactive HTML (no libraries)</div>
+  </header>
+
+  <div class="wrap">
+    <section class="card" id="controls">
+      <h2>Controls</h2>
+
+      <div class="row">
+        <label for="spacing">Line spacing D (px)</label>
+        <input id="spacing" type="range" min="20" max="160" value="80" step="1">
+        <input id="spacingNum" type="number" min="20" max="400" value="80" step="1">
+      </div>
+      <div class="row">
+        <label for="length">Needle length L (px)</label>
+        <input id="length" type="range" min="5" max="160" value="60" step="1">
+        <input id="lengthNum" type="number" min="5" max="400" value="60" step="1">
+      </div>
+      <div class="row">
+        <label for="batch">Drops per frame</label>
+        <input id="batch" type="range" min="1" max="200" value="40" step="1">
+        <input id="batchNum" type="number" min="1" max="5000" value="40" step="1">
+      </div>
+      <div class="row">
+        <label for="fps">Animation fps</label>
+        <input id="fps" type="range" min="5" max="60" value="30" step="1">
+        <input id="fpsNum" type="number" min="5" max="120" value="30" step="1">
+      </div>
+
+      <div class="btns">
+        <button class="primary" id="startBtn">▶ Start</button>
+        <button id="pauseBtn">❚❚ Pause</button>
+        <button id="stepBtn">⏭ Step × <span id="stepN">1000</span></button>
+        <button class="success" id="resetBtn">↻ Reset</button>
+        <button class="red" id="clearBtn">🧹 Clear drawing</button>
+      </div>
+
+      <div class="note" id="ratioNote"></div>
+
+      <h2 style="margin-top:16px">Stats</h2>
+      <table class="stats">
+        <tr><td class="k">Throws n</td><td id="nOut">0</td></tr>
+        <tr><td class="k">Crossings k</td><td id="kOut">0</td></tr>
+        <tr><td class="k">Empirical rate p̂ = k/n</td><td id="pOut">—</td></tr>
+        <tr><td class="k">Theoretical p(L,D)</td><td id="pthOut">—</td></tr>
+        <tr><td class="k">π̂ from p̂</td><td id="piOut">—</td></tr>
+        <tr><td class="k">95% CI for π̂ (delta)</td><td id="ciOut">—</td></tr>
+        <tr><td class="k">|π̂ − π|</td><td id="absErrOut">—</td></tr>
+      </table>
+      <small>For L ≤ D: p = 2L/(πD) ⇒ π̂ = 2L/(Dp̂). For L > D the general Buffon formula is used.
+      Confidence interval via delta method for g(p)=C/p, where C depends on L/D.</small>
+    </section>
+
+    <section class="card canvasWrap">
+      <canvas id="cnv"></canvas>
+      <div class="overlay" id="overlay">
+        <span class="pill">Click canvas to toggle Start/Pause</span>
+        <span class="pill" id="pillRatio"></span>
+        <span class="pill" id="pillFormula"></span>
+      </div>
+    </section>
+  </div>
+
+  <script>
+  // ---------- Helpers ----------
+  const $ = sel => document.querySelector(sel);
+  const cnv = $('#cnv');
+  const ctx = cnv.getContext('2d');
+  let W = 0, H = 0, scale = window.devicePixelRatio || 1;
+
+  function resizeCanvas(){
+    const pad = 0; // canvas wrapped by card; full size
+    const rect = cnv.parentElement.getBoundingClientRect();
+    W = Math.max(600, Math.floor(rect.width));
+    H = Math.max(420, Math.floor(rect.height));
+    cnv.width = Math.floor(W * scale);
+    cnv.height = Math.floor((H) * scale);
+    cnv.style.width = W + 'px';
+    cnv.style.height = H + 'px';
+    ctx.setTransform(scale,0,0,scale,0,0);
+    redrawGrid();
+  }
+  window.addEventListener('resize', resizeCanvas);
+
+  // Parameters
+  let D = 80; // spacing in px
+  let L = 60; // length in px
+  let dropsPerFrame = 40;
+  let fps = 30;
+
+  let running = false;
+  let timer = null;
+  let n = 0, k = 0; // counts
+
+  // UI bindings
+  function bindPair(rangeId, numId, getter){
+    const r = $(rangeId), t = $(numId);
+    const sync = v => { r.value = v; t.value = v; updateParams(); };
+    r.addEventListener('input', e => sync(+e.target.value));
+    t.addEventListener('input', e => sync(+e.target.value));
+  }
+
+  bindPair('#spacing','#spacingNum');
+  bindPair('#length','#lengthNum');
+  bindPair('#batch','#batchNum');
+  bindPair('#fps','#fpsNum');
+
+  function updateParams(){
+    D = +$('#spacing').value; L = +$('#length').value; dropsPerFrame = +$('#batch').value; fps = +$('#fps').value;
+    $('#stepN').textContent = String(25 * dropsPerFrame);
+    const ratio = (L/D).toFixed(3);
+    $('#ratioNote').textContent = `Current ratio L/D = ${ratio}.`;
+    $('#pillRatio').textContent = `L = ${L}px, D = ${D}px (L/D = ${ratio})`;
+    $('#pillFormula').textContent = (L <= D)
+      ? 'Using classical formula p = 2L/(πD)'
+      : 'Using general Buffon formula for L > D';
+    redrawGrid();
+    updateStats();
+  }
+
+  // ---------- Probability + Estimator ----------
+  function theoP(L,D){
+    if (L <= D){ return (2*L)/(Math.PI*D); }
+    const x = D/L; // in (0,1)
+    return (2/Math.PI) * ( (L/D)*(1 - Math.sqrt(1 - x*x)) + Math.acos(x) );
+  }
+  function Cconst(L,D){ // C in g(p)=C/p
+    if (L <= D){ return 2*L/D; }
+    const x = D/L;
+    return 2 * ( (L/D)*(1 - Math.sqrt(1 - x*x)) + Math.acos(x) );
+  }
+  function piFromP(L,D,phat){
+    if (phat <= 0) return NaN;
+    if (L <= D){ return (2*L)/(D*phat); }
+    const x = D/L;
+    const bracket = (L/D)*(1 - Math.sqrt(1 - x*x)) + Math.acos(x);
+    return (2 * bracket)/phat;
+  }
+
+  // ---------- Drawing ----------
+  function clearCanvas(){
+    ctx.clearRect(0,0,W,H);
+  }
+  function redrawGrid(){
+    clearCanvas();
+    // draw parallel lines spaced by D
+    ctx.save();
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--line') || '#2a2f3a';
+    ctx.lineWidth = 1;
+    for (let y=0; y<=H; y+=D){
+      ctx.beginPath();
+      ctx.moveTo(0, y+0.5);
+      ctx.lineTo(W, y+0.5);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawNeedle(x,y,theta,hit){
+    const dx = (L/2)*Math.cos(theta);
+    const dy = (L/2)*Math.sin(theta);
+    const x1 = x - dx, y1 = y - dy;
+    const x2 = x + dx, y2 = y + dy;
+    ctx.save();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = hit ? 'rgba(110,231,168,0.95)' : 'rgba(118,199,255,0.55)';
+    ctx.beginPath();
+    ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    ctx.restore();
+  }
+
+  function throwOne(){
+    // center uniform over canvas
+    const x = Math.random()*W;
+    const y = Math.random()*H;
+    const theta = Math.random()*Math.PI; // [0, π)
+    // distance from center to nearest line
+    const ymod = ((y % D) + D) % D;
+    const dist = Math.min(ymod, D - ymod);
+    const perpHalf = Math.abs((L/2)*Math.sin(theta));
+    const hit = dist <= perpHalf;
+    drawNeedle(x,y,theta,hit);
+    n++;
+    if(hit) k++;
+  }
+
+  // ---------- Simulation loop ----------
+  function tick(){
+    for(let i=0;i<dropsPerFrame;i++) throwOne();
+    updateStats();
+  }
+  function start(){
+    if (running) return; running = true;
+    const interval = 1000/Math.max(1,fps);
+    timer = setInterval(tick, interval);
+  }
+  function pause(){ if (!running) return; running=false; clearInterval(timer); timer=null; }
+  function resetCounts(){ n=0; k=0; updateStats(); }
+
+  // ---------- Stats UI ----------
+  function format(x, digits=6){ return Number.isFinite(x) ? x.toFixed(digits) : '—'; }
+  function updateStats(){
+    $('#nOut').textContent = n;
+    $('#kOut').textContent = k;
+    const phat = n>0 ? k/n : NaN;
+    const pth = theoP(L,D);
+    $('#pthOut').textContent = format(pth, 6);
+    $('#pOut').textContent = format(phat, 6);
+    const pihat = piFromP(L,D, phat);
+    $('#piOut').textContent = format(pihat, 6);
+
+    // CI using delta method: SE_pi = |C|/p^2 * sqrt(p(1-p)/n), plug-in p̂
+    let ciTxt = '—';
+    if (Number.isFinite(pihat) && n>0 && k<n){
+      const C = Cconst(L,D);
+      const se_pi = (C/(phat*phat)) * Math.sqrt(phat*(1-phat)/n);
+      const lo = pihat - 1.96*se_pi, hi = pihat + 1.96*se_pi;
+      ciTxt = `${format(lo,5)} … ${format(hi,5)}`;
+    }
+    $('#ciOut').textContent = ciTxt;
+
+    const absErr = Number.isFinite(pihat) ? Math.abs(pihat - Math.PI) : NaN;
+    $('#absErrOut').textContent = format(absErr, 6);
+  }
+
+  // ---------- Buttons ----------
+  $('#startBtn').addEventListener('click', start);
+  $('#pauseBtn').addEventListener('click', pause);
+  $('#stepBtn').addEventListener('click', ()=>{ for(let i=0;i<25*dropsPerFrame;i++) throwOne(); updateStats(); });
+  $('#resetBtn').addEventListener('click', ()=>{ pause(); resetCounts(); redrawGrid(); });
+  $('#clearBtn').addEventListener('click', ()=>{ redrawGrid(); });
+  $('#cnv').addEventListener('click', ()=>{ running ? pause() : start(); });
+
+  // Initialize
+  resizeCanvas();
+  updateParams();
+  // draw a few at start for illustration
+  for(let i=0;i<200;i++) throwOne(); pause();
+  </script>
+</body>
+</html>
