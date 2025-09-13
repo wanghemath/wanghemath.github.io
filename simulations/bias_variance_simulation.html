@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bias-Variance Trade-off Simulation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        label {
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        input[type="range"] {
+            width: 150px;
+            margin: 5px 0;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px 0 rgba(255, 107, 107, 0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgba(255, 107, 107, 0.4);
+        }
+        
+        .plot-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        canvas {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Bias-Variance Trade-off Interactive Simulation</h1>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="complexity">Model Complexity</label>
+                <input type="range" id="complexity" min="1" max="10" value="3" step="1">
+                <span id="complexityValue">3</span>
+            </div>
+            
+            <div class="control-group">
+                <label for="noise">Noise Level (σ²)</label>
+                <input type="range" id="noise" min="0.1" max="2.0" value="0.5" step="0.1">
+                <span id="noiseValue">0.5</span>
+            </div>
+            
+            <div class="control-group">
+                <label for="samples">Training Sample Size</label>
+                <input type="range" id="samples" min="10" max="100" value="30" step="5">
+                <span id="samplesValue">30</span>
+            </div>
+            
+            <div class="control-group">
+                <label for="datasets">Number of Datasets</label>
+                <input type="range" id="datasets" min="10" max="100" value="50" step="5">
+                <span id="datasetsValue">50</span>
+            </div>
+            
+            <button onclick="runSimulation()">🚀 Run New Simulation</button>
+        </div>
+        
+        <div class="plot-container">
+            <canvas id="plotCanvas" width="800" height="500"></canvas>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #2E86AB;"></div>
+                <span>True Function h(x)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #A23B72;"></div>
+                <span>Training Data</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #F18F01;"></div>
+                <span>Individual Estimators</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #C73E1D;"></div>
+                <span>Average Estimator</span>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div>Bias²</div>
+                <div class="stat-value" id="biasSquared">-</div>
+            </div>
+            <div class="stat-card">
+                <div>Variance</div>
+                <div class="stat-value" id="variance">-</div>
+            </div>
+            <div class="stat-card">
+                <div>Noise (σ²)</div>
+                <div class="stat-value" id="noiseDisplay">-</div>
+            </div>
+            <div class="stat-card">
+                <div>Total EPE</div>
+                <div class="stat-value" id="totalEPE">-</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let canvas, ctx;
+        let currentEstimators = [];
+        let currentTrainingData = [];
+        
+        // True linear function: h(x) = 2x + 1
+        function trueFunction(x) {
+            return 2 * x + 1;
+        }
+        
+        // Generate polynomial features for given complexity
+        function generateFeatures(x, complexity) {
+            const features = [];
+            for (let i = 0; i <= complexity; i++) {
+                features.push(Math.pow(x, i));
+            }
+            return features;
+        }
+        
+        // Polynomial regression using least squares
+        function polynomialRegression(xData, yData, complexity) {
+            const n = xData.length;
+            const p = complexity + 1;
+            
+            // Create design matrix
+            const X = [];
+            for (let i = 0; i < n; i++) {
+                X.push(generateFeatures(xData[i], complexity));
+            }
+            
+            // Solve normal equations: (X^T X)^(-1) X^T y
+            const XtX = matrixMultiply(transpose(X), X);
+            const XtY = matrixVectorMultiply(transpose(X), yData);
+            
+            try {
+                const coeffs = solveLinearSystem(XtX, XtY);
+                return coeffs;
+            } catch (e) {
+                // Fallback to simple linear regression if matrix is singular
+                return simpleLinearRegression(xData, yData);
+            }
+        }
+        
+        function simpleLinearRegression(xData, yData) {
+            const n = xData.length;
+            const sumX = xData.reduce((a, b) => a + b, 0);
+            const sumY = yData.reduce((a, b) => a + b, 0);
+            const sumXY = xData.reduce((sum, x, i) => sum + x * yData[i], 0);
+            const sumX2 = xData.reduce((sum, x) => sum + x * x, 0);
+            
+            const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+            const intercept = (sumY - slope * sumX) / n;
+            
+            return [intercept, slope];
+        }
+        
+        // Matrix operations
+        function transpose(matrix) {
+            return matrix[0].map((_, i) => matrix.map(row => row[i]));
+        }
+        
+        function matrixMultiply(A, B) {
+            const result = [];
+            for (let i = 0; i < A.length; i++) {
+                result[i] = [];
+                for (let j = 0; j < B[0].length; j++) {
+                    let sum = 0;
+                    for (let k = 0; k < B.length; k++) {
+                        sum += A[i][k] * B[k][j];
+                    }
+                    result[i][j] = sum;
+                }
+            }
+            return result;
+        }
+        
+        function matrixVectorMultiply(matrix, vector) {
+            return matrix.map(row => 
+                row.reduce((sum, val, i) => sum + val * vector[i], 0)
+            );
+        }
+        
+        function solveLinearSystem(A, b) {
+            // Gaussian elimination with partial pivoting
+            const n = A.length;
+            const augmented = A.map((row, i) => [...row, b[i]]);
+            
+            // Forward elimination
+            for (let i = 0; i < n; i++) {
+                // Find pivot
+                let maxRow = i;
+                for (let k = i + 1; k < n; k++) {
+                    if (Math.abs(augmented[k][i]) > Math.abs(augmented[maxRow][i])) {
+                        maxRow = k;
+                    }
+                }
+                
+                // Swap rows
+                [augmented[i], augmented[maxRow]] = [augmented[maxRow], augmented[i]];
+                
+                // Make diagonal element 1
+                const pivot = augmented[i][i];
+                if (Math.abs(pivot) < 1e-10) {
+                    throw new Error("Matrix is singular");
+                }
+                
+                for (let j = i; j <= n; j++) {
+                    augmented[i][j] /= pivot;
+                }
+                
+                // Eliminate column
+                for (let k = i + 1; k < n; k++) {
+                    const factor = augmented[k][i];
+                    for (let j = i; j <= n; j++) {
+                        augmented[k][j] -= factor * augmented[i][j];
+                    }
+                }
+            }
+            
+            // Back substitution
+            const x = new Array(n);
+            for (let i = n - 1; i >= 0; i--) {
+                x[i] = augmented[i][n];
+                for (let j = i + 1; j < n; j++) {
+                    x[i] -= augmented[i][j] * x[j];
+                }
+            }
+            
+            return x;
+        }
+        
+        // Evaluate polynomial with given coefficients
+        function evaluatePolynomial(x, coeffs) {
+            return coeffs.reduce((sum, coeff, power) => sum + coeff * Math.pow(x, power), 0);
+        }
+        
+        // Generate noisy data
+        function generateData(n, noiseLevel) {
+            const data = [];
+            for (let i = 0; i < n; i++) {
+                const x = (Math.random() - 0.5) * 6; // x in [-3, 3]
+                const y = trueFunction(x) + (Math.random() - 0.5) * 2 * Math.sqrt(noiseLevel);
+                data.push({x, y});
+            }
+            return data.sort((a, b) => a.x - b.x);
+        }
+        
+        // Initialize canvas
+        function initCanvas() {
+            canvas = document.getElementById('plotCanvas');
+            ctx = canvas.getContext('2d');
+        }
+        
+        // Convert data coordinates to canvas coordinates
+        function toCanvas(x, y, xMin, xMax, yMin, yMax) {
+            const margin = 50;
+            const plotWidth = canvas.width - 2 * margin;
+            const plotHeight = canvas.height - 2 * margin;
+            
+            const canvasX = margin + ((x - xMin) / (xMax - xMin)) * plotWidth;
+            const canvasY = margin + ((yMax - y) / (yMax - yMin)) * plotHeight;
+            
+            return {x: canvasX, y: canvasY};
+        }
+        
+        // Draw axes and grid
+        function drawAxes(xMin, xMax, yMin, yMax) {
+            const margin = 50;
+            
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            
+            // Draw axes
+            ctx.beginPath();
+            const origin = toCanvas(0, 0, xMin, xMax, yMin, yMax);
+            
+            // X-axis
+            ctx.moveTo(margin, origin.y);
+            ctx.lineTo(canvas.width - margin, origin.y);
+            
+            // Y-axis
+            ctx.moveTo(origin.x, margin);
+            ctx.lineTo(origin.x, canvas.height - margin);
+            
+            ctx.stroke();
+            
+            // Draw grid
+            ctx.strokeStyle = '#ddd';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            
+            for (let i = 0; i <= 10; i++) {
+                const x = xMin + (i / 10) * (xMax - xMin);
+                const pos = toCanvas(x, 0, xMin, xMax, yMin, yMax);
+                ctx.moveTo(pos.x, margin);
+                ctx.lineTo(pos.x, canvas.height - margin);
+                
+                const y = yMin + (i / 10) * (yMax - yMin);
+                const posY = toCanvas(0, y, xMin, xMax, yMin, yMax);
+                ctx.moveTo(margin, posY.y);
+                ctx.lineTo(canvas.width - margin, posY.y);
+            }
+            ctx.stroke();
+            
+            // Labels
+            ctx.fillStyle = '#333';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+            
+            // X-axis labels
+            for (let i = 0; i <= 5; i++) {
+                const x = xMin + (i / 5) * (xMax - xMin);
+                const pos = toCanvas(x, 0, xMin, xMax, yMin, yMax);
+                ctx.fillText(x.toFixed(1), pos.x, pos.y + 20);
+            }
+            
+            // Y-axis labels
+            ctx.textAlign = 'right';
+            for (let i = 0; i <= 5; i++) {
+                const y = yMin + (i / 5) * (yMax - yMin);
+                const pos = toCanvas(0, y, xMin, xMax, yMin, yMax);
+                ctx.fillText(y.toFixed(1), pos.x - 10, pos.y + 5);
+            }
+        }
+        
+        // Draw function
+        function drawFunction(func, xMin, xMax, yMin, yMax, color, lineWidth = 2) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.beginPath();
+            
+            let first = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = func(x);
+                const pos = toCanvas(x, y, xMin, xMax, yMin, yMax);
+                
+                if (first) {
+                    ctx.moveTo(pos.x, pos.y);
+                    first = false;
+                } else {
+                    ctx.lineTo(pos.x, pos.y);
+                }
+            }
+            ctx.stroke();
+        }
+        
+        // Draw data points
+        function drawPoints(data, xMin, xMax, yMin, yMax, color, size = 4) {
+            ctx.fillStyle = color;
+            data.forEach(point => {
+                const pos = toCanvas(point.x, point.y, xMin, xMax, yMin, yMax);
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, size, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+        }
+        
+        // Calculate bias-variance decomposition
+        function calculateBiasVariance(estimators, testPoint, trueValue) {
+            // Calculate mean prediction
+            const meanPrediction = estimators.reduce((sum, pred) => sum + pred, 0) / estimators.length;
+            
+            // Bias squared
+            const biasSquared = Math.pow(meanPrediction - trueValue, 2);
+            
+            // Variance
+            const variance = estimators.reduce((sum, pred) => sum + Math.pow(pred - meanPrediction, 2), 0) / estimators.length;
+            
+            return {biasSquared, variance, meanPrediction};
+        }
+        
+        // Main simulation function
+        function runSimulation() {
+            const complexity = parseInt(document.getElementById('complexity').value);
+            const noiseLevel = parseFloat(document.getElementById('noise').value);
+            const sampleSize = parseInt(document.getElementById('samples').value);
+            const numDatasets = parseInt(document.getElementById('datasets').value);
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Set plot bounds
+            const xMin = -3, xMax = 3;
+            const yMin = -4, yMax = 10;
+            
+            // Draw axes
+            drawAxes(xMin, xMax, yMin, yMax);
+            
+            // Generate multiple datasets and fit estimators
+            const estimators = [];
+            const testPoint = 1.0; // Fixed test point
+            const trueValue = trueFunction(testPoint);
+            
+            // Show one example training dataset
+            const exampleData = generateData(sampleSize, noiseLevel);
+            currentTrainingData = exampleData;
+            
+            for (let d = 0; d < numDatasets; d++) {
+                const data = generateData(sampleSize, noiseLevel);
+                const xData = data.map(p => p.x);
+                const yData = data.map(p => p.y);
+                
+                // Fit polynomial
+                const coeffs = polynomialRegression(xData, yData, complexity);
+                estimators.push(coeffs);
+                
+                // Draw individual estimator (only show a few to avoid clutter)
+                if (d < Math.min(10, numDatasets)) {
+                    drawFunction(x => evaluatePolynomial(x, coeffs), xMin, xMax, yMin, yMax, 'rgba(241, 143, 1, 0.3)', 1);
+                }
+            }
+            
+            // Calculate average estimator
+            const avgCoeffs = estimators[0].map((_, i) => 
+                estimators.reduce((sum, coeffs) => sum + (coeffs[i] || 0), 0) / numDatasets
+            );
+            
+            // Draw true function
+            drawFunction(trueFunction, xMin, xMax, yMin, yMax, '#2E86AB', 3);
+            
+            // Draw average estimator
+            drawFunction(x => evaluatePolynomial(x, avgCoeffs), xMin, xMax, yMin, yMax, '#C73E1D', 3);
+            
+            // Draw training data points
+            drawPoints(exampleData, xMin, xMax, yMin, yMax, '#A23B72', 4);
+            
+            // Calculate predictions at test point
+            const predictions = estimators.map(coeffs => evaluatePolynomial(testPoint, coeffs));
+            const {biasSquared, variance, meanPrediction} = calculateBiasVariance(predictions, testPoint, trueValue);
+            
+            // Draw test point and predictions
+            const testPos = toCanvas(testPoint, trueValue, xMin, xMax, yMin, yMax);
+            ctx.fillStyle = '#2E86AB';
+            ctx.beginPath();
+            ctx.arc(testPos.x, testPos.y, 8, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Draw vertical line showing prediction spread
+            const predMin = Math.min(...predictions);
+            const predMax = Math.max(...predictions);
+            const minPos = toCanvas(testPoint, predMin, xMin, xMax, yMin, yMax);
+            const maxPos = toCanvas(testPoint, predMax, xMin, xMax, yMin, yMax);
+            const meanPos = toCanvas(testPoint, meanPrediction, xMin, xMax, yMin, yMax);
+            
+            ctx.strokeStyle = 'rgba(241, 143, 1, 0.8)';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(minPos.x, minPos.y);
+            ctx.lineTo(maxPos.x, maxPos.y);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#C73E1D';
+            ctx.beginPath();
+            ctx.arc(meanPos.x, meanPos.y, 6, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Update statistics
+            const totalEPE = biasSquared + variance + noiseLevel;
+            document.getElementById('biasSquared').textContent = biasSquared.toFixed(3);
+            document.getElementById('variance').textContent = variance.toFixed(3);
+            document.getElementById('noiseDisplay').textContent = noiseLevel.toFixed(3);
+            document.getElementById('totalEPE').textContent = totalEPE.toFixed(3);
+            
+            currentEstimators = estimators;
+        }
+        
+        // Update control values
+        function updateControls() {
+            document.getElementById('complexityValue').textContent = document.getElementById('complexity').value;
+            document.getElementById('noiseValue').textContent = document.getElementById('noise').value;
+            document.getElementById('samplesValue').textContent = document.getElementById('samples').value;
+            document.getElementById('datasetsValue').textContent = document.getElementById('datasets').value;
+        }
+        
+        // Initialize
+        window.onload = function() {
+            initCanvas();
+            
+            // Add event listeners
+            document.getElementById('complexity').addEventListener('input', updateControls);
+            document.getElementById('noise').addEventListener('input', updateControls);
+            document.getElementById('samples').addEventListener('input', updateControls);
+            document.getElementById('datasets').addEventListener('input', updateControls);
+            
+            updateControls();
+            runSimulation();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bias–Variance Trade‑off Simulator (1D, linear h)</title>
+<style>
+  :root {
+    --bg: #0b0f14;
+    --panel: #101720;
+    --ink: #e6eef7;
+    --muted: #9db0c3;
+    --accent: #6cc0ff;
+    --accent2: #a5e075;
+    --accent3: #ffb86b;
+    --accent4: #f26d6d;
+    --accent5: #caa9ff;
+    --grid: #1e2a36;
+  }
+  html, body { height: 100%; }
+  body {
+    margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+    background: radial-gradient(1200px 800px at 20% -20%, #1a2633 0%, var(--bg) 60%);
+    color: var(--ink);
+  }
+  .wrap { max-width: 1100px; margin: 24px auto 56px; padding: 0 16px; }
+  h1 { font-size: 28px; margin: 12px 0 8px; }
+  p.lead { color: var(--muted); margin-top: 0; }
+  .grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 18px; align-items: start; }
+  .card { background: var(--panel); border: 1px solid #1a2430; border-radius: 14px; padding: 14px 16px; box-shadow: 0 10px 22px rgba(0,0,0,.28); }
+  .controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
+  .controls label { font-size: 13px; color: var(--muted); display: block; margin: 0 0 6px; }
+  .controls input[type="number"], .controls input[type="range"] { width: 100%; }
+  .row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: end; }
+  button {
+    background: linear-gradient(180deg, #2a88ff, #1462ff);
+    color: white; border: none; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-weight: 600;
+    box-shadow: 0 6px 18px rgba(32,126,255,.35);
+  }
+  button.secondary { background: #233042; box-shadow: none; border: 1px solid #2b3b52; }
+  .charts { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  canvas { width: 100%; height: 340px; background: #0c131c; border-radius: 12px; border: 1px solid #172231; }
+  .meta { font-size: 12px; color: var(--muted); }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 0; }
+  .legend-item { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  .eq { font-size: 14px; color: var(--muted); }
+  .small { font-size: 12px; color: var(--muted); }
+  .spacer { height: 6px; }
+  .code {
+    background: #0d151e; border: 1px solid #1a2430; padding: 10px 12px; border-radius: 10px; font-size: 13px; color: #cfe3ff;
+  }
+  @media (max-width: 980px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Bias–Variance Trade‑off (Monte‑Carlo Simulator)</h1>
+    <p class="lead">Data‑generating process: <span class="mono">x \u223c U[-1,1]</span>, true function <span class="mono">h(x) = a x + b</span>, observation <span class="mono">y = h(x) + \u03b5</span> with <span class="mono">\u03b5 \u223c N(0, \u03c3<sup>2</sup>)</span>. We fit a polynomial model of degree <span class="mono">d</span> by least squares and estimate bias, variance, and error by averaging over many fresh datasets.</p>
+
+    <div class="grid">
+      <section class="card">
+        <h2 style="margin:6px 0 10px">Controls</h2>
+        <div class="controls">
+          <div>
+            <label>True slope a</label>
+            <input id="a" type="number" step="0.1" value="2" />
+          </div>
+          <div>
+            <label>True intercept b</label>
+            <input id="b" type="number" step="0.1" value="0" />
+          </div>
+          <div>
+            <label>Noise std (\u03c3)</label>
+            <input id="sigma" type="number" step="0.05" value="0.4" />
+          </div>
+          <div>
+            <label>Train size (n)</label>
+            <input id="n" type="number" min="5" step="5" value="60" />
+          </div>
+          <div>
+            <label>Max polynomial degree (complexity)</label>
+            <input id="maxdeg" type="number" min="0" max="12" step="1" value="10" />
+          </div>
+          <div>
+            <label>Replicates (datasets)</label>
+            <input id="R" type="number" min="5" step="5" value="100" />
+          </div>
+          <div class="row">
+            <div>
+              <label>Fixed evaluation grid size</label>
+              <input id="gridN" type="number" min="21" step="10" value="121" />
+            </div>
+            <button id="run">Run simulation</button>
+          </div>
+          <div class="row">
+            <div class="small">Optional ridge (\u03bb) for stability</div>
+            <input id="ridge" type="number" min="0" step="1e-6" value="1e-8" />
+          </div>
+          <div class="row">
+            <button id="download" class="secondary">Download CSV</button>
+            <div class="small">Export the summary table across degrees</div>
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <div class="eq">We estimate at each complexity <span class="mono">d</span>:
+          <div class="code mono">MSE(d) \u2248 \u27e8 (\u02c6y\u2212y)^2 \u27e9 = Bias^2(d) + Var(d) + \u03c3^2</div>
+        </div>
+        <div class="small">Angle brackets \u27e8\u27e9 denote Monte‑Carlo averages over fresh datasets and test points. Bias/variance are computed w.r.t. the prediction function at fixed x values, then averaged across an evaluation grid.</div>
+      </section>
+
+      <section class="card">
+        <h2 style="margin:6px 0 10px">True function & sample fits</h2>
+        <canvas id="preview" width="520" height="360"></canvas>
+        <div class="legend" id="legend-preview"></div>
+        <div class="small">Preview shows <span style="color:var(--accent)">true line h(x)</span> and a few fitted polynomials from independent datasets for the selected maximum degree.</div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top:16px">
+      <h2 style="margin:6px 0 10px">Bias–Variance Decomposition vs Complexity</h2>
+      <canvas id="chartBV" width="1024" height="360"></canvas>
+      <div class="legend" id="legend-bv"></div>
+      <div class="meta" id="meta1"></div>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <h2 style="margin:6px 0 10px">Train/Test Error vs Complexity</h2>
+      <canvas id="chartTT" width="1024" height="360"></canvas>
+      <div class="legend" id="legend-tt"></div>
+      <div class="meta" id="meta2"></div>
+    </section>
+
+    <p class="small">Tip: Increase noise \u03c3 or lower n to emphasize variance; increase degree to reduce bias but watch variance grow. With linear truth, the optimal degree tends to 1 as n \u2192 \u221e and \u03bb \u2192 0.</p>
+  </div>
+
+<script>
+// ======= Utilities =======
+const randu = () => Math.random();
+function randn() { // Box-Muller
+  let u = 0, v = 0; while (u === 0) u = Math.random(); while (v === 0) v = Math.random();
+  return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+}
+function linspace(a, b, n) {
+  const out = new Array(n); const step = (b - a) / (n - 1);
+  for (let i = 0; i < n; i++) out[i] = a + i * step;
+  return out;
+}
+// matrix helpers for tiny systems (<= 13 x 13)
+function zeros(r, c) { const A = new Array(r); for (let i=0;i<r;i++){A[i]=new Float64Array(c);} return A; }
+function eye(n) { const A = zeros(n,n); for (let i=0;i<n;i++) A[i][i]=1; return A; }
+function transpose(A) { const r=A.length,c=A[0].length; const T=zeros(c,r); for(let i=0;i<r;i++) for(let j=0;j<c;j++) T[j][i]=A[i][j]; return T; }
+function matmul(A,B){ const r=A.length,c=A[0].length, c2=B[0].length; const C=zeros(r,c2); for(let i=0;i<r;i++) for(let k=0;k<c;k++){ const aik=A[i][k]; for(let j=0;j<c2;j++) C[i][j]+=aik*B[k][j]; } return C; }
+function solveSymPosDef(A, b){ // Cholesky with tiny jitter
+  const n=A.length; const L=zeros(n,n);
+  for(let i=0;i<n;i++) for(let j=0;j<=i;j++){
+    let sum=A[i][j]; for(let k=0;k<j;k++) sum -= L[i][k]*L[j][k];
+    if(i===j){ L[i][j]=Math.sqrt(Math.max(sum,1e-18)); } else { L[i][j]=sum/L[j][j]; }
+  }
+  // Solve L y = b, then L^T x = y
+  const y=new Float64Array(n); for(let i=0;i<n;i++){ let s=b[i]; for(let k=0;k<i;k++) s-=L[i][k]*y[k]; y[i]=s/L[i][i]; }
+  const x=new Float64Array(n); for(let i=n-1;i>=0;i--){ let s=y[i]; for(let k=i+1;k<n;k++) s-=L[k][i]*x[k]; x[i]=s/L[i][i]; }
+  return Array.from(x);
+}
+function mean(arr){ let s=0; for(const v of arr) s+=v; return s/arr.length; }
+function variance(arr){ const m=mean(arr); let s=0; for(const v of arr) s+=(v-m)*(v-m); return s/arr.length; }
+
+// ======= Data + Model =======
+function generateDataset(n, a, b, sigma){
+  const x=new Float64Array(n), y=new Float64Array(n);
+  for(let i=0;i<n;i++){ const xi = -1 + 2*randu(); x[i]=xi; y[i]=a*xi+b + sigma*randn(); }
+  return {x,y};
+}
+function designVandermonde(x, degree){
+  const n=x.length; const p=degree+1; const X=zeros(n,p);
+  for(let i=0;i<n;i++){
+    let v=1; for(let j=0;j<p;j++){ X[i][j]=v; v*=x[i]; }
+  }
+  return X;
+}
+function fitPolyLS(x, y, degree, ridge=0){
+  const X=designVandermonde(x, degree); const XT=transpose(X);
+  let XtX=matmul(XT,X); // add ridge
+  const p=XtX.length; for(let i=0;i<p;i++) XtX[i][i]+=ridge;
+  const Xty = new Float64Array(p); for(let j=0;j<p;j++){ let s=0; for(let i=0;i<x.length;i++) s+=XT[j][i]*y[i]; Xty[j]=s; }
+  const coef = solveSymPosDef(XtX, Array.from(Xty));
+  return coef; // [c0, c1, ..., cd]
+}
+function predictPoly(coef, x){ let v=1, yhat=0; for(let j=0;j<coef.length;j++){ yhat += coef[j]*v; v*=x; } return yhat; }
+
+// ======= Charts (minimal canvas line plot) =======
+function drawChart(canvas, series, opts={}){
+  const ctx = canvas.getContext('2d'); const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+  // padding
+  const m = {l: 48, r: 12, t: 18, b: 36};
+  // X domain (0..N-1), determine N from first series length
+  const N = series[0].data.length;
+  const xTicks = N-1;
+  // Y domain autoscale
+  let ymin=+Infinity, ymax=-Infinity;
+  for(const s of series){ for(const v of s.data){ if(isFinite(v)){ ymin=Math.min(ymin,v); ymax=Math.max(ymax,v);} } }
+  if(!isFinite(ymin) || !isFinite(ymax)) { ymin=0; ymax=1; }
+  if(ymax===ymin){ ymax=ymin+1; }
+  const pad = 0.08*(ymax - ymin || 1); ymin -= pad; ymax += pad;
+  const X = (i)=> m.l + (W - m.l - m.r) * (i / (N-1));
+  const Y = (v)=> H - m.b - (H - m.t - m.b) * ((v - ymin) / (ymax - ymin));
+  // grid
+  ctx.strokeStyle = '#1e2a36'; ctx.lineWidth = 1; ctx.setLineDash([2,3]);
+  for(let i=0;i<=xTicks;i++){
+    const x = X(i); ctx.beginPath(); ctx.moveTo(x, m.t); ctx.lineTo(x, H - m.b); ctx.stroke();
+  }
+  const ySteps = 5; for(let k=0;k<=ySteps;k++){
+    const y = m.t + (H - m.t - m.b) * (k/ySteps);
+    ctx.beginPath(); ctx.moveTo(m.l, y); ctx.lineTo(W - m.r, y); ctx.stroke();
+  }
+  ctx.setLineDash([]);
+  // axes
+  ctx.strokeStyle = '#38506b'; ctx.lineWidth = 1.2; ctx.beginPath();
+  ctx.moveTo(m.l, m.t); ctx.lineTo(m.l, H - m.b); ctx.lineTo(W - m.r, H - m.b); ctx.stroke();
+  // y labels
+  ctx.fillStyle = '#9db0c3'; ctx.font = '12px system-ui, -apple-system, Segoe UI, Roboto, Arial'; ctx.textAlign='right'; ctx.textBaseline='middle';
+  for(let k=0;k<=ySteps;k++){
+    const val = (ymin + (ymax - ymin) * (1 - k/ySteps));
+    const y = m.t + (H - m.t - m.b) * (k/ySteps);
+    ctx.fillText(val.toFixed(3), m.l - 6, y);
+  }
+  // x labels (degrees)
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  for(let i=0;i<N;i++) ctx.fillText(i.toString(), X(i), H - m.b + 6);
+  // draw lines
+  for(const s of series){
+    ctx.strokeStyle = s.color; ctx.lineWidth = 2.2; ctx.beginPath();
+    for(let i=0;i<N;i++){
+      const v=s.data[i]; const x=X(i), y=Y(v);
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+  }
+  // title
+  if(opts.title){ ctx.fillStyle = '#e6eef7'; ctx.font = '600 14px system-ui, -apple-system, Segoe UI, Roboto, Arial'; ctx.textAlign='left'; ctx.textBaseline='top'; ctx.fillText(opts.title, m.l, m.t - 14); }
+}
+
+function drawPreview(canvas, a,b,sigma, degree){
+  const ctx = canvas.getContext('2d'); const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const m = {l: 44, r: 10, t: 14, b: 36};
+  const X = x => m.l + (W-m.l-m.r)*( (x+1)/2 );
+  const Y = y => {
+    const ymin=-2.5, ymax=2.5; // fixed range good for preview
+    return H - m.b - (H-m.t-m.b) * ((y - ymin)/(ymax-ymin));
+  };
+  // background grid
+  const gridx = 10; ctx.strokeStyle = '#1e2a36'; ctx.setLineDash([2,3]);
+  for(let k=0;k<=gridx;k++){ const gx = -1 + 2*k/gridx; const x = X(gx); ctx.beginPath(); ctx.moveTo(x,m.t); ctx.lineTo(x,H-m.b); ctx.stroke(); }
+  for(let k=0;k<=8;k++){ const gy = -2 + 4*k/8; const y=Y(gy); ctx.beginPath(); ctx.moveTo(m.l,y); ctx.lineTo(W-m.r,y); ctx.stroke(); }
+  ctx.setLineDash([]);
+  // axes
+  ctx.strokeStyle = '#38506b'; ctx.beginPath(); ctx.moveTo(m.l, H-m.b); ctx.lineTo(W-m.r, H-m.b); ctx.moveTo(m.l, m.t); ctx.lineTo(m.l, H-m.b); ctx.stroke();
+  // true line
+  const xs = linspace(-1,1,200); ctx.strokeStyle = getColor('accent'); ctx.lineWidth=2.4; ctx.beginPath();
+  xs.forEach((x,i)=>{ const y = a*x+b; const Xp=X(x), Yp=Y(y); if(i===0) ctx.moveTo(Xp,Yp); else ctx.lineTo(Xp,Yp); }); ctx.stroke();
+  // a few sample fits
+  const K=3; const colors=[getColor('accent3'), getColor('accent4'), getColor('accent5')];
+  for(let k=0;k<K;k++){
+    const D=generateDataset(40, a,b,sigma);
+    const coef=fitPolyLS(D.x, D.y, degree, 1e-8);
+    ctx.strokeStyle = colors[k]; ctx.lineWidth=1.8; ctx.beginPath();
+    xs.forEach((x,i)=>{ const y=predictPoly(coef,x); const Xp=X(x), Yp=Y(y); if(i===0) ctx.moveTo(Xp,Yp); else ctx.lineTo(Xp,Yp); }); ctx.stroke();
+  }
+}
+
+function getColor(name){
+  const s = getComputedStyle(document.documentElement);
+  const map = {accent: '--accent', accent2: '--accent2', accent3: '--accent3', accent4: '--accent4', accent5: '--accent5'};
+  return s.getPropertyValue(map[name]).trim();
+}
+
+// ======= Simulation core =======
+function simulate(params){
+  const {a,b,sigma,n,maxdeg,R,gridN,ridge} = params;
+  const grid = linspace(-1,1,gridN);
+  const trueY = grid.map(x => a*x + b);
+
+  const out = {deg: [], bias2: [], variance: [], noise: [], mse: [], trainMSE: [], testMSE: []};
+
+  for(let d=0; d<=maxdeg; d++){
+    // accumulators across datasets
+    const predSums = new Float64Array(gridN); // E[ yhat(x) ]
+    const predSumsq = new Float64Array(gridN); // E[ yhat(x)^2 ]
+
+    let trainErr = 0, testErr = 0; // average across datasets
+
+    for(let r=0;r<R;r++){
+      const D = generateDataset(n, a,b,sigma);
+      const coef = fitPolyLS(D.x, D.y, d, ridge);
+      // training MSE on D
+      let sTrain=0; for(let i=0;i<n;i++){ const yh = predictPoly(coef, D.x[i]); const e = D.y[i] - yh; sTrain += e*e; }
+      trainErr += sTrain / n;
+      // independent test set (large)
+      const T = generateDataset(400, a,b,sigma);
+      let sTest=0; for(let i=0;i<T.x.length;i++){ const yh = predictPoly(coef, T.x[i]); const e = T.y[i] - yh; sTest += e*e; }
+      testErr += sTest / T.x.length;
+      // predictions on fixed grid
+      for(let i=0;i<gridN;i++){
+        const p = predictPoly(coef, grid[i]);
+        predSums[i] += p; predSumsq[i] += p*p;
+      }
+    }
+    const Eyhat = Array.from(predSums).map(s => s/R);
+    const Eyhat2 = Array.from(predSumsq).map(s => s/R);
+    const VarYhat = Eyhat2.map((m2,i)=> m2 - Eyhat[i]*Eyhat[i]);
+    const Bias2AtX = Eyhat.map((m,i)=> (m - trueY[i])**2);
+
+    const bias2 = mean(Bias2AtX);
+    const variance = mean(VarYhat);
+    const noise = sigma*sigma;
+    const mse = bias2 + variance + noise;
+
+    out.deg.push(d);
+    out.bias2.push(bias2);
+    out.variance.push(variance);
+    out.noise.push(noise);
+    out.mse.push(mse);
+    out.trainMSE.push(trainErr/R);
+    out.testMSE.push(testErr/R);
+  }
+  return out;
+}
+
+// ======= CSV export =======
+function toCSV(res){
+  const header = ['degree','bias2','variance','noise','mse','trainMSE','testMSE'];
+  const lines = [header.join(',')];
+  const N = res.deg.length;
+  for(let i=0;i<N;i++){
+    lines.push([res.deg[i], res.bias2[i], res.variance[i], res.noise[i], res.mse[i], res.trainMSE[i], res.testMSE[i]].join(','));
+  }
+  return lines.join('\n');
+}
+
+// ======= Wiring UI =======
+const $ = (id)=> document.getElementById(id);
+const preview = $('preview');
+const chartBV = $('chartBV');
+const chartTT = $('chartTT');
+
+function renderBV(res){
+  const colors = [getColor('accent3'), getColor('accent4'), getColor('accent2'), getColor('accent')];
+  const series = [
+    {name:'Bias^2', color: colors[0], data: res.bias2},
+    {name:'Variance', color: colors[1], data: res.variance},
+    {name:'Noise (σ²)', color: colors[2], data: res.noise},
+    {name:'Total ≈ bias² + var + σ²', color: colors[3], data: res.mse},
+  ];
+  drawChart(chartBV, series, {title:'Bias–Variance decomposition across polynomial degree'});
+  const legend = $('legend-bv'); legend.innerHTML = '';
+  for(const s of series){ const el=document.createElement('div'); el.className='legend-item'; el.innerHTML = `<span class="legend-dot" style="background:${s.color}"></span>${s.name}`; legend.appendChild(el);}  
+  $('meta1').textContent = `Minimum estimated MSE at degree ${argmin(res.mse)} (Monte‑Carlo).`;
+}
+
+function renderTT(res){
+  const colors = [getColor('accent4'), getColor('accent2')];
+  const series = [
+    {name:'Train MSE', color: colors[0], data: res.trainMSE},
+    {name:'Test MSE', color: colors[1], data: res.testMSE},
+  ];
+  drawChart(chartTT, series, {title:'Train vs Test error across polynomial degree'});
+  const legend = $('legend-tt'); legend.innerHTML = '';
+  for(const s of series){ const el=document.createElement('div'); el.className='legend-item'; el.innerHTML = `<span class="legend-dot" style="background:${s.color}"></span>${s.name}`; legend.appendChild(el);}  
+  $('meta2').textContent = `Generalization gap widens with complexity; watch for the U‑shape in Test MSE.`;
+}
+
+function argmin(arr){ let m=Infinity, k=0; for(let i=0;i<arr.length;i++){ if(arr[i]<m){ m=arr[i]; k=i; } } return k; }
+
+function currentParams(){
+  return {
+    a: parseFloat($('a').value),
+    b: parseFloat($('b').value),
+    sigma: parseFloat($('sigma').value),
+    n: parseInt($('n').value,10),
+    maxdeg: parseInt($('maxdeg').value,10),
+    R: parseInt($('R').value,10),
+    gridN: parseInt($('gridN').value,10),
+    ridge: parseFloat($('ridge').value)
+  };
+}
+
+function run(){
+  const P = currentParams();
+  drawPreview(preview, P.a, P.b, P.sigma, P.maxdeg);
+  const res = simulate(P);
+  window.__bv_result = res; // stash for download
+  renderBV(res); renderTT(res);
+}
+
+$('run').addEventListener('click', run);
+$('download').addEventListener('click', ()=>{
+  if(!window.__bv_result){ alert('Run a simulation first.'); return; }
+  const csv = toCSV(window.__bv_result);
+  const blob = new Blob([csv], {type:'text/csv'}); const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='bias_variance_simulation.csv'; a.click(); URL.revokeObjectURL(url);
+});
+
+// Initial render
+run();
+</script>
+</body>
+</html>
