@@ -1,187 +1,387 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Slashhack - News for 31337 Kiddies</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulations - Probability & Machine Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            font-weight: 300;
+            margin-bottom: 10px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        
+        header p {
+            text-align: center;
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        nav {
+            text-align: center;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 8px 16px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        
+        main {
+            padding: 60px 0;
+        }
+        
+        .intro {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .intro h2 {
+            font-size: 2em;
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+        
+        .intro p {
+            font-size: 1.1em;
+            color: #4a5568;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        .category-section {
+            margin-bottom: 80px;
+        }
+        
+        .category-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .category-header h2 {
+            font-size: 2em;
+            color: #2d3748;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .category-header h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+        
+        .category-header p {
+            color: #4a5568;
+            font-size: 1.1em;
+            margin-top: 20px;
+        }
+        
+        .simulations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .simulation-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        .simulation-link:hover {
+            transform: translateY(-5px);
+        }
+        
+        .simulation-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+            height: 100%;
+        }
+        
+        .simulation-link:hover .simulation-card {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .simulation-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: #667eea;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .simulation-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .simulation-info {
+            padding: 25px;
+        }
+        
+        .simulation-info h3 {
+            font-size: 1.3em;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .simulation-info p {
+            color: #4a5568;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .view-simulation {
+            color: #667eea;
+            font-weight: 500;
+            margin-top: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9em;
+        }
+        
+        .view-simulation:after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+        
+        .simulation-link:hover .view-simulation:after {
+            transform: translateX(5px);
+        }
+        
+        footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 80px;
+        }
+        
+        footer p {
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+        
+        /* Icon placeholders for simulations */
+        .icon-clt::before { content: '📊'; }
+        .icon-monte-carlo::before { content: '🎯'; }
+        .icon-bayesian::before { content: '🪙'; }
+        .icon-regression::before { content: '📈'; }
+        .icon-kmeans::before { content: '🔵'; }
+        .icon-neural::before { content: '🧠'; }
+        
+        @media (max-width: 768px) {
+            .simulations-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2em;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
 </head>
-
-<body marginheight=0 marginwidth=0 link=#e5e5e5 vlink=#e5e5e5 alink=#e5e5e5 bgcolor=#ffffff>
-
-<table border=0 width=100% cellspacing=0 cellpadding=2>
-<tr>
-
-  <!-- left nav bar column -->
-  <td width=20% height="663" valign=top bgcolor=#425a7c>
-
-  <br>
-  <!-- first box -->
-  <table border=0 cellspacing=0 cellpadding=2 width=98%>
-    <tr>
-      <td width=100%><font color=#e5e5e5 face=helvetica><b>Sections</b></font></td>
-    </tr>
-    <tr>
-      <td width=100% bgcolor=#5272a4>
-        &nbsp;- <font color=#e5e5e5><a href=index.html>main</a></font><br>
-        &nbsp;- <font color=#e5e5e5><a href=index.html>news</a></font><br>
-        &nbsp;- <font color=#e5e5e5><a href=index.html>search</a></font><br>
-        &nbsp;- <font color=#e5e5e5><a href=index.html>submit</a></font><br>
-        &nbsp;- <font color=#e5e5e5><a href=index.html>old stuff</a></font><br>
-        &nbsp;- <font color=#e5e5e5><a href=index.html>editorials</a></font><br>
-      </td>
-    </tr>
-  </table>
-  <!-- end of first box -->
-
-  <br>
-  <table border=0 cellspacing=0 cellpadding=2 width=98%>
-    <tr>
-      <td width=100%><font color=#e5e5e5 face=helvetica><b>Interactive</b></font></td>
-    </tr>
-    <tr>
-      <td width=100% bgcolor=#5272a4>
-        &nbsp;- <font color=#e5e5e5><a href=index.html>message boards</a></font><br>
-        &nbsp;- <font color=#e5e5e5><a href=index.html>contact</a></font><br>
-      </td>
-    </tr>
-  </table>
-
-  <br>
-  <table border=0 cellspacing=0 cellpadding=2 width=98%>
-    <tr>
-      <td width=100%><font color=#e5e5e5 face=helvetica><b>Links</b></font></td>
-    </tr>
-    <tr>
-      <td width=100% bgcolor=#5272a4>
-        &nbsp;- <font color=#e5e5e5><a href=index.html>freshmeat.net</a></font><br>
-        &nbsp;- <font color=#e5e5e5><a href=index.html>themes.org</a></font><br>
-        &nbsp;- <font color=#e5e5e5><a href=index.html>linux.com</a></font><br>
-        &nbsp;- <font color=#e5e5e5><a href=index.html>php.net</a></font><br>
-        &nbsp;- <font color=#e5e5e5><a href=index.html>slashdot.org</a></font><br>
-        &nbsp;- <font color=#e5e5e5><a href=index.html>slackware.com</a></font><br>
-      </td>
-    </tr>
-  </table>
-
-  </td>
-
-  <!-- middle content column -->
-  <td width=60% valign=top>
-  <br>
-  <center><b><font color=#425a74 size=+2>Slashhack - News for 31337 kiddies</b></center>
-  <br>
-  
-  <!-- news box -->
-  <table border=0 cellspacing=0 cellpadding=2 width=98% align=center>
-    <tr>
-      <td width=100% bgcolor=#425a74>
-        <font color=#e5e5e5 face=helvetica><b>&nbsp;News</b></font>
-      </td>
-    </tr>
+<body>
+    <header>
+        <div class="container">
+            <h1>Interactive Simulations</h1>
+            <p>Probability Theory & Machine Learning Visualizations</p>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="teaching.html">Teaching</a></li>
+                    <li><a href="research.html">Research</a></li>
+                    <li><a href="talks.html">Talks</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
     
-    <tr>
-
-      <td bgcolor=#d6d6d6 width=100%>
-
-       <!-- sample news item -->
-       <b>Mitnick sneezes, breaks into Pentagon<br>
-       <small>Story posted by CmdrAntipop on Oct. 20, 2000.<br></small></b>
-       <div align=justify>
-       z3r0-c00l submitted this one:
-       <i>"This morning a source close to the celebrated hacker Kevin Mitnick reported that the he
-       might be coming down with a bad cold. The source said the cold was so bad that when he
-       sneezed he suddenly had root on the Pentagon's computers."</i> For those of us who have
-       followed Kevin's hacking career we already knew he was s00p3r 31337 but this proves it.
-      </div><br>
-      <!-- end of sample news item -->
-  
-      <hr width=80%><br>
-
-      <b>Redhat 7 is the 31337est for kiddies<br>
-      <small>Story posted by CmdrAntipop on Oct. 19, 2000.<br></small></b>
-      <div align=justify>
-      Signal666 sent: <i>"As all of us script kiddies know, Redhat is the most 31337 way to port scan
-      everyone in your @Home subnet continously. Well friends, version 7 is out. Sure, it's full of bugs
-      and the graphical tools hide you from all the cool part of the Linux OS, but hey, all you really
-      care about is your Matrix KDE theme, right?"</i> Well said. Although I prefer the Windowmaker
-      Matrix theme.</div><br>
-
-      <hr width=80%><br>
-
-      <b>Windows ME is Out<br>
-      <div align=justify>
-      <small>Story posted by JonPussy on Oct. 19, 2000.<br></small></b>
-      With the recent geek alienation that's been going on, it's a wonder Microsoft got anything done
-      this year. But the evil empire has, and they have released the 31337 version of Windows yet!
-      Now you'll never have to see that darned command line DOS prompt again! Point and click
-      your way to 31337 heaven. Some people criticize Windows for not being stable, but everyone
-      knows that those truly evil Linux users planted the BSOD in Windows! Those geek alienaters
-      will stop at nothing to take our precious Windows away! </div><br>
-
-      </td>
-
-    </tr>
-</table>
-
-  <td width=20% valign=top>
-    <!-- this is to try to get the spacing the same -->
-    <center><br><font color=#ffffff size=+2>foo</font><br><Br></center>
-
-    <table border=0 cellspacing=0 cellpadding=2 width=100%>
-      <tr>
-      
-        <td bgcolor=#425a74>
-          &nbsp;<font face=helvetica color=#e5e5e5><b>Poll</b></font>
-        </td>
- 
-      </tr>
-      <tr>
-
-        <td bgcolor=#d6d6d6>
-        <b>What OS do you use?</b><br><small>
-        <li>Redhat cuz I'm 31337!</li>
-        <li>Windows ME because I sold my soul to MS!</li>
-        <li>DOS cuz I'm poor</li>
-        <li>CowboyAntipop Linux v.9.0!</li>
-        <center><B>Submit</b></center>
-        </td>
- 
-      </tr>
-    </table>
-<br>
-    <table border=0 cellspacing=0 cellpadding=2 width=100%>
-      <tr>
-
-        <td bgcolor=#425a74>
-          &nbsp;<font face=helvetica color=#e5e5e5><b>Editorials</b></font>
-        </td>
- 
-      </tr>
-      <tr>
-      
-        <td bgcolor=#d6d6d6>
-        <li>How to be 31337</li>
-        <li>Matrix Theme HOWTO</li>
-        <li>Beating Lameness Filters</li>
-        <li>Geek Alienation</li>
-        </td>
- 
-      </tr>
-    </table>
-
-  </td>
-
-</tr>
-</table>
-
-<table width="98%" border="0" cellpadding="0" cellspacing="0">
-  <tr>
-    <td bgcolor="#5272a4"> 
-      <div align="right"><small>&copy; 2000</small> Slashhack <small>
-	  <!--This theme is free for distriubtion,  so long as  link to openwebdesing.org and florida-villa.com  stay on the theme-->
-	  Courtesy 
-        <a href="http://www.openwebdesign.org" target="_blank">Open Web Design</a><a href="http://www.dubaiapartments.biz" target="_blank"><img src="spacer.gif" width="5" height="5" border="0"/></a>Thanks 
-        to <a href="http://www.florida-villa.com" target="_blank">Florida Vacation Homes</a> </small></div></td>
-  </tr>
-</table>
+    <main>
+        <div class="container">
+            <div class="intro">
+                <h2>Explore Concepts Through Interaction</h2>
+                <p>These interactive simulations help visualize fundamental concepts in probability theory and machine learning. Click on any simulation to explore and interact with the concepts in real-time.</p>
+            </div>
+            
+            <!-- Probability Section -->
+            <div class="category-section">
+                <div class="category-header">
+                    <h2>Probability Theory</h2>
+                    <p>Fundamental concepts in probability and statistics</p>
+                </div>
+                
+                <div class="simulations-grid">
+                    <a href="simulations/central-limit-theorem.html" class="simulation-link">
+                        <div class="simulation-card">
+                            <div class="simulation-image icon-clt">
+                                <!-- Replace with: <img src="images/clt-preview.png" alt="Central Limit Theorem"> -->
+                            </div>
+                            <div class="simulation-info">
+                                <h3>Central Limit Theorem</h3>
+                                <p>Explore how the distribution of sample means approaches a normal distribution as sample size increases, regardless of the population distribution.</p>
+                                <div class="view-simulation">View Simulation</div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="simulations/monte-carlo-pi.html" class="simulation-link">
+                        <div class="simulation-card">
+                            <div class="simulation-image icon-monte-carlo">
+                                <!-- Replace with: <img src="images/monte-carlo-preview.png" alt="Monte Carlo π Estimation"> -->
+                            </div>
+                            <div class="simulation-info">
+                                <h3>Monte Carlo π Estimation</h3>
+                                <p>Use random sampling to estimate the value of π by simulating random points in a square and counting how many fall within a circle.</p>
+                                <div class="view-simulation">View Simulation</div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="simulations/bayesian-coin-flip.html" class="simulation-link">
+                        <div class="simulation-card">
+                            <div class="simulation-image icon-bayesian">
+                                <!-- Replace with: <img src="images/bayesian-preview.png" alt="Bayesian Coin Flip"> -->
+                            </div>
+                            <div class="simulation-info">
+                                <h3>Bayesian Coin Flip</h3>
+                                <p>See how Bayesian inference updates our beliefs about a coin's fairness as we observe more flips and gather evidence.</p>
+                                <div class="view-simulation">View Simulation</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Machine Learning Section -->
+            <div class="category-section">
+                <div class="category-header">
+                    <h2>Machine Learning</h2>
+                    <p>Core algorithms and concepts visualized</p>
+                </div>
+                
+                <div class="simulations-grid">
+                    <a href="simulations/linear-regression.html" class="simulation-link">
+                        <div class="simulation-card">
+                            <div class="simulation-image icon-regression">
+                                <!-- Replace with: <img src="images/linear-regression-preview.png" alt="Linear Regression"> -->
+                            </div>
+                            <div class="simulation-info">
+                                <h3>Linear Regression</h3>
+                                <p>Visualize how linear regression finds the best-fitting line through noisy data points using least squares optimization.</p>
+                                <div class="view-simulation">View Simulation</div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="simulations/k-means-clustering.html" class="simulation-link">
+                        <div class="simulation-card">
+                            <div class="simulation-image icon-kmeans">
+                                <!-- Replace with: <img src="images/kmeans-preview.png" alt="K-Means Clustering"> -->
+                            </div>
+                            <div class="simulation-info">
+                                <h3>K-Means Clustering</h3>
+                                <p>Watch the K-means algorithm iteratively find cluster centers and group similar data points together.</p>
+                                <div class="view-simulation">View Simulation</div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="simulations/neural-network.html" class="simulation-link">
+                        <div class="simulation-card">
+                            <div class="simulation-image icon-neural">
+                                <!-- Replace with: <img src="images/neural-network-preview.png" alt="Neural Network Training"> -->
+                            </div>
+                            <div class="simulation-info">
+                                <h3>Neural Network Training</h3>
+                                <p>Observe a neural network learn the XOR function through backpropagation and gradient descent.</p>
+                                <div class="view-simulation">View Simulation</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Your Name. Interactive Simulations for Education.</p>
+        </div>
+    </footer>
 </body>
-
 </html>
