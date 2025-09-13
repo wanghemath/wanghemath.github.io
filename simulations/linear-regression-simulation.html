@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Regression - Interactive Simulation</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .simulation-container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin: 20px 0;
+        }
+        
+        .description {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .control-group {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .control-group label {
+            display: block;
+            color: #4a5568;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .control-group input[type="range"] {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .control-group .value {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+        
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+        
+        .btn-add {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .btn-add:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 30px 0;
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .result-card {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .result-card h3 {
+            color: #4a5568;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .result-card .value {
+            color: #667eea;
+            font-size: 2em;
+            font-weight: 600;
+        }
+        
+        .equation-display {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            color: #2d3748;
+        }
+        
+        .interactive-hint {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            color: #234e52;
+        }
+        
+        .theory-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: #edf2f7;
+            border-radius: 10px;
+        }
+        
+        .theory-section h2 {
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        .theory-section p {
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        .formula {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Linear Regression</h1>
+        <p>Find the best-fitting line through data</p>
+    </header>
+    
+    <div class="container">
+        <div class="back-link">
+            <a href="../simulations.html">← Back to Simulations</a>
+        </div>
+        
+        <div class="simulation-container">
+            <div class="description">
+                <p>Linear regression finds the line that best fits a set of data points by minimizing the sum of squared residuals. This simulation lets you generate data with various noise levels and watch how the algorithm finds the optimal line.</p>
+            </div>
+            
+            <div class="interactive-hint">
+                💡 <strong>Tip:</strong> Click anywhere on the chart to add custom data points!
+            </div>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <label>Noise Level: <span class="value" id="noise-value">0.3</span></label>
+                    <input type="range" id="noise-level" min="0" max="1" value="0.3" step="0.05">
+                </div>
+                <div class="control-group">
+                    <label>Number of Points: <span class="value" id="points-value">50</span></label>
+                    <input type="range" id="num-points" min="10" max="200" value="50" step="10">
+                </div>
+                <div class="control-group">
+                    <label>True Slope: <span class="value" id="slope-value">1.5</span></label>
+                    <input type="range" id="true-slope" min="-3" max="3" value="1.5" step="0.1">
+                </div>
+                <div class="control-group">
+                    <label>True Intercept: <span class="value" id="intercept-value">2.0</span></label>
+                    <input type="range" id="true-intercept" min="-5" max="5" value="2.0" step="0.1">
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn btn-primary" onclick="generateData()">Generate Data</button>
+                <button class="btn btn-primary" onclick="fitRegression()">Fit Line</button>
+                <button class="btn btn-add" onclick="toggleAddMode()">Add Points Mode</button>
+                <button class="btn btn-secondary" onclick="resetSimulation()">Reset</button>
+            </div>
+            
+            <div class="equation-display" id="equation">
+                y = mx + b
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="regressionChart"></canvas>
+            </div>
+            
+            <div class="results">
+                <div class="result-card">
+                    <h3>R² Score</h3>
+                    <div class="value" id="r2-score">-</div>
+                </div>
+                <div class="result-card">
+                    <h3>Fitted Slope</h3>
+                    <div class="value" id="fitted-slope">-</div>
+                </div>
+                <div class="result-card">
+                    <h3>Fitted Intercept</h3>
+                    <div class="value" id="fitted-intercept">-</div>
+                </div>
+                <div class="result-card">
+                    <h3>Mean Squared Error</h3>
+                    <div class="value" id="mse">-</div>
+                </div>
+            </div>
+            
+            <div class="theory-section">
+                <h2>How Linear Regression Works</h2>
+                <p>Linear regression finds the line y = mx + b that minimizes the sum of squared errors between predicted and actual values. The optimal parameters are found using the least squares method:</p>
+                <div class="formula">
+                    m = Σ((x - x̄)(y - ȳ)) / Σ((x - x̄)²)
+                </div>
+                <div class="formula">
+                    b = ȳ - m·x̄
+                </div>
+                <p>Where x̄ and ȳ are the means of x and y values. The R² score measures how well the line fits the data, with 1.0 being a perfect fit.</p>
+                <p><strong>Key concepts:</strong></p>
+                <ul style="margin-left: 20px; color: #4a5568;">
+                    <li>Residuals: The vertical distances between data points and the fitted line</li>
+                    <li>Least Squares: Minimizing the sum of squared residuals</li>
+                    <li>R² Score: Proportion of variance explained by the model</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2024 Your Name. Educational Simulations.</p>
+    </footer>
+    
+    <script>
+        let chart;
+        let dataPoints = [];
+        let addMode = false;
+        let regressionLine = null;
+        
+        // Update value displays
+        document.getElementById('noise-level').addEventListener('input', function() {
+            document.getElementById('noise-value').textContent = this.value;
+        });
+        
+        document.getElementById('num-points').addEventListener('input', function() {
+            document.getElementById('points-value').textContent = this.value;
+        });
+        
+        document.getElementById('true-slope').addEventListener('input', function() {
+            document.getElementById('slope-value').textContent = this.value;
+        });
+        
+        document.getElementById('true-intercept').addEventListener('input', function() {
+            document.getElementById('intercept-value').textContent = this.value;
+        });
+        
+        // Initialize chart
+        const ctx = document.getElementById('regressionChart').getContext('2d');
+        chart = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Data Points',
+                    data: [],
+                    backgroundColor: 'rgba(102, 126, 234, 0.6)',
+                    borderColor: 'rgba(102, 126, 234, 1)',
+                    borderWidth: 1,
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }, {
+                    label: 'Regression Line',
+                    data: [],
+                    type: 'line',
+                    backgroundColor: 'rgba(244, 63, 94, 0.2)',
+                    borderColor: 'rgba(244, 63, 94, 1)',
+                    borderWidth: 3,
+                    pointRadius: 0,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: 'X'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Y'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Linear Regression Visualization'
+                    }
+                },
+                onClick: function(event, elements) {
+                    if (addMode) {
+                        const rect = chart.canvas.getBoundingClientRect();
+                        const x = event.clientX - rect.left;
+                        const y = event.clientY - rect.top;
+                        
+                        const xScale = chart.scales.x;
+                        const yScale = chart.scales.y;
+                        
+                        const xValue = xScale.getValueForPixel(x);
+                        const yValue = yScale.getValueForPixel(y);
+                        
+                        dataPoints.push({x: xValue, y: yValue});
+                        updateChart();
+                    }
+                }
+            }
+        });
+        
+        function generateData() {
+            const numPoints = parseInt(document.getElementById('num-points').value);
+            const noiseLevel = parseFloat(document.getElementById('noise-level').value);
+            const trueSlope = parseFloat(document.getElementById('true-slope').value);
+            const trueIntercept = parseFloat(document.getElementById('true-intercept').value);
+            
+            dataPoints = [];
+            
+            for (let i = 0; i < numPoints; i++) {
+                const x = Math.random() * 10;
+                const noise = (Math.random() - 0.5) * 2 * noiseLevel * 5;
+                const y = trueSlope * x + trueIntercept + noise;
+                dataPoints.push({x: x, y: y});
+            }
+            
+            regressionLine = null;
+            updateChart();
+            resetResults();
+        }
+        
+        function fitRegression() {
+            if (dataPoints.length < 2) {
+                alert('Please generate or add at least 2 data points first!');
+                return;
+            }
+            
+            // Calculate means
+            const n = dataPoints.length;
+            const meanX = dataPoints.reduce((sum, p) => sum + p.x, 0) / n;
+            const meanY = dataPoints.reduce((sum, p) => sum + p.y, 0) / n;
+            
+            // Calculate slope
+            let numerator = 0;
+            let denominator = 0;
+            
+            dataPoints.forEach(point => {
+                numerator += (point.x - meanX) * (point.y - meanY);
+                denominator += Math.pow(point.x - meanX, 2);
+            });
+            
+            const slope = numerator / denominator;
+            const intercept = meanY - slope * meanX;
+            
+            // Create regression line
+            const minX = Math.min(...dataPoints.map(p => p.x));
+            const maxX = Math.max(...dataPoints.map(p => p.x));
+            
+            regressionLine = [
+                {x: minX, y: slope * minX + intercept},
+                {x: maxX, y: slope * maxX + intercept}
+            ];
+            
+            // Calculate R²
+            let ssRes = 0;
+            let ssTot = 0;
+            
+            dataPoints.forEach(point => {
+                const yPred = slope * point.x + intercept;
+                ssRes += Math.pow(point.y - yPred, 2);
+                ssTot += Math.pow(point.y - meanY, 2);
+            });
+            
+            const r2 = 1 - (ssRes / ssTot);
+            const mse = ssRes / n;
+            
+            // Update display
+            document.getElementById('r2-score').textContent = r2.toFixed(4);
+            document.getElementById('fitted-slope').textContent = slope.toFixed(3);
+            document.getElementById('fitted-intercept').textContent = intercept.toFixed(3);
+            document.getElementById('mse').textContent = mse.toFixed(3);
+            document.getElementById('equation').textContent = `y = ${slope.toFixed(3)}x + ${intercept.toFixed(3)}`;
+            
+            updateChart();
+        }
+        
+        function updateChart() {
+            chart.data.datasets[0].data = dataPoints;
+            chart.data.datasets[1].data = regressionLine || [];
+            chart.update();
+        }
+        
+        function toggleAddMode() {
+            addMode = !addMode;
+            const btn = event.target;
+            if (addMode) {
+                btn.textContent = 'Exit Add Mode';
+                btn.style.background = '#e53e3e';
+                chart.canvas.style.cursor = 'crosshair';
+            } else {
+                btn.textContent = 'Add Points Mode';
+                btn.style.background = '#48bb78';
+                chart.canvas.style.cursor = 'default';
+            }
+        }
+        
+        function resetResults() {
+            document.getElementById('r2-score').textContent = '-';
+            document.getElementById('fitted-slope').textContent = '-';
+            document.getElementById('fitted-intercept').textContent = '-';
+            document.getElementById('mse').textContent = '-';
+            document.getElementById('equation').textContent = 'y = mx + b';
+        }
+        
+        function resetSimulation() {
+            dataPoints = [];
+            regressionLine = null;
+            addMode = false;
+            
+            const btn = document.querySelector('.btn-add');
+            btn.textContent = 'Add Points Mode';
+            btn.style.background = '#48bb78';
+            chart.canvas.style.cursor = 'default';
+            
+            updateChart();
+            resetResults();
+        }
+    </script>
+</body>
+</html>

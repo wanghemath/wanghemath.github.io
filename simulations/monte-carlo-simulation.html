@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monte Carlo π Estimation - Interactive Simulation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .simulation-container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin: 20px 0;
+        }
+        
+        .description {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .visualization-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .canvas-container {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        canvas {
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            background: white;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .control-group {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .control-group label {
+            display: block;
+            color: #4a5568;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .control-group input[type="range"] {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .control-group .value {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+        
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+        
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .result-card {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .result-card h3 {
+            color: #4a5568;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .result-card .value {
+            color: #667eea;
+            font-size: 2em;
+            font-weight: 600;
+        }
+        
+        .theory-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: #edf2f7;
+            border-radius: 10px;
+        }
+        
+        .theory-section h2 {
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        .theory-section p {
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+            color: #4a5568;
+        }
+        
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #718096;
+        }
+        
+        @media (max-width: 768px) {
+            .visualization-area {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Monte Carlo π Estimation</h1>
+        <p>Estimate π using random sampling</p>
+    </header>
+    
+    <div class="container">
+        <div class="back-link">
+            <a href="../simulations.html">← Back to Simulations</a>
+        </div>
+        
+        <div class="simulation-container">
+            <div class="description">
+                <p>This simulation demonstrates how we can estimate the value of π using random sampling. By generating random points in a square and counting how many fall within an inscribed circle, we can approximate π based on the ratio of areas.</p>
+            </div>
+            
+            <div class="visualization-area">
+                <div class="canvas-container">
+                    <h3 style="margin-bottom: 15px; color: #2d3748;">Sampling Visualization</h3>
+                    <canvas id="monteCarloCanvas" width="400" height="400"></canvas>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: #48bb78;"></div>
+                            <span>Inside Circle</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: #f56565;"></div>
+                            <span>Outside Circle</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-container">
+                    <h3 style="margin-bottom: 15px; color: #2d3748;">π Estimation Over Time</h3>
+                    <canvas id="piGraph" width="400" height="400"></canvas>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <label>Points per Step: <span class="value" id="points-per-step-value">100</span></label>
+                    <input type="range" id="points-per-step" min="10" max="1000" value="100" step="10">
+                </div>
+                <div class="control-group">
+                    <label>Animation Speed (ms): <span class="value" id="speed-value">50</span></label>
+                    <input type="range" id="speed" min="10" max="500" value="50" step="10">
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn btn-primary" onclick="startSimulation()">Start Simulation</button>
+                <button class="btn btn-primary" onclick="pauseSimulation()">Pause</button>
+                <button class="btn btn-secondary" onclick="resetSimulation()">Reset</button>
+            </div>
+            
+            <div class="results">
+                <div class="result-card">
+                    <h3>Estimated π</h3>
+                    <div class="value" id="pi-estimate">-</div>
+                </div>
+                <div class="result-card">
+                    <h3>Total Points</h3>
+                    <div class="value" id="total-points">0</div>
+                </div>
+                <div class="result-card">
+                    <h3>Points in Circle</h3>
+                    <div class="value" id="points-in-circle">0</div>
+                </div>
+                <div class="result-card">
+                    <h3>Error</h3>
+                    <div class="value" id="error">-</div>
+                </div>
+            </div>
+            
+            <div class="theory-section">
+                <h2>How It Works</h2>
+                <p>The Monte Carlo method for estimating π is based on the following principle:</p>
+                <p>• A circle with radius r = 1 has area π</p>
+                <p>• A square with side length 2 (containing the circle) has area 4</p>
+                <p>• The ratio of the circle's area to the square's area is π/4</p>
+                <p>By randomly placing points in the square and counting how many fall inside the circle, we can estimate this ratio. As the number of points increases, our estimate becomes more accurate: π ≈ 4 × (points inside circle) / (total points)</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2024 Your Name. Educational Simulations.</p>
+    </footer>
+    
+    <script>
+        let totalPoints = 0;
+        let pointsInCircle = 0;
+        let isRunning = false;
+        let animationId;
+        let piHistory = [];
+        
+        const canvas = document.getElementById('monteCarloCanvas');
+        const ctx = canvas.getContext('2d');
+        const graphCanvas = document.getElementById('piGraph');
+        const graphCtx = graphCanvas.getContext('2d');
+        
+        // Update value displays
+        document.getElementById('points-per-step').addEventListener('input', function() {
+            document.getElementById('points-per-step-value').textContent = this.value;
+        });
+        
+        document.getElementById('speed').addEventListener('input', function() {
+            document.getElementById('speed-value').textContent = this.value;
+        });
+        
+        function drawCircleAndSquare() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw square
+            ctx.strokeStyle = '#4a5568';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw circle
+            ctx.beginPath();
+            ctx.arc(canvas.width/2, canvas.height/2, canvas.width/2, 0, 2 * Math.PI);
+            ctx.stroke();
+        }
+        
+        function drawPoint(x, y, isInside) {
+            ctx.fillStyle = isInside ? '#48bb78' : '#f56565';
+            ctx.globalAlpha = 0.6;
+            ctx.beginPath();
+            ctx.arc(x * canvas.width, y * canvas.height, 2, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+        }
+        
+        function updateGraph() {
+            graphCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
+            
+            // Draw axes
+            graphCtx.strokeStyle = '#4a5568';
+            graphCtx.lineWidth = 1;
+            graphCtx.beginPath();
+            graphCtx.moveTo(40, graphCanvas.height - 40);
+            graphCtx.lineTo(graphCanvas.width - 20, graphCanvas.height - 40);
+            graphCtx.moveTo(40, 20);
+            graphCtx.lineTo(40, graphCanvas.height - 40);
+            graphCtx.stroke();
+            
+            // Draw π line
+            const piY = graphCanvas.height - 40 - ((Math.PI - 2.5) / 1.5) * (graphCanvas.height - 60);
+            graphCtx.strokeStyle = '#e53e3e';
+            graphCtx.setLineDash([5, 5]);
+            graphCtx.beginPath();
+            graphCtx.moveTo(40, piY);
+            graphCtx.lineTo(graphCanvas.width - 20, piY);
+            graphCtx.stroke();
+            graphCtx.setLineDash([]);
+            
+            // Draw estimate line
+            if (piHistory.length > 1) {
+                graphCtx.strokeStyle = '#667eea';
+                graphCtx.lineWidth = 2;
+                graphCtx.beginPath();
+                
+                const xScale = (graphCanvas.width - 60) / Math.max(piHistory.length - 1, 1);
+                const yScale = (graphCanvas.height - 60) / 1.5;
+                
+                piHistory.forEach((pi, i) => {
+                    const x = 40 + i * xScale;
+                    const y = graphCanvas.height - 40 - (pi - 2.5) * yScale;
+                    
+                    if (i === 0) {
+                        graphCtx.moveTo(x, y);
+                    } else {
+                        graphCtx.lineTo(x, y);
+                    }
+                });
+                
+                graphCtx.stroke();
+            }
+            
+            // Labels
+            graphCtx.fillStyle = '#4a5568';
+            graphCtx.font = '12px Arial';
+            graphCtx.fillText('Iterations', graphCanvas.width / 2 - 20, graphCanvas.height - 10);
+            graphCtx.save();
+            graphCtx.translate(15, graphCanvas.height / 2);
+            graphCtx.rotate(-Math.PI / 2);
+            graphCtx.fillText('π Estimate', -30, 0);
+            graphCtx.restore();
+            
+            // Y-axis labels
+            graphCtx.fillText('4.0', 10, 30);
+            graphCtx.fillText('3.14', 10, piY);
+            graphCtx.fillText('2.5', 10, graphCanvas.height - 40);
+        }
+        
+        function simulate() {
+            if (!isRunning) return;
+            
+            const pointsPerStep = parseInt(document.getElementById('points-per-step').value);
+            
+            for (let i = 0; i < pointsPerStep; i++) {
+                const x = Math.random();
+                const y = Math.random();
+                
+                // Check if point is inside circle (centered at 0.5, 0.5 with radius 0.5)
+                const distance = Math.sqrt(Math.pow(x - 0.5, 2) + Math.pow(y - 0.5, 2));
+                const isInside = distance <= 0.5;
+                
+                if (isInside) {
+                    pointsInCircle++;
+                }
+                totalPoints++;
+                
+                // Draw point
+                drawPoint(x, y, isInside);
+            }
+            
+            // Update estimate
+            const piEstimate = 4 * pointsInCircle / totalPoints;
+            piHistory.push(piEstimate);
+            
+            // Update displays
+            document.getElementById('pi-estimate').textContent = piEstimate.toFixed(6);
+            document.getElementById('total-points').textContent = totalPoints.toLocaleString();
+            document.getElementById('points-in-circle').textContent = pointsInCircle.toLocaleString();
+            document.getElementById('error').textContent = ((piEstimate - Math.PI) / Math.PI * 100).toFixed(2) + '%';
+            
+            // Update graph
+            updateGraph();
+            
+            // Continue animation
+            const speed = parseInt(document.getElementById('speed').value);
+            animationId = setTimeout(simulate, speed);
+        }
+        
+        function startSimulation() {
+            isRunning = true;
+            simulate();
+        }
+        
+        function pauseSimulation() {
+            isRunning = false;
+            if (animationId) {
+                clearTimeout(animationId);
+            }
+        }
+        
+        function resetSimulation() {
+            pauseSimulation();
+            totalPoints = 0;
+            pointsInCircle = 0;
+            piHistory = [];
+            
+            document.getElementById('pi-estimate').textContent = '-';
+            document.getElementById('total-points').textContent = '0';
+            document.getElementById('points-in-circle').textContent = '0';
+            document.getElementById('error').textContent = '-';
+            
+            drawCircleAndSquare();
+            updateGraph();
+        }
+        
+        // Initialize
+        drawCircleAndSquare();
+        updateGraph();
+    </script>
+</body>
+</html>
