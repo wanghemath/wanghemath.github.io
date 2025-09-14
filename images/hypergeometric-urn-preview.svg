@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f7fafc"/>
+  <text x="200" y="30" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#2d3748">Hypergeometric Distribution</text>
+  
+  <!-- Original Urn -->
+  <g transform="translate(100, 100)">
+    <rect x="-40" y="-10" width="80" height="80" fill="#f0f0f0" rx="10" stroke="#999" stroke-width="2"/>
+    <text x="0" y="-20" text-anchor="middle" font-family="Arial" font-size="12" fill="#444">Original Urn</text>
+    
+    <!-- Red balls -->
+    <circle cx="-20" cy="15" r="8" fill="#ff6b6b"/>
+    <circle cx="0" cy="15" r="8" fill="#ff6b6b"/>
+    <circle cx="20" cy="15" r="8" fill="#ff6b6b"/>
+    <circle cx="-20" cy="35" r="8" fill="#ff6b6b"/>
+    
+    <!-- Green balls -->
+    <circle cx="0" cy="35" r="8" fill="#51cf66"/>
+    <circle cx="20" cy="35" r="8" fill="#51cf66"/>
+    <circle cx="-10" cy="50" r="8" fill="#51cf66"/>
+    <circle cx="10" cy="50" r="8" fill="#51cf66"/>
+    
+    <text x="0" y="90" text-anchor="middle" font-family="Arial" font-size="11" fill="#666">N=50, M=20</text>
+  </g>
+  
+  <!-- Arrow -->
+  <path d="M 160 140 L 220 140" stroke="#667eea" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <text x="190" y="135" text-anchor="middle" font-family="Arial" font-size="11" fill="#667eea">Draw K=10</text>
+  
+  <!-- Sample -->
+  <g transform="translate(280, 100)">
+    <rect x="-40" y="-10" width="80" height="80" fill="#f0f0f0" rx="10" stroke="#999" stroke-width="2"/>
+    <text x="0" y="-20" text-anchor="middle" font-family="Arial" font-size="12" fill="#444">Sample</text>
+    
+    <!-- Sample balls -->
+    <circle cx="-20" cy="15" r="8" fill="#ff6b6b"/>
+    <circle cx="0" cy="15" r="8" fill="#ff6b6b"/>
+    <circle cx="20" cy="15" r="8" fill="#ff6b6b"/>
+    <circle cx="-20" cy="35" r="8" fill="#ff6b6b"/>
+    <circle cx="0" cy="35" r="8" fill="#51cf66"/>
+    <circle cx="20" cy="35" r="8" fill="#51cf66"/>
+    <circle cx="-20" cy="50" r="8" fill="#51cf66"/>
+    <circle cx="0" cy="50" r="8" fill="#51cf66"/>
+    <circle cx="20" cy="50" r="8" fill="#51cf66"/>
+    <circle cx="0" cy="68" r="8" fill="#51cf66"/>
+    
+    <text x="0" y="90" text-anchor="middle" font-family="Arial" font-size="11" fill="#666">Red: 4, Green: 6</text>
+  </g>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#667eea"/>
+    </marker>
+  </defs>
+  
+  <!-- Formula -->
+  <rect x="50" y="220" width="300" height="60" fill="#e8f4f8" rx="5"/>
+  <text x="200" y="240" text-anchor="middle" font-family="Courier New" font-size="11" fill="#333">P(X = 4) = C(20,4) × C(30,6) / C(50,10)</text>
+  <text x="200" y="260" text-anchor="middle" font-family="Arial" font-size="11" fill="#667eea">= 0.2156</text>
+</svg>

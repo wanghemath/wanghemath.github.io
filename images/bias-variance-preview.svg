@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f7fafc"/>
+  <text x="200" y="30" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#2d3748">Bias-Variance Trade-off</text>
+  
+  <!-- Axes -->
+  <line x1="60" y1="250" x2="350" y2="250" stroke="#333" stroke-width="2"/>
+  <line x1="60" y1="250" x2="60" y2="50" stroke="#333" stroke-width="2"/>
+  
+  <!-- True function (linear) -->
+  <line x1="100" y1="200" x2="300" y2="100" stroke="#2E86AB" stroke-width="3"/>
+  
+  <!-- Individual polynomial fits (high variance) -->
+  <path d="M 100 180 Q 150 120, 200 140 T 300 90" stroke="#F18F01" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M 100 190 Q 150 150, 200 130 T 300 110" stroke="#F18F01" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M 100 210 Q 150 140, 200 150 T 300 100" stroke="#F18F01" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M 100 200 Q 150 130, 200 135 T 300 95" stroke="#F18F01" stroke-width="1" fill="none" opacity="0.5"/>
+  
+  <!-- Average estimator -->
+  <path d="M 100 195 Q 150 135, 200 140 T 300 98" stroke="#C73E1D" stroke-width="3" fill="none"/>
+  
+  <!-- Data points -->
+  <circle cx="120" cy="180" r="4" fill="#A23B72"/>
+  <circle cx="160" cy="160" r="4" fill="#A23B72"/>
+  <circle cx="200" cy="145" r="4" fill="#A23B72"/>
+  <circle cx="240" cy="125" r="4" fill="#A23B72"/>
+  <circle cx="280" cy="110" r="4" fill="#A23B72"/>
+  
+  <!-- Test point with prediction spread -->
+  <circle cx="220" cy="120" r="6" fill="#2E86AB"/>
+  <line x1="220" y1="105" x2="220" y2="135" stroke="#F18F01" stroke-width="4" opacity="0.8"/>
+  
+  <!-- Labels -->
+  <text x="200" y="280" text-anchor="middle" font-family="Arial" font-size="12" fill="#4a5568">x</text>
+  <text x="30" y="150" text-anchor="middle" font-family="Arial" font-size="12" fill="#4a5568" transform="rotate(-90 30 150)">y</text>
+  
+  <!-- Stats display -->
+  <rect x="250" y="60" width="130" height="80" fill="#667eea" opacity="0.1" rx="5"/>
+  <text x="315" y="80" text-anchor="middle" font-family="Arial" font-size="11" fill="#667eea" font-weight="bold">Bias² = 0.523</text>
+  <text x="315" y="100" text-anchor="middle" font-family="Arial" font-size="11" fill="#667eea" font-weight="bold">Var = 1.234</text>
+  <text x="315" y="120" text-anchor="middle" font-family="Arial" font-size="11" fill="#667eea" font-weight="bold">EPE = 2.257</text>
+</svg>
