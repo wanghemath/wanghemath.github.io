@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/B Testing Simulation - Interactive Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .use-case-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .use-case-card {
+            flex: 1;
+            min-width: 200px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .use-case-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .use-case-card.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .use-case-card .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .use-case-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .use-case-card p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .variant-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .variant-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+        }
+        
+        .variant-a::before {
+            background: #3498db;
+        }
+        
+        .variant-b::before {
+            background: #e74c3c;
+        }
+        
+        .variant-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .variant-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .variant-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .variant-a .variant-badge {
+            background: #3498db;
+        }
+        
+        .variant-b .variant-badge {
+            background: #e74c3c;
+        }
+        
+        .metric-display {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .metric-value {
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .sample-info {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .sample-info-item {
+            text-align: center;
+        }
+        
+        .sample-info-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .sample-info-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .controls-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .control-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        
+        .control-input {
+            position: relative;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 8px rgba(102, 126, 234, 0.1);
+        }
+        
+        .control-value {
+            position: absolute;
+            top: -25px;
+            right: 0;
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        select {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .results-section {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .results-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .results-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .significance-indicator {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .significant {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .not-significant {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .result-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .result-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .result-subtitle {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 5px;
+        }
+        
+        .chart-container {
+            margin: 30px 0;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .insights-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .insights-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .insights-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+        }
+        
+        .insights-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .insight-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: start;
+        }
+        
+        .insight-bullet {
+            width: 8px;
+            height: 8px;
+            background: #667eea;
+            border-radius: 50%;
+            margin-right: 15px;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+        
+        .sample-size-calculator {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .calculator-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .calculator-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        
+        .calculator-results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .calculator-result {
+            text-align: center;
+        }
+        
+        .calculator-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #856404;
+        }
+        
+        .calculator-label {
+            font-size: 0.9rem;
+            color: #856404;
+        }
+        
+        .info-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .info-box h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .info-box p {
+            color: #34495e;
+            line-height: 1.6;
+        }
+        
+        .timeline-section {
+            margin-top: 30px;
+        }
+        
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .timeline-btn {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-btn:hover {
+            background: #f8f9fa;
+        }
+        
+        .timeline-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .winner-badge {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">
+            <h1>A/B Testing Simulation Dashboard</h1>
+            <p>Interactive tool for understanding A/B testing statistics and decision-making</p>
+        </div>
+        
+        <div class="content">
+            <!-- Use Case Selection -->
+            <div class="use-case-selector">
+                <div class="use-case-card active" onclick="selectUseCase('conversion')">
+                    <div class="icon">🎯</div>
+                    <h3>Conversion Rate</h3>
+                    <p>Website optimization</p>
+                </div>
+                <div class="use-case-card" onclick="selectUseCase('revenue')">
+                    <div class="icon">💰</div>
+                    <h3>Revenue per User</h3>
+                    <p>Monetization testing</p>
+                </div>
+                <div class="use-case-card" onclick="selectUseCase('engagement')">
+                    <div class="icon">📊</div>
+                    <h3>Engagement Rate</h3>
+                    <p>Feature adoption</p>
+                </div>
+                <div class="use-case-card" onclick="selectUseCase('retention')">
+                    <div class="icon">🔄</div>
+                    <h3>Retention Rate</h3>
+                    <p>User retention</p>
+                </div>
+            </div>
+            
+            <!-- Variant Dashboard -->
+            <div class="dashboard">
+                <div class="variant-card variant-a">
+                    <div class="variant-header">
+                        <h2 class="variant-title">Control</h2>
+                        <span class="variant-badge">Variant A</span>
+                    </div>
+                    <div class="metric-display">
+                        <div class="metric-value" id="metricA">-</div>
+                        <div class="metric-label" id="metricLabelA">Conversion Rate</div>
+                    </div>
+                    <div class="sample-info">
+                        <div class="sample-info-item">
+                            <div class="sample-info-value" id="conversionsA">-</div>
+                            <div class="sample-info-label">Conversions</div>
+                        </div>
+                        <div class="sample-info-item">
+                            <div class="sample-info-value" id="sampleSizeA">-</div>
+                            <div class="sample-info-label">Sample Size</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="variant-card variant-b">
+                    <div class="variant-header">
+                        <h2 class="variant-title">Treatment</h2>
+                        <span class="variant-badge">Variant B</span>
+                    </div>
+                    <div class="metric-display">
+                        <div class="metric-value" id="metricB">-</div>
+                        <div class="metric-label" id="metricLabelB">Conversion Rate</div>
+                    </div>
+                    <div class="sample-info">
+                        <div class="sample-info-item">
+                            <div class="sample-info-value" id="conversionsB">-</div>
+                            <div class="sample-info-label">Conversions</div>
+                        </div>
+                        <div class="sample-info-item">
+                            <div class="sample-info-value" id="sampleSizeB">-</div>
+                            <div class="sample-info-label">Sample Size</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controls Section -->
+            <div class="controls-section">
+                <h3 style="margin-bottom: 20px;">Experiment Parameters</h3>
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label class="control-label" for="sampleSize">Sample Size per Variant</label>
+                        <div class="control-input">
+                            <input type="range" id="sampleSize" min="100" max="10000" value="1000" step="100">
+                            <span class="control-value" id="sampleSizeValue">1000</span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="baseRate">Control Performance</label>
+                        <div class="control-input">
+                            <input type="range" id="baseRate" min="1" max="50" value="10" step="0.5">
+                            <span class="control-value" id="baseRateValue">10%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="effect">Expected Lift</label>
+                        <div class="control-input">
+                            <input type="range" id="effect" min="-50" max="100" value="20" step="1">
+                            <span class="control-value" id="effectValue">+20%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="confidence">Confidence Level</label>
+                        <div class="control-input">
+                            <input type="range" id="confidence" min="90" max="99" value="95" step="1">
+                            <span class="control-value" id="confidenceValue">95%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="power">Statistical Power</label>
+                        <div class="control-input">
+                            <input type="range" id="power" min="70" max="95" value="80" step="5">
+                            <span class="control-value" id="powerValue">80%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="testType">Test Type</label>
+                        <select id="testType">
+                            <option value="two-sided">Two-sided test</option>
+                            <option value="one-sided">One-sided test</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="runSingleTest()">Run Single Test</button>
+                <button class="btn btn-secondary" onclick="runPowerAnalysis()">Power Analysis (1000 runs)</button>
+                <button class="btn btn-secondary" onclick="calculateSampleSize()">Calculate Sample Size</button>
+                <button class="btn btn-secondary" onclick="simulateSequential()">Simulate Daily Testing</button>
+            </div>
+            
+            <!-- Results Section -->
+            <div id="resultsSection" class="results-section" style="display: none;">
+                <div class="results-header">
+                    <h2>Test Results</h2>
+                    <div id="significanceIndicator" class="significance-indicator">
+                        Calculating...
+                    </div>
+                </div>
+                
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-label">Relative Lift</div>
+                        <div class="result-value" id="observedLift">-</div>
+                        <div class="result-subtitle">vs. control</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">P-value</div>
+                        <div class="result-value" id="pValue">-</div>
+                        <div class="result-subtitle" id="pValueInterpretation">-</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Confidence Interval</div>
+                        <div class="result-value" id="confidenceInterval">-</div>
+                        <div class="result-subtitle">for the difference</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Test Statistic</div>
+                        <div class="result-value" id="testStatistic">-</div>
+                        <div class="result-subtitle">z-score</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Insights Section -->
+            <div id="insightsSection" class="insights-section" style="display: none;">
+                <div class="insights-header">
+                    <div class="insights-icon">💡</div>
+                    <h3 class="insights-title">Key Insights</h3>
+                </div>
+                <div id="insightsList"></div>
+            </div>
+            
+            <!-- Sample Size Calculator -->
+            <div id="sampleSizeCalc" class="sample-size-calculator" style="display: none;">
+                <div class="calculator-header">
+                    <div class="calculator-icon">🧮</div>
+                    <h3>Required Sample Size Calculation</h3>
+                </div>
+                <p id="calcDescription">-</p>
+                <div class="calculator-results">
+                    <div class="calculator-result">
+                        <div class="calculator-value" id="requiredPerVariant">-</div>
+                        <div class="calculator-label">Per Variant</div>
+                    </div>
+                    <div class="calculator-result">
+                        <div class="calculator-value" id="requiredTotal">-</div>
+                        <div class="calculator-label">Total Needed</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Visualization Charts -->
+            <div class="chart-container">
+                <h3 class="chart-title">Results Distribution</h3>
+                <canvas id="mainChart" width="900" height="400"></canvas>
+            </div>
+            
+            <!-- Timeline Section -->
+            <div id="timelineSection" class="timeline-section" style="display: none;">
+                <div class="timeline-header">
+                    <h3>Sequential Testing Timeline</h3>
+                    <div class="timeline-controls">
+                        <button class="timeline-btn active" onclick="showTimelineView('pvalue')">P-value</button>
+                        <button class="timeline-btn" onclick="showTimelineView('lift')">Observed Lift</button>
+                        <button class="timeline-btn" onclick="showTimelineView('confidence')">Confidence Bounds</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="timelineChart" width="900" height="300"></canvas>
+                </div>
+            </div>
+            
+            <!-- Educational Info -->
+            <div class="info-box">
+                <h3>📚 Understanding A/B Testing</h3>
+                <p>
+                    A/B testing is a method of comparing two versions to determine which performs better. 
+                    The key is to ensure your results are statistically significant before making decisions.
+                </p>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    <li><strong>Statistical Significance:</strong> The probability that the observed difference is not due to random chance</li>
+                    <li><strong>P-value:</strong> The probability of seeing results at least as extreme if there's no real difference</li>
+                    <li><strong>Power:</strong> The probability of detecting a real effect when it exists</li>
+                    <li><strong>Sample Size:</strong> More data = more confidence in results</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUseCase = 'conversion';
+        let testResults = [];
+        let timelineData = [];
+        let currentTimelineView = 'pvalue';
+        
+        // Initialize event listeners
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            input.addEventListener('input', updateControlValue);
+        });
+        
+        function updateControlValue(e) {
+            const valueSpan = document.getElementById(e.target.id + 'Value');
+            let value = e.target.value;
+            
+            if (e.target.id === 'baseRate') {
+                value += '%';
+            } else if (e.target.id === 'effect') {
+                value = (value >= 0 ? '+' : '') + value + '%';
+            } else if (e.target.id === 'confidence' || e.target.id === 'power') {
+                value += '%';
+            }
+            
+            valueSpan.textContent = value;
+        }
+        
+        function selectUseCase(useCase) {
+            currentUseCase = useCase;
+            
+            // Update UI
+            document.querySelectorAll('.use-case-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            event.target.closest('.use-case-card').classList.add('active');
+            
+            // Update labels based on use case
+            const labels = {
+                conversion: { metric: 'Conversion Rate', action: 'Conversions' },
+                revenue: { metric: 'Revenue per User', action: 'Total Revenue' },
+                engagement: { metric: 'Engagement Rate', action: 'Engaged Users' },
+                retention: { metric: 'Retention Rate', action: 'Retained Users' }
+            };
+            
+            document.getElementById('metricLabelA').textContent = labels[useCase].metric;
+            document.getElementById('metricLabelB').textContent = labels[useCase].metric;
+            document.querySelectorAll('.sample-info-label')[0].textContent = labels[useCase].action;
+            document.querySelectorAll('.sample-info-label')[2].textContent = labels[useCase].action;
+        }
+        
+        function generateBinaryOutcome(n, p) {
+            let successes = 0;
+            for (let i = 0; i < n; i++) {
+                if (Math.random() < p) successes++;
+            }
+            return successes;
+        }
+        
+        function runSingleTest() {
+            const n = parseInt(document.getElementById('sampleSize').value);
+            const baseRate = parseFloat(document.getElementById('baseRate').value) / 100;
+            const effect = parseFloat(document.getElementById('effect').value) / 100;
+            const confidence = parseFloat(document.getElementById('confidence').value) / 100;
+            const testType = document.getElementById('testType').value;
+            
+            // Generate data
+            const pA = baseRate;
+            const pB = baseRate * (1 + effect);
+            
+            const successesA = generateBinaryOutcome(n, pA);
+            const successesB = generateBinaryOutcome(n, pB);
+            
+            const observedPA = successesA / n;
+            const observedPB = successesB / n;
+            
+            // Calculate statistics
+            const pooledP = (successesA + successesB) / (2 * n);
+            const se = Math.sqrt(pooledP * (1 - pooledP) * (2 / n));
+            const z = (observedPB - observedPA) / se;
+            
+            const pValue = testType === 'two-sided' 
+                ? 2 * (1 - normalCDF(Math.abs(z)))
+                : 1 - normalCDF(z);
+            
+            // Confidence interval
+            const seDiff = Math.sqrt((observedPA * (1 - observedPA) / n) + (observedPB * (1 - observedPB) / n));
+            const zCrit = normalInverse(1 - (1 - confidence) / 2);
+            const ciLower = (observedPB - observedPA) - zCrit * seDiff;
+            const ciUpper = (observedPB - observedPA) + zCrit * seDiff;
+            
+            const observedLift = observedPA > 0 ? ((observedPB - observedPA) / observedPA) * 100 : 0;
+            
+            // Update UI
+            updateVariantDisplays(successesA, successesB, n, observedPA, observedPB);
+            updateResults(observedLift, pValue, z, ciLower, ciUpper, confidence);
+            generateInsights(pValue, observedLift, n, confidence);
+            drawDistributionChart(observedPA, observedPB, n);
+            
+            // Show results sections
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('insightsSection').style.display = 'block';
+        }
+        
+        function updateVariantDisplays(successesA, successesB, n, pA, pB) {
+            // Update Variant A
+            document.getElementById('metricA').textContent = (pA * 100).toFixed(2) + '%';
+            document.getElementById('conversionsA').textContent = successesA.toLocaleString();
+            document.getElementById('sampleSizeA').textContent = n.toLocaleString();
+            
+            // Update Variant B
+            document.getElementById('metricB').textContent = (pB * 100).toFixed(2) + '%';
+            document.getElementById('conversionsB').textContent = successesB.toLocaleString();
+            document.getElementById('sampleSizeB').textContent = n.toLocaleString();
+            
+            // Add winner indicator if significant
+            const alpha = 1 - parseFloat(document.getElementById('confidence').value) / 100;
+            if (pB > pA) {
+                document.querySelector('.variant-b .variant-badge').classList.add('winner-badge');
+                document.querySelector('.variant-a .variant-badge').classList.remove('winner-badge');
+            } else if (pA > pB) {
+                document.querySelector('.variant-a .variant-badge').classList.add('winner-badge');
+                document.querySelector('.variant-b .variant-badge').classList.remove('winner-badge');
+            }
+        }
+        
+        function updateResults(lift, pValue, z, ciLower, ciUpper, confidence) {
+            const alpha = 1 - confidence;
+            const significant = pValue < alpha;
+            
+            // Update significance indicator
+            const indicator = document.getElementById('significanceIndicator');
+            indicator.textContent = significant ? '✓ Statistically Significant' : '✗ Not Statistically Significant';
+            indicator.className = significant ? 'significance-indicator significant' : 'significance-indicator not-significant';
+            
+            // Update metrics
+            document.getElementById('observedLift').textContent = 
+                (lift >= 0 ? '+' : '') + lift.toFixed(1) + '%';
+            document.getElementById('pValue').textContent = 
+                pValue < 0.001 ? '<0.001' : pValue.toFixed(4);
+            document.getElementById('testStatistic').textContent = z.toFixed(3);
+            document.getElementById('confidenceInterval').textContent = 
+                `[${(ciLower * 100).toFixed(1)}%, ${(ciUpper * 100).toFixed(1)}%]`;
+            
+            // P-value interpretation
+            let interpretation = '';
+            if (pValue < 0.001) interpretation = 'Very strong evidence';
+            else if (pValue < 0.01) interpretation = 'Strong evidence';
+            else if (pValue < 0.05) interpretation = 'Moderate evidence';
+            else if (pValue < 0.1) interpretation = 'Weak evidence';
+            else interpretation = 'No evidence';
+            
+            document.getElementById('pValueInterpretation').textContent = interpretation;
+        }
+        
+        function generateInsights(pValue, lift, n, confidence) {
+            const insights = [];
+            const alpha = 1 - confidence;
+            
+            if (pValue < alpha) {
+                insights.push(`The treatment shows a statistically significant ${lift > 0 ? 'improvement' : 'decline'} compared to the control.`);
+                
+                if (Math.abs(lift) < 5) {
+                    insights.push('While statistically significant, the effect size is relatively small. Consider if this change is practically meaningful for your business.');
+                } else if (Math.abs(lift) > 20) {
+                    insights.push('The observed effect is quite large. Consider running the test longer to ensure this isn\'t a temporary fluctuation.');
+                }
+            } else {
+                insights.push('No statistically significant difference was detected between the variants.');
+                
+                if (n < 1000) {
+                    insights.push('Your sample size is relatively small. Consider running the test longer to increase statistical power.');
+                }
+            }
+            
+            // Add sample size insight
+            const minDetectableLift = calculateMinDetectableEffect(n, alpha, 0.8);
+            insights.push(`With your current sample size, you can reliably detect effects larger than ±${minDetectableLift.toFixed(1)}%.`);
+            
+            // Display insights
+            const insightsList = document.getElementById('insightsList');
+            insightsList.innerHTML = insights.map(insight => `
+                <div class="insight-item">
+                    <div class="insight-bullet"></div>
+                    <div>${insight}</div>
+                </div>
+            `).join('');
+        }
+        
+        function runPowerAnalysis() {
+            const n = parseInt(document.getElementById('sampleSize').value);
+            const baseRate = parseFloat(document.getElementById('baseRate').value) / 100;
+            const effect = parseFloat(document.getElementById('effect').value) / 100;
+            const confidence = parseFloat(document.getElementById('confidence').value) / 100;
+            const testType = document.getElementById('testType').value;
+            
+            const alpha = 1 - confidence;
+            const pA = baseRate;
+            const pB = baseRate * (1 + effect);
+            
+            let significantCount = 0;
+            const liftDistribution = [];
+            
+            // Run 1000 simulations
+            for (let i = 0; i < 1000; i++) {
+                const successesA = generateBinaryOutcome(n, pA);
+                const successesB = generateBinaryOutcome(n, pB);
+                
+                const observedPA = successesA / n;
+                const observedPB = successesB / n;
+                
+                const pooledP = (successesA + successesB) / (2 * n);
+                const se = Math.sqrt(pooledP * (1 - pooledP) * (2 / n));
+                const z = (observedPB - observedPA) / se;
+                
+                const pValue = testType === 'two-sided' 
+                    ? 2 * (1 - normalCDF(Math.abs(z)))
+                    : 1 - normalCDF(z);
+                
+                if (pValue < alpha) significantCount++;
+                
+                const observedLift = observedPA > 0 ? ((observedPB - observedPA) / observedPA) * 100 : 0;
+                liftDistribution.push(observedLift);
+            }
+            
+            const observedPower = significantCount / 10;
+            
+            // Show power analysis results
+            const insightsList = document.getElementById('insightsList');
+            insightsList.innerHTML = `
+                <div class="insight-item">
+                    <div class="insight-bullet"></div>
+                    <div><strong>Observed Statistical Power: ${observedPower.toFixed(1)}%</strong></div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-bullet"></div>
+                    <div>Out of 1000 simulations, ${significantCount} correctly detected the ${effect >= 0 ? 'positive' : 'negative'} effect.</div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-bullet"></div>
+                    <div>Average observed lift: ${(liftDistribution.reduce((a, b) => a + b, 0) / 1000).toFixed(1)}% (true lift: ${(effect * 100).toFixed(0)}%)</div>
+                </div>
+            `;
+            
+            document.getElementById('insightsSection').style.display = 'block';
+            
+            // Draw power distribution
+            drawPowerDistribution(liftDistribution, effect * 100);
+        }
+        
+        function calculateSampleSize() {
+            const baseRate = parseFloat(document.getElementById('baseRate').value) / 100;
+            const effect = parseFloat(document.getElementById('effect').value) / 100;
+            const confidence = parseFloat(document.getElementById('confidence').value) / 100;
+            const power = parseFloat(document.getElementById('power').value) / 100;
+            const testType = document.getElementById('testType').value;
+            
+            const alpha = 1 - confidence;
+            const pA = baseRate;
+            const pB = baseRate * (1 + effect);
+            const delta = Math.abs(pB - pA);
+            
+            // Z-scores
+            const zAlpha = testType === 'two-sided' 
+                ? normalInverse(1 - alpha / 2)
+                : normalInverse(1 - alpha);
+            const zBeta = normalInverse(power);
+            
+            // Sample size formula for proportions
+            const pBar = (pA + pB) / 2;
+            const n = Math.ceil(
+                Math.pow(
+                    zAlpha * Math.sqrt(2 * pBar * (1 - pBar)) + 
+                    zBeta * Math.sqrt(pA * (1 - pA) + pB * (1 - pB)), 
+                    2
+                ) / Math.pow(delta, 2)
+            );
+            
+            // Display results
+            const calcDiv = document.getElementById('sampleSizeCalc');
+            calcDiv.style.display = 'block';
+            
+            document.getElementById('calcDescription').textContent = 
+                `To detect a ${(effect * 100).toFixed(0)}% lift with ${(power * 100).toFixed(0)}% power at ${(confidence * 100).toFixed(0)}% confidence level:`;
+            document.getElementById('requiredPerVariant').textContent = n.toLocaleString();
+            document.getElementById('requiredTotal').textContent = (2 * n).toLocaleString();
+        }
+        
+        function simulateSequential() {
+            const n = parseInt(document.getElementById('sampleSize').value);
+            const baseRate = parseFloat(document.getElementById('baseRate').value) / 100;
+            const effect = parseFloat(document.getElementById('effect').value) / 100;
+            const confidence = parseFloat(document.getElementById('confidence').value) / 100;
+            
+            const pA = baseRate;
+            const pB = baseRate * (1 + effect);
+            const checkpoints = 20;
+            const stepSize = Math.floor(n / checkpoints);
+            
+            timelineData = [];
+            
+            let cumulativeA = 0;
+            let cumulativeB = 0;
+            
+            for (let i = 1; i <= checkpoints; i++) {
+                const currentN = i * stepSize;
+                
+                // Add new conversions
+                cumulativeA += generateBinaryOutcome(stepSize, pA);
+                cumulativeB += generateBinaryOutcome(stepSize, pB);
+                
+                const observedPA = cumulativeA / currentN;
+                const observedPB = cumulativeB / currentN;
+                
+                const pooledP = (cumulativeA + cumulativeB) / (2 * currentN);
+                const se = Math.sqrt(pooledP * (1 - pooledP) * (2 / currentN));
+                const z = (observedPB - observedPA) / se;
+                const pValue = 2 * (1 - normalCDF(Math.abs(z)));
+                
+                const seDiff = Math.sqrt((observedPA * (1 - observedPA) / currentN) + 
+                                       (observedPB * (1 - observedPB) / currentN));
+                const zCrit = normalInverse(1 - (1 - confidence) / 2);
+                
+                timelineData.push({
+                    n: currentN,
+                    pValue: pValue,
+                    lift: observedPA > 0 ? ((observedPB - observedPA) / observedPA) * 100 : 0,
+                    ciLower: ((observedPB - observedPA) - zCrit * seDiff) * 100,
+                    ciUpper: ((observedPB - observedPA) + zCrit * seDiff) * 100,
+                    significant: pValue < (1 - confidence)
+                });
+            }
+            
+            document.getElementById('timelineSection').style.display = 'block';
+            drawTimeline();
+        }
+        
+        function showTimelineView(view) {
+            currentTimelineView = view;
+            
+            // Update button states
+            document.querySelectorAll('.timeline-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            drawTimeline();
+        }
+        
+        function drawDistributionChart(pA, pB, n) {
+            const canvas = document.getElementById('mainChart');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const padding = 60;
+            const width = canvas.width - 2 * padding;
+            const height = canvas.height - 2 * padding;
+            
+            // Calculate normal distributions
+            const seA = Math.sqrt(pA * (1 - pA) / n);
+            const seB = Math.sqrt(pB * (1 - pB) / n);
+            
+            const minX = Math.min(pA - 4 * seA, pB - 4 * seB);
+            const maxX = Math.max(pA + 4 * seA, pB + 4 * seB);
+            
+            // Draw distributions
+            const steps = 200;
+            const dx = (maxX - minX) / steps;
+            
+            // Control distribution
+            ctx.strokeStyle = '#3498db';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            for (let i = 0; i <= steps; i++) {
+                const x = minX + i * dx;
+                const y = normalPDF(x, pA, seA);
+                const canvasX = padding + (i / steps) * width;
+                const canvasY = canvas.height - padding - (y * height * seA * Math.sqrt(2 * Math.PI) * 2);
+                
+                if (i === 0) ctx.moveTo(canvasX, canvasY);
+                else ctx.lineTo(canvasX, canvasY);
+            }
+            ctx.stroke();
+            
+            // Treatment distribution
+            ctx.strokeStyle = '#e74c3c';
+            ctx.beginPath();
+            for (let i = 0; i <= steps; i++) {
+                const x = minX + i * dx;
+                const y = normalPDF(x, pB, seB);
+                const canvasX = padding + (i / steps) * width;
+                const canvasY = canvas.height - padding - (y * height * seB * Math.sqrt(2 * Math.PI) * 2);
+                
+                if (i === 0) ctx.moveTo(canvasX, canvasY);
+                else ctx.lineTo(canvasX, canvasY);
+            }
+            ctx.stroke();
+            
+            // Draw axes
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.stroke();
+            
+            // Labels
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            
+            // X-axis labels
+            for (let i = 0; i <= 5; i++) {
+                const value = minX + (i / 5) * (maxX - minX);
+                const x = padding + (i / 5) * width;
+                ctx.fillText((value * 100).toFixed(1) + '%', x, canvas.height - padding + 20);
+            }
+            
+            // Legend
+            ctx.font = '14px Arial';
+            ctx.fillStyle = '#3498db';
+            ctx.fillText('Control (A)', canvas.width / 2 - 100, 30);
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillText('Treatment (B)', canvas.width / 2 + 100, 30);
+        }
+        
+        function drawPowerDistribution(liftDistribution, trueLift) {
+            const canvas = document.getElementById('mainChart');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Create histogram
+            const bins = 30;
+            const min = Math.min(...liftDistribution);
+            const max = Math.max(...liftDistribution);
+            const binWidth = (max - min) / bins;
+            
+            const histogram = new Array(bins).fill(0);
+            liftDistribution.forEach(lift => {
+                const binIndex = Math.min(Math.floor((lift - min) / binWidth), bins - 1);
+                histogram[binIndex]++;
+            });
+            
+            const padding = 60;
+            const width = canvas.width - 2 * padding;
+            const height = canvas.height - 2 * padding;
+            const maxCount = Math.max(...histogram);
+            
+            // Draw histogram bars
+            ctx.fillStyle = 'rgba(102, 126, 234, 0.6)';
+            histogram.forEach((count, i) => {
+                const x = padding + (i / bins) * width;
+                const barHeight = (count / maxCount) * height;
+                const barWidth = width / bins - 2;
+                
+                ctx.fillRect(x, canvas.height - padding - barHeight, barWidth, barHeight);
+            });
+            
+            // Draw true effect line
+            const trueX = padding + ((trueLift - min) / (max - min)) * width;
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(trueX, padding);
+            ctx.lineTo(trueX, canvas.height - padding);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Labels
+            ctx.fillStyle = '#e74c3c';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('True Effect', trueX, padding - 10);
+            
+            // Axes
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.stroke();
+            
+            // X-axis labels
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            for (let i = 0; i <= 5; i++) {
+                const x = padding + (i / 5) * width;
+                const value = min + (i / 5) * (max - min);
+                ctx.fillText(value.toFixed(0) + '%', x, canvas.height - padding + 20);
+            }
+            
+            // Title
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Distribution of Observed Lifts (1000 simulations)', canvas.width / 2, 30);
+        }
+        
+        function drawTimeline() {
+            const canvas = document.getElementById('timelineChart');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (timelineData.length === 0) return;
+            
+            const padding = 60;
+            const width = canvas.width - 2 * padding;
+            const height = canvas.height - 2 * padding;
+            
+            if (currentTimelineView === 'pvalue') {
+                // Draw significance threshold
+                const alpha = 1 - parseFloat(document.getElementById('confidence').value) / 100;
+                const sigY = canvas.height - padding - (alpha * height);
+                
+                ctx.strokeStyle = '#e74c3c';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(padding, sigY);
+                ctx.lineTo(canvas.width - padding, sigY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Label
+                ctx.fillStyle = '#e74c3c';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'right';
+                ctx.fillText(`α = ${alpha}`, padding - 5, sigY);
+                
+                // Draw p-value line
+                ctx.strokeStyle = '#667eea';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                
+                timelineData.forEach((point, i) => {
+                    const x = padding + (i / (timelineData.length - 1)) * width;
+                    const y = canvas.height - padding - (Math.min(point.pValue, 1) * height);
+                    
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                    
+                    // Mark significant points
+                    if (point.significant) {
+                        ctx.fillStyle = '#27ae60';
+                        ctx.beginPath();
+                        ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                        ctx.fill();
+                    }
+                });
+                ctx.stroke();
+                
+                // Y-axis label
+                ctx.save();
+                ctx.translate(20, canvas.height / 2);
+                ctx.rotate(-Math.PI / 2);
+                ctx.textAlign = 'center';
+                ctx.font = '14px Arial';
+                ctx.fillStyle = '#333';
+                ctx.fillText('P-value', 0, 0);
+                ctx.restore();
+            } else if (currentTimelineView === 'lift') {
+                // Draw zero line
+                const zeroY = canvas.height - padding - (0.5 * height);
+                ctx.strokeStyle = '#999';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(padding, zeroY);
+                ctx.lineTo(canvas.width - padding, zeroY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Find min/max for scaling
+                const minLift = Math.min(...timelineData.map(d => d.lift));
+                const maxLift = Math.max(...timelineData.map(d => d.lift));
+                const range = Math.max(Math.abs(minLift), Math.abs(maxLift)) * 1.2;
+                
+                // Draw lift line
+                ctx.strokeStyle = '#667eea';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                
+                timelineData.forEach((point, i) => {
+                    const x = padding + (i / (timelineData.length - 1)) * width;
+                    const y = canvas.height - padding - ((point.lift + range) / (2 * range)) * height;
+                    
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+                
+                // Y-axis label
+                ctx.save();
+                ctx.translate(20, canvas.height / 2);
+                ctx.rotate(-Math.PI / 2);
+                ctx.textAlign = 'center';
+                ctx.font = '14px Arial';
+                ctx.fillStyle = '#333';
+                ctx.fillText('Observed Lift (%)', 0, 0);
+                ctx.restore();
+            } else if (currentTimelineView === 'confidence') {
+                // Draw zero line
+                const zeroY = canvas.height - padding - (0.5 * height);
+                ctx.strokeStyle = '#999';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(padding, zeroY);
+                ctx.lineTo(canvas.width - padding, zeroY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Find range for scaling
+                const allValues = timelineData.flatMap(d => [d.ciLower, d.ciUpper]);
+                const range = Math.max(Math.abs(Math.min(...allValues)), Math.abs(Math.max(...allValues))) * 1.2;
+                
+                // Draw confidence bands
+                ctx.fillStyle = 'rgba(102, 126, 234, 0.2)';
+                ctx.beginPath();
+                
+                timelineData.forEach((point, i) => {
+                    const x = padding + (i / (timelineData.length - 1)) * width;
+                    const yUpper = canvas.height - padding - ((point.ciUpper + range) / (2 * range)) * height;
+                    
+                    if (i === 0) ctx.moveTo(x, yUpper);
+                    else ctx.lineTo(x, yUpper);
+                });
+                
+                for (let i = timelineData.length - 1; i >= 0; i--) {
+                    const point = timelineData[i];
+                    const x = padding + (i / (timelineData.length - 1)) * width;
+                    const yLower = canvas.height - padding - ((point.ciLower + range) / (2 * range)) * height;
+                    ctx.lineTo(x, yLower);
+                }
+                
+                ctx.closePath();
+                ctx.fill();
+                
+                // Draw center line
+                ctx.strokeStyle = '#667eea';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                
+                timelineData.forEach((point, i) => {
+                    const x = padding + (i / (timelineData.length - 1)) * width;
+                    const y = canvas.height - padding - (((point.ciLower + point.ciUpper) / 2 + range) / (2 * range)) * height;
+                    
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+                
+                // Y-axis label
+                ctx.save();
+                ctx.translate(20, canvas.height / 2);
+                ctx.rotate(-Math.PI / 2);
+                ctx.textAlign = 'center';
+                ctx.font = '14px Arial';
+                ctx.fillStyle = '#333';
+                ctx.fillText('Difference with CI (%)', 0, 0);
+                ctx.restore();
+            }
+            
+            // Draw axes
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.stroke();
+            
+            // X-axis labels
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            
+            for (let i = 0; i <= 4; i++) {
+                const x = padding + (i / 4) * width;
+                const n = Math.floor((i / 4) * timelineData[timelineData.length - 1].n);
+                ctx.fillText(n.toLocaleString(), x, canvas.height - padding + 20);
+            }
+            
+            // X-axis label
+            ctx.font = '14px Arial';
+            ctx.fillText('Sample Size', canvas.width / 2, canvas.height - 10);
+        }
+        
+        // Statistical functions
+        function normalCDF(z) {
+            const a1 = 0.254829592;
+            const a2 = -0.284496736;
+            const a3 = 1.421413741;
+            const a4 = -1.453152027;
+            const a5 = 1.061405429;
+            const p = 0.3275911;
+            
+            const sign = z < 0 ? -1 : 1;
+            z = Math.abs(z) / Math.sqrt(2.0);
+            
+            const t = 1.0 / (1.0 + p * z);
+            const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-z * z);
+            
+            return 0.5 * (1.0 + sign * y);
+        }
+        
+        function normalPDF(x, mean, std) {
+            return Math.exp(-0.5 * Math.pow((x - mean) / std, 2)) / (std * Math.sqrt(2 * Math.PI));
+        }
+        
+        function normalInverse(p) {
+            const a = [2.50662823884, -18.61500062529, 41.39119773534, -25.44106049637];
+            const b = [-8.47351093090, 23.08336743743, -21.06224101826, 3.13082909833];
+            const c = [0.3374754822726147, 0.9761690190917186, 0.1607979714918209, 
+                      0.0276438810333863, 0.0038405729373609, 0.0003951896511919, 
+                      0.0000321767881768, 0.0000002888167364, 0.0000003960315187];
+            
+            const y = p - 0.5;
+            if (Math.abs(y) < 0.42) {
+                const r = y * y;
+                return y * (((a[3] * r + a[2]) * r + a[1]) * r + a[0]) / 
+                          ((((b[3] * r + b[2]) * r + b[1]) * r + b[0]) * r + 1);
+            } else {
+                let r = p;
+                if (y > 0) r = 1 - p;
+                r = Math.log(-Math.log(r));
+                let x = c[0];
+                for (let i = 1; i < 9; i++) {
+                    x += c[i] * Math.pow(r, i);
+                }
+                if (y < 0) x = -x;
+                return x;
+            }
+        }
+        
+        function calculateMinDetectableEffect(n, alpha, power) {
+            const zAlpha = normalInverse(1 - alpha / 2);
+            const zBeta = normalInverse(power);
+            const baseRate = parseFloat(document.getElementById('baseRate').value) / 100;
+            
+            // Simplified calculation
+            const mde = (zAlpha + zBeta) * Math.sqrt(2 * baseRate * (1 - baseRate) / n);
+            return (mde / baseRate) * 100;
+        }
+        
+        // Initialize on load
+        runSingleTest();
+    </script>
+</body>
+</html>
