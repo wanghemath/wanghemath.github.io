@@ -1,0 +1,122 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f5f5f5"/>
+  
+  <!-- Header -->
+  <rect width="800" height="80" fill="#333"/>
+  <text x="400" y="50" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">ANOVA Simulation</text>
+  
+  <!-- Group boxes -->
+  <g transform="translate(60, 100)">
+    <rect width="160" height="100" fill="#e3f2fd" stroke="#2196f3" stroke-width="2" rx="8"/>
+    <text x="80" y="30" font-family="Arial" font-size="16" font-weight="bold" fill="#333" text-anchor="middle">Group 1</text>
+    <text x="80" y="60" font-family="Arial" font-size="24" font-weight="bold" fill="#333" text-anchor="middle">48.3</text>
+    <text x="80" y="80" font-family="Arial" font-size="12" fill="#666" text-anchor="middle">SD: 9.8 | n=20</text>
+  </g>
+  
+  <g transform="translate(240, 100)">
+    <rect width="160" height="100" fill="#fce4ec" stroke="#e91e63" stroke-width="2" rx="8"/>
+    <text x="80" y="30" font-family="Arial" font-size="16" font-weight="bold" fill="#333" text-anchor="middle">Group 2</text>
+    <text x="80" y="60" font-family="Arial" font-size="24" font-weight="bold" fill="#333" text-anchor="middle">52.7</text>
+    <text x="80" y="80" font-family="Arial" font-size="12" fill="#666" text-anchor="middle">SD: 10.2 | n=20</text>
+  </g>
+  
+  <g transform="translate(420, 100)">
+    <rect width="160" height="100" fill="#e8f5e9" stroke="#4caf50" stroke-width="2" rx="8"/>
+    <text x="80" y="30" font-family="Arial" font-size="16" font-weight="bold" fill="#333" text-anchor="middle">Group 3</text>
+    <text x="80" y="60" font-family="Arial" font-size="24" font-weight="bold" fill="#333" text-anchor="middle">55.1</text>
+    <text x="80" y="80" font-family="Arial" font-size="12" fill="#666" text-anchor="middle">SD: 9.5 | n=20</text>
+  </g>
+  
+  <g transform="translate(600, 100)">
+    <rect width="140" height="100" fill="#fff3e0" stroke="#ff9800" stroke-width="2" rx="8"/>
+    <text x="70" y="30" font-family="Arial" font-size="16" font-weight="bold" fill="#333" text-anchor="middle">Group 4</text>
+    <text x="70" y="60" font-family="Arial" font-size="24" font-weight="bold" fill="#333" text-anchor="middle">46.9</text>
+    <text x="70" y="80" font-family="Arial" font-size="12" fill="#666" text-anchor="middle">SD: 11.1 | n=20</text>
+  </g>
+  
+  <!-- Box plot visualization -->
+  <g transform="translate(60, 220)">
+    <rect width="680" height="200" fill="white" stroke="#ddd" stroke-width="2" rx="8"/>
+    
+    <!-- Y-axis -->
+    <line x1="40" y1="20" x2="40" y2="170" stroke="#333" stroke-width="2"/>
+    
+    <!-- Box plots -->
+    <!-- Group 1 -->
+    <g transform="translate(120, 0)">
+      <rect x="-30" y="60" width="60" height="50" fill="rgba(33, 150, 243, 0.4)" stroke="#2196f3" stroke-width="2"/>
+      <line x1="-30" y1="85" x2="30" y2="85" stroke="#2196f3" stroke-width="3"/>
+      <line x1="0" y1="110" x2="0" y2="140" stroke="#2196f3" stroke-width="2"/>
+      <line x1="-15" y1="140" x2="15" y2="140" stroke="#2196f3" stroke-width="2"/>
+      <line x1="0" y1="60" x2="0" y2="30" stroke="#2196f3" stroke-width="2"/>
+      <line x1="-15" y1="30" x2="15" y2="30" stroke="#2196f3" stroke-width="2"/>
+    </g>
+    
+    <!-- Group 2 -->
+    <g transform="translate(280, 0)">
+      <rect x="-30" y="40" width="60" height="50" fill="rgba(233, 30, 99, 0.4)" stroke="#e91e63" stroke-width="2"/>
+      <line x1="-30" y1="65" x2="30" y2="65" stroke="#e91e63" stroke-width="3"/>
+      <line x1="0" y1="90" x2="0" y2="120" stroke="#e91e63" stroke-width="2"/>
+      <line x1="-15" y1="120" x2="15" y2="120" stroke="#e91e63" stroke-width="2"/>
+      <line x1="0" y1="40" x2="0" y2="10" stroke="#e91e63" stroke-width="2"/>
+      <line x1="-15" y1="10" x2="15" y2="10" stroke="#e91e63" stroke-width="2"/>
+    </g>
+    
+    <!-- Group 3 -->
+    <g transform="translate(440, 0)">
+      <rect x="-30" y="35" width="60" height="50" fill="rgba(76, 175, 80, 0.4)" stroke="#4caf50" stroke-width="2"/>
+      <line x1="-30" y1="60" x2="30" y2="60" stroke="#4caf50" stroke-width="3"/>
+      <line x1="0" y1="85" x2="0" y2="115" stroke="#4caf50" stroke-width="2"/>
+      <line x1="-15" y1="115" x2="15" y2="115" stroke="#4caf50" stroke-width="2"/>
+      <line x1="0" y1="35" x2="0" y2="5" stroke="#4caf50" stroke-width="2"/>
+      <line x1="-15" y1="5" x2="15" y2="5" stroke="#4caf50" stroke-width="2"/>
+    </g>
+    
+    <!-- Group 4 -->
+    <g transform="translate(600, 0)">
+      <rect x="-30" y="70" width="60" height="50" fill="rgba(255, 152, 0, 0.4)" stroke="#ff9800" stroke-width="2"/>
+      <line x1="-30" y1="95" x2="30" y2="95" stroke="#ff9800" stroke-width="3"/>
+      <line x1="0" y1="120" x2="0" y2="150" stroke="#ff9800" stroke-width="2"/>
+      <line x1="-15" y1="150" x2="15" y2="150" stroke="#ff9800" stroke-width="2"/>
+      <line x1="0" y1="70" x2="0" y2="40" stroke="#ff9800" stroke-width="2"/>
+      <line x1="-15" y1="40" x2="15" y2="40" stroke="#ff9800" stroke-width="2"/>
+    </g>
+    
+    <!-- X-axis -->
+    <line x1="40" y1="170" x2="640" y2="170" stroke="#333" stroke-width="2"/>
+  </g>
+  
+  <!-- ANOVA Table -->
+  <g transform="translate(60, 440)">
+    <rect width="680" height="120" fill="white" stroke="#ddd" stroke-width="2" rx="8"/>
+    
+    <!-- Table header -->
+    <rect x="0" y="0" width="680" height="30" fill="#007bff" rx="8 8 0 0"/>
+    <text x="80" y="20" font-family="Arial" font-size="14" font-weight="bold" fill="white">Source</text>
+    <text x="200" y="20" font-family="Arial" font-size="14" font-weight="bold" fill="white">SS</text>
+    <text x="300" y="20" font-family="Arial" font-size="14" font-weight="bold" fill="white">df</text>
+    <text x="400" y="20" font-family="Arial" font-size="14" font-weight="bold" fill="white">MS</text>
+    <text x="500" y="20" font-family="Arial" font-size="14" font-weight="bold" fill="white">F-stat</text>
+    <text x="600" y="20" font-family="Arial" font-size="14" font-weight="bold" fill="white">p-value</text>
+    
+    <!-- Table rows -->
+    <text x="80" y="55" font-family="Arial" font-size="13" fill="#333">Between Groups</text>
+    <text x="200" y="55" font-family="Arial" font-size="13" fill="#333">423.8</text>
+    <text x="300" y="55" font-family="Arial" font-size="13" fill="#333">3</text>
+    <text x="400" y="55" font-family="Arial" font-size="13" fill="#333">141.3</text>
+    <text x="500" y="55" font-family="Arial" font-size="13" font-weight="bold" fill="#333">5.67</text>
+    <text x="600" y="55" font-family="Arial" font-size="13" font-weight="bold" fill="#333">0.002</text>
+    
+    <line x1="20" y1="70" x2="660" y2="70" stroke="#e0e0e0"/>
+    
+    <text x="80" y="90" font-family="Arial" font-size="13" fill="#333">Within Groups</text>
+    <text x="200" y="90" font-family="Arial" font-size="13" fill="#333">1892.5</text>
+    <text x="300" y="90" font-family="Arial" font-size="13" fill="#333">76</text>
+    <text x="400" y="90" font-family="Arial" font-size="13" fill="#333">24.9</text>
+  </g>
+  
+  <!-- Decision -->
+  <rect x="240" y="570" width="320" height="25" fill="#d4edda" rx="12"/>
+  <text x="400" y="587" font-family="Arial" font-size="14" font-weight="bold" fill="#155724" text-anchor="middle">Reject H₀ - Groups are significantly different</text>
+</svg>
