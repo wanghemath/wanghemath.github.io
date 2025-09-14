@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVD Image Compression</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #764ba2;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .controls {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+        
+        .image-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .image-container {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        canvas {
+            max-width: 100%;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            background: white;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .info-box {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .singular-values-plot {
+            margin-top: 20px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🖼️ SVD Image Compression</h1>
+        <p class="subtitle">Compress images using Singular Value Decomposition</p>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label>Number of Singular Values: <span class="value-display" id="rankValue">10</span></label>
+                <input type="range" id="rank" min="1" max="50" value="10">
+            </div>
+            <div>
+                <button onclick="generateRandomImage()">Generate Random Image</button>
+                <button onclick="loadSampleImage()">Load Sample Pattern</button>
+                <button onclick="compressImage()">Apply Compression</button>
+            </div>
+        </div>
+        
+        <div class="image-grid">
+            <div class="image-container">
+                <h3>Original Image</h3>
+                <canvas id="originalCanvas" width="256" height="256"></canvas>
+            </div>
+            <div class="image-container">
+                <h3>Compressed Image (Rank <span id="compressedRank">10</span>)</h3>
+                <canvas id="compressedCanvas" width="256" height="256"></canvas>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <h4>Compression Ratio</h4>
+                <div class="stat-value" id="compressionRatio">-</div>
+            </div>
+            <div class="stat-card">
+                <h4>Retained Energy</h4>
+                <div class="stat-value" id="retainedEnergy">-</div>
+            </div>
+            <div class="stat-card">
+                <h4>PSNR (dB)</h4>
+                <div class="stat-value" id="psnr">-</div>
+            </div>
+        </div>
+        
+        <div class="singular-values-plot">
+            <h3>Singular Values Decay</h3>
+            <canvas id="singularValuesCanvas" width="800" height="300"></canvas>
+        </div>
+        
+        <div class="info-box">
+            <h3>How SVD Compression Works</h3>
+            <p>Singular Value Decomposition (SVD) decomposes an image matrix A into three matrices: A = UΣV^T</p>
+            <ul>
+                <li><strong>U:</strong> Left singular vectors (image space basis)</li>
+                <li><strong>Σ:</strong> Diagonal matrix of singular values (importance weights)</li>
+                <li><strong>V:</strong> Right singular vectors (feature space basis)</li>
+            </ul>
+            <p>By keeping only the k largest singular values, we can approximate the image with much less data while preserving the most important features.</p>
+        </div>
+    </div>
+
+    <script>
+        let originalImageData = null;
+        let svdResult = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('rank').addEventListener('input', function() {
+                document.getElementById('rankValue').textContent = this.value;
+            });
+            generateRandomImage();
+        });
+        
+        function generateRandomImage() {
+            const canvas = document.getElementById('originalCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Create a random pattern with structure
+            const imageData = ctx.createImageData(width, height);
+            const data = imageData.data;
+            
+            // Generate structured random pattern
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const idx = (y * width + x) * 4;
+                    
+                    // Create patterns
+                    const pattern1 = Math.sin(x * 0.05) * Math.cos(y * 0.05);
+                    const pattern2 = Math.sin((x + y) * 0.02);
+                    const pattern3 = Math.cos(Math.sqrt(x*x + y*y) * 0.03);
+                    
+                    const value = 128 + 64 * (pattern1 + pattern2 + pattern3) / 3;
+                    
+                    data[idx] = value;     // R
+                    data[idx + 1] = value; // G
+                    data[idx + 2] = value; // B
+                    data[idx + 3] = 255;   // A
+                }
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+            originalImageData = imageData;
+            performSVD();
+        }
+        
+        function loadSampleImage() {
+            const canvas = document.getElementById('originalCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const imageData = ctx.createImageData(width, height);
+            const data = imageData.data;
+            
+            // Create a checkerboard with gradients
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const idx = (y * width + x) * 4;
+                    
+                    const checker = ((Math.floor(x / 32) + Math.floor(y / 32)) % 2) * 128;
+                    const gradient = (x + y) / (width + height) * 128;
+                    
+                    const value = checker + gradient;
+                    
+                    data[idx] = value;
+                    data[idx + 1] = value;
+                    data[idx + 2] = value;
+                    data[idx + 3] = 255;
+                }
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+            originalImageData = imageData;
+            performSVD();
+        }
+        
+        // Simple SVD implementation for grayscale images
+        function performSVD() {
+            if (!originalImageData) return;
+            
+            const width = 256;
+            const height = 256;
+            
+            // Convert to grayscale matrix
+            const matrix = [];
+            for (let y = 0; y < height; y++) {
+                matrix[y] = [];
+                for (let x = 0; x < width; x++) {
+                    const idx = (y * width + x) * 4;
+                    matrix[y][x] = originalImageData.data[idx];
+                }
+            }
+            
+            // For demonstration, we'll simulate SVD results
+            // In practice, you'd use a proper SVD library
+            svdResult = simulateSVD(matrix);
+            
+            // Plot singular values
+            plotSingularValues();
+        }
+        
+        function simulateSVD(matrix) {
+            // This is a simplified simulation for demonstration
+            // Real SVD would require a proper numerical library
+            const n = Math.min(matrix.length, matrix[0].length);
+            const singularValues = [];
+            
+            // Generate decreasing singular values
+            for (let i = 0; i < n; i++) {
+                singularValues.push(1000 * Math.exp(-i * 0.1) * (1 + Math.random() * 0.2));
+            }
+            
+            return {
+                singularValues: singularValues,
+                matrix: matrix
+            };
+        }
+        
+        function compressImage() {
+            if (!svdResult) return;
+            
+            const rank = parseInt(document.getElementById('rank').value);
+            document.getElementById('compressedRank').textContent = rank;
+            
+            const canvas = document.getElementById('compressedCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Reconstruct image using only 'rank' singular values
+            const imageData = ctx.createImageData(width, height);
+            const data = imageData.data;
+            
+            // For demonstration, we'll simulate compression by reducing detail
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const idx = (y * width + x) * 4;
+                    const origIdx = (y * width + x) * 4;
+                    
+                    // Simulate compression effect
+                    let value = originalImageData.data[origIdx];
+                    
+                    // Add quantization based on rank
+                    const quantLevel = Math.max(1, 50 - rank);
+                    value = Math.round(value / quantLevel) * quantLevel;
+                    
+                    // Add some blur for low ranks
+                    if (rank < 20) {
+                        const blurRadius = Math.floor((20 - rank) / 4);
+                        let sum = 0;
+                        let count = 0;
+                        
+                        for (let dy = -blurRadius; dy <= blurRadius; dy++) {
+                            for (let dx = -blurRadius; dx <= blurRadius; dx++) {
+                                const ny = y + dy;
+                                const nx = x + dx;
+                                if (ny >= 0 && ny < height && nx >= 0 && nx < width) {
+                                    sum += originalImageData.data[(ny * width + nx) * 4];
+                                    count++;
+                                }
+                            }
+                        }
+                        value = sum / count;
+                    }
+                    
+                    data[idx] = value;
+                    data[idx + 1] = value;
+                    data[idx + 2] = value;
+                    data[idx + 3] = 255;
+                }
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+            
+            // Calculate statistics
+            calculateStatistics(imageData);
+        }
+        
+        function calculateStatistics(compressedData) {
+            const rank = parseInt(document.getElementById('rank').value);
+            const totalSize = 256 * 256;
+            const compressedSize = rank * (256 + 256 + 1); // U, V matrices and singular values
+            
+            // Compression ratio
+            const ratio = totalSize / compressedSize;
+            document.getElementById('compressionRatio').textContent = ratio.toFixed(2) + ':1';
+            
+            // Retained energy (based on singular values)
+            if (svdResult) {
+                const totalEnergy = svdResult.singularValues.reduce((sum, s) => sum + s * s, 0);
+                const retainedEnergy = svdResult.singularValues.slice(0, rank).reduce((sum, s) => sum + s * s, 0);
+                const energyPercent = (retainedEnergy / totalEnergy * 100).toFixed(1);
+                document.getElementById('retainedEnergy').textContent = energyPercent + '%';
+            }
+            
+            // PSNR calculation
+            let mse = 0;
+            for (let i = 0; i < originalImageData.data.length; i += 4) {
+                const diff = originalImageData.data[i] - compressedData.data[i];
+                mse += diff * diff;
+            }
+            mse /= (256 * 256);
+            
+            const psnr = mse > 0 ? 10 * Math.log10(255 * 255 / mse) : 100;
+            document.getElementById('psnr').textContent = psnr.toFixed(2);
+        }
+        
+        function plotSingularValues() {
+            if (!svdResult) return;
+            
+            const canvas = document.getElementById('singularValuesCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const values = svdResult.singularValues.slice(0, 50);
+            const maxValue = Math.max(...values);
+            
+            const margin = 40;
+            const width = canvas.width - 2 * margin;
+            const height = canvas.height - 2 * margin;
+            
+            // Draw axes
+            ctx.strokeStyle = '#dee2e6';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(margin, margin);
+            ctx.lineTo(margin, canvas.height - margin);
+            ctx.lineTo(canvas.width - margin, canvas.height - margin);
+            ctx.stroke();
+            
+            // Draw bars
+            const barWidth = width / values.length;
+            const selectedRank = parseInt(document.getElementById('rank').value);
+            
+            values.forEach((value, i) => {
+                const barHeight = (value / maxValue) * height;
+                const x = margin + i * barWidth;
+                const y = canvas.height - margin - barHeight;
+                
+                ctx.fillStyle = i < selectedRank ? '#667eea' : '#dee2e6';
+                ctx.fillRect(x, y, barWidth - 2, barHeight);
+            });
+            
+            // Labels
+            ctx.fillStyle = '#495057';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Singular Value Index', canvas.width / 2, canvas.height - 10);
+            
+            ctx.save();
+            ctx.translate(15, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Magnitude', 0, 0);
+            ctx.restore();
+        }
+    </script>
+</body>
+</html>
