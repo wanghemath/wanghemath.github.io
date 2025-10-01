@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Gambler's Ruin Problem</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        .container {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #7f8c8d;
+        }
+        .problem-statement {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-left: 5px solid #3498db;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .theorem {
+            background-color: #e8f8f5;
+            padding: 20px;
+            border-left: 5px solid #27ae60;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .example {
+            background-color: #fef9e7;
+            padding: 20px;
+            border-left: 5px solid #f39c12;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="range"] {
+            width: 100%;
+        }
+        input[type="number"] {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+        .stats-box {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .formula {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .simulation-status {
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .win {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .loss {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>The Gambler's Ruin Problem</h1>
+
+    <div class="container">
+        <div class="problem-statement">
+            <h2>Problem Statement</h2>
+            <p>A gambler starts with initial capital of $k$ dollars and repeatedly plays a game where:</p>
+            <ul>
+                <li>With probability $p$, they win $1</li>
+                <li>With probability $q = 1-p$, they lose $1</li>
+            </ul>
+            <p>The gambler continues playing until either:</p>
+            <ul>
+                <li>They reach $0$ (ruin)</li>
+                <li>They reach a target of $N$ dollars (success)</li>
+            </ul>
+            <p><strong>Question:</strong> What is the probability that the gambler reaches $N$ before going broke?</p>
+        </div>
+
+        <h2>Mathematical Analysis</h2>
+        
+        <h3>Setting up the Problem</h3>
+        <p>Let $P_k$ be the probability of reaching $N$ starting from $k$ dollars.</p>
+        <p>We have the boundary conditions:</p>
+        <ul>
+            <li>$P_0 = 0$ (already ruined)</li>
+            <li>$P_N = 1$ (already successful)</li>
+        </ul>
+        
+        <p>For $0 < k < N$, we have the recurrence relation:</p>
+        <div class="formula">
+            $$P_k = p \cdot P_{k+1} + q \cdot P_{k-1}$$
+        </div>
+
+        <div class="theorem">
+            <h3>Solution of the Recurrence</h3>
+            <p>The general solution depends on whether the game is fair ($p = q = 0.5$) or unfair ($p \neq q$):</p>
+            
+            <p><strong>Case 1: Fair Game ($p = 0.5$)</strong></p>
+            <div class="formula">
+                $$P_k = \frac{k}{N}$$
+            </div>
+            
+            <p><strong>Case 2: Unfair Game ($p \neq 0.5$)</strong></p>
+            <div class="formula">
+                $$P_k = \frac{1 - (q/p)^k}{1 - (q/p)^N}$$
+            </div>
+        </div>
+
+        <h3>Expected Duration</h3>
+        <p>Let $E_k$ be the expected number of games until absorption (reaching 0 or N) starting from $k$.</p>
+        
+        <p><strong>Fair Game:</strong></p>
+        <div class="formula">
+            $$E_k = k(N-k)$$
+        </div>
+        
+        <p><strong>Unfair Game:</strong></p>
+        <div class="formula">
+            $$E_k = \frac{k}{q-p} - \frac{N}{q-p} \cdot \frac{1-(q/p)^k}{1-(q/p)^N}$$
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Interactive Simulation</h2>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="initialCapital">Initial Capital (k): <span id="initialCapitalValue">50</span></label>
+                <input type="range" id="initialCapital" min="1" max="99" value="50" step="1">
+            </div>
+            <div class="control-group">
+                <label for="targetCapital">Target Capital (N): <span id="targetCapitalValue">100</span></label>
+                <input type="range" id="targetCapital" min="10" max="200" value="100" step="10">
+            </div>
+            <div class="control-group">
+                <label for="winProbability">Win Probability (p): <span id="winProbabilityValue">0.50</span></label>
+                <input type="range" id="winProbability" min="0.1" max="0.9" value="0.5" step="0.01">
+            </div>
+            <div class="control-group">
+                <label for="numSimulations">Number of Simulations:</label>
+                <input type="number" id="numSimulations" min="100" max="10000" value="1000" step="100">
+            </div>
+        </div>
+        
+        <button onclick="runSimulation()">Run Simulation</button>
+        <button onclick="runSinglePath()">Show Single Path</button>
+        <button onclick="calculateTheoretical()">Calculate Theoretical Values</button>
+    </div>
+
+    <div class="grid-2">
+        <div class="container">
+            <h3>Single Gambler's Path</h3>
+            <div class="chart-container">
+                <canvas id="pathChart"></canvas>
+            </div>
+            <div id="pathStatus"></div>
+        </div>
+        
+        <div class="container">
+            <h3>Success Probability by Initial Capital</h3>
+            <div class="chart-container">
+                <canvas id="probabilityChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h3>Simulation Results</h3>
+        <div id="simulationResults"></div>
+    </div>
+
+    <div class="container">
+        <h3>Theoretical Analysis</h3>
+        <div id="theoreticalResults"></div>
+    </div>
+
+    <div class="container">
+        <h2>Concrete Examples</h2>
+        
+        <div class="example">
+            <h3>Example 1: Fair Game</h3>
+            <p>A gambler starts with $30 and wants to reach $100. Each bet is a fair coin flip.</p>
+            <ul>
+                <li>Initial capital: $k = 30$</li>
+                <li>Target: $N = 100$</li>
+                <li>Win probability: $p = 0.5$</li>
+            </ul>
+            <p><strong>Solution:</strong> Since $p = 0.5$, we use the fair game formula:</p>
+            <div class="formula">
+                $$P_{30} = \frac{30}{100} = 0.3$$
+            </div>
+            <p>The gambler has a 30% chance of reaching $100 before going broke.</p>
+        </div>
+        
+        <div class="example">
+            <h3>Example 2: Casino Game</h3>
+            <p>Playing roulette (betting on red/black), a gambler starts with $40 and wants to reach $100.</p>
+            <ul>
+                <li>Initial capital: $k = 40$</li>
+                <li>Target: $N = 100$</li>
+                <li>Win probability: $p = 18/38 \approx 0.4737$ (American roulette)</li>
+                <li>Lose probability: $q = 20/38 \approx 0.5263$</li>
+            </ul>
+            <p><strong>Solution:</strong> Since $p \neq 0.5$, we calculate $q/p = 20/18 = 10/9$:</p>
+            <div class="formula">
+                $$P_{40} = \frac{1 - (10/9)^{40}}{1 - (10/9)^{100}} \approx 0.0002$$
+            </div>
+            <p>The gambler has only about 0.02% chance of reaching $100!</p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize MathJax
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+
+        // Global variables
+        let pathChart, probabilityChart;
+
+        // Initialize charts
+        function initCharts() {
+            const pathCtx = document.getElementById('pathChart').getContext('2d');
+            pathChart = new Chart(pathCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Capital',
+                        data: [],
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Gambler\'s Capital Over Time'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Number of Bets'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Capital ($)'
+                            },
+                            min: 0
+                        }
+                    }
+                }
+            });
+
+            const probCtx = document.getElementById('probabilityChart').getContext('2d');
+            probabilityChart = new Chart(probCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Theoretical',
+                        data: [],
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        tension: 0.1
+                    }, {
+                        label: 'Simulated',
+                        data: [],
+                        borderColor: 'rgb(54, 162, 235)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Success Probability vs Initial Capital'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Initial Capital ($)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Probability of Success'
+                            },
+                            min: 0,
+                            max: 1
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update slider values
+        document.querySelectorAll('input[type="range"]').forEach(slider => {
+            slider.addEventListener('input', function() {
+                document.getElementById(this.id + 'Value').textContent = 
+                    this.id === 'winProbability' ? parseFloat(this.value).toFixed(2) : this.value;
+            });
+        });
+
+        // Calculate theoretical probability
+        function calculateProbability(k, N, p) {
+            if (p === 0.5) {
+                return k / N;
+            } else {
+                const q = 1 - p;
+                const ratio = q / p;
+                return (1 - Math.pow(ratio, k)) / (1 - Math.pow(ratio, N));
+            }
+        }
+
+        // Calculate expected duration
+        function calculateExpectedDuration(k, N, p) {
+            if (p === 0.5) {
+                return k * (N - k);
+            } else {
+                const q = 1 - p;
+                const prob = calculateProbability(k, N, p);
+                return k / (q - p) - (N / (q - p)) * prob;
+            }
+        }
+
+        // Run single path simulation
+        function runSinglePath() {
+            const k = parseInt(document.getElementById('initialCapital').value);
+            const N = parseInt(document.getElementById('targetCapital').value);
+            const p = parseFloat(document.getElementById('winProbability').value);
+            
+            let capital = k;
+            const path = [capital];
+            const maxSteps = 10000;
+            let steps = 0;
+            
+            while (capital > 0 && capital < N && steps < maxSteps) {
+                if (Math.random() < p) {
+                    capital++;
+                } else {
+                    capital--;
+                }
+                path.push(capital);
+                steps++;
+            }
+            
+            // Update chart
+            pathChart.data.labels = Array.from({length: path.length}, (_, i) => i);
+            pathChart.data.datasets[0].data = path;
+            pathChart.update();
+            
+            // Update status
+            const status = capital === 0 ? 'loss' : (capital === N ? 'win' : 'timeout');
+            const statusText = capital === 0 ? 'Gambler went broke!' : 
+                             (capital === N ? 'Gambler reached the target!' : 'Simulation timeout');
+            document.getElementById('pathStatus').innerHTML = 
+                `<div class="simulation-status ${status}">${statusText} (${steps} bets)</div>`;
+        }
+
+        // Run multiple simulations
+        function runSimulation() {
+            const k = parseInt(document.getElementById('initialCapital').value);
+            const N = parseInt(document.getElementById('targetCapital').value);
+            const p = parseFloat(document.getElementById('winProbability').value);
+            const numSims = parseInt(document.getElementById('numSimulations').value);
+            
+            // Run simulations for different initial capitals
+            const capitals = [];
+            const theoreticalProbs = [];
+            const simulatedProbs = [];
+            
+            for (let initCap = 1; initCap < N; initCap += Math.max(1, Math.floor(N/50))) {
+                capitals.push(initCap);
+                theoreticalProbs.push(calculateProbability(initCap, N, p));
+                
+                // Run simulations for this initial capital
+                let successes = 0;
+                for (let sim = 0; sim < Math.min(numSims, 1000); sim++) {
+                    let capital = initCap;
+                    let steps = 0;
+                    const maxSteps = 10000;
+                    
+                    while (capital > 0 && capital < N && steps < maxSteps) {
+                        if (Math.random() < p) {
+                            capital++;
+                        } else {
+                            capital--;
+                        }
+                        steps++;
+                    }
+                    
+                    if (capital === N) {
+                        successes++;
+                    }
+                }
+                simulatedProbs.push(successes / Math.min(numSims, 1000));
+            }
+            
+            // Update probability chart
+            probabilityChart.data.labels = capitals;
+            probabilityChart.data.datasets[0].data = theoreticalProbs;
+            probabilityChart.data.datasets[1].data = simulatedProbs;
+            probabilityChart.update();
+            
+            // Run detailed simulation for current parameters
+            let wins = 0;
+            let totalSteps = 0;
+            const outcomes = [];
+            
+            for (let i = 0; i < numSims; i++) {
+                let capital = k;
+                let steps = 0;
+                const maxSteps = 100000;
+                
+                while (capital > 0 && capital < N && steps < maxSteps) {
+                    if (Math.random() < p) {
+                        capital++;
+                    } else {
+                        capital--;
+                    }
+                    steps++;
+                }
+                
+                if (capital === N) {
+                    wins++;
+                }
+                if (steps < maxSteps) {
+                    totalSteps += steps;
+                    outcomes.push(steps);
+                }
+            }
+            
+            const successRate = wins / numSims;
+            const avgDuration = outcomes.length > 0 ? totalSteps / outcomes.length : 0;
+            
+            // Display results
+            const resultsHtml = `
+                <h4>Simulation Summary (k=${k}, N=${N}, p=${p.toFixed(2)})</h4>
+                <table>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Simulated</th>
+                        <th>Theoretical</th>
+                        <th>Error</th>
+                    </tr>
+                    <tr>
+                        <td>Success Probability</td>
+                        <td>${(successRate * 100).toFixed(2)}%</td>
+                        <td>${(calculateProbability(k, N, p) * 100).toFixed(2)}%</td>
+                        <td>${Math.abs(successRate - calculateProbability(k, N, p)).toFixed(4)}</td>
+                    </tr>
+                    <tr>
+                        <td>Average Duration</td>
+                        <td>${avgDuration.toFixed(0)} bets</td>
+                        <td>${calculateExpectedDuration(k, N, p).toFixed(0)} bets</td>
+                        <td>${Math.abs(avgDuration - calculateExpectedDuration(k, N, p)).toFixed(0)}</td>
+                    </tr>
+                    <tr>
+                        <td>Win Rate</td>
+                        <td>${wins} / ${numSims}</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                </table>
+                <p><em>Based on ${numSims} simulations</em></p>
+            `;
+            
+            document.getElementById('simulationResults').innerHTML = resultsHtml;
+        }
+
+        // Calculate theoretical values
+        function calculateTheoretical() {
+            const k = parseInt(document.getElementById('initialCapital').value);
+            const N = parseInt(document.getElementById('targetCapital').value);
+            const p = parseFloat(document.getElementById('winProbability').value);
+            const q = 1 - p;
+            
+            const prob = calculateProbability(k, N, p);
+            const duration = calculateExpectedDuration(k, N, p);
+            
+            let formula, calculation;
+            
+            if (p === 0.5) {
+                formula = `$$P_k = \\frac{k}{N} = \\frac{${k}}{${N}}$$`;
+                calculation = `<p><strong>Fair Game Calculation:</strong></p>
+                              <p>Success probability: $P_{${k}} = \\frac{${k}}{${N}} = ${prob.toFixed(4)}$</p>
+                              <p>Expected duration: $E_{${k}} = ${k} \\times ${N-k} = ${duration.toFixed(0)}$ bets</p>`;
+            } else {
+                const ratio = q/p;
+                formula = `$$P_k = \\frac{1 - (q/p)^k}{1 - (q/p)^N} = \\frac{1 - ${ratio.toFixed(4)}^{${k}}}{1 - ${ratio.toFixed(4)}^{${N}}}$$`;
+                calculation = `<p><strong>Unfair Game Calculation:</strong></p>
+                              <p>$q/p = ${q.toFixed(3)}/${p.toFixed(3)} = ${ratio.toFixed(4)}$</p>
+                              <p>Success probability: $P_{${k}} = ${prob.toFixed(4)}$</p>
+                              <p>Expected duration: $E_{${k}} = ${duration.toFixed(0)}$ bets</p>`;
+            }
+            
+            const resultsHtml = `
+                <h4>Theoretical Analysis</h4>
+                ${calculation}
+                <div class="formula">${formula}</div>
+                
+                <h4>Interpretation</h4>
+                <ul>
+                    <li>Starting with $${k}, you have a <strong>${(prob * 100).toFixed(2)}%</strong> chance of reaching $${N}</li>
+                    <li>On average, the game will last <strong>${duration.toFixed(0)}</strong> bets</li>
+                    <li>${p > 0.5 ? 'The game favors you' : (p < 0.5 ? 'The game favors the house' : 'This is a fair game')}</li>
+                    ${p < 0.5 ? '<li><strong>Warning:</strong> In the long run, the house edge will likely lead to ruin!</li>' : ''}
+                </ul>
+                
+                <h4>Risk Analysis</h4>
+                <p>Probability of ruin: <strong>${((1 - prob) * 100).toFixed(2)}%</strong></p>
+                <p>Expected value: $${(prob * N).toFixed(2)}</p>
+                <p>Risk-reward ratio: ${(prob / (1 - prob)).toFixed(3)}</p>
+            `;
+            
+            document.getElementById('theoreticalResults').innerHTML = resultsHtml;
+            
+            // Re-render MathJax
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            initCharts();
+            runSinglePath();
+            calculateTheoretical();
+        };
+    </script>
+</body>
+</html>
