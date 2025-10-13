@@ -1,0 +1,409 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rat in a Three-Door Maze — Simulation & Theory</title>
+  <style>
+    :root {
+      --fg: #0f172a;
+      --muted: #334155;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --accent: #2563eb;
+      --ring: rgba(37,99,235,.2);
+      --green: #16a34a;
+      --orange: #ea580c;
+      --rose: #e11d48;
+    }
+    html, body { margin:0; padding:0; background:var(--bg); color:var(--fg);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    .wrap { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(2,6,23,.06);
+      padding: 1.25rem 1.25rem;
+      margin-bottom: 1rem;
+      border: 1px solid #e5e7eb;
+    }
+    h1 { font-size: 1.8rem; margin: 0 0 .75rem; }
+    h2 { font-size: 1.2rem; margin: 1rem 0 .5rem; }
+    p { line-height:1.6; color: var(--muted); }
+    .stats { display:grid; grid-template-columns: repeat(3,1fr); gap:.5rem; }
+    .stat { background:#f1f5f9; border:1px solid #e5e7eb; border-radius:12px; padding:.7rem .8rem; }
+    .stat .k { font-size:.75rem; color:#475569; }
+    .stat .v { font-size:1.15rem; font-weight:800; }
+    .pill { display:inline-block; padding:.2rem .55rem; border-radius:999px; background:#e2e8f0; color:#334155; font-size:.78rem; font-weight:700; }
+    .controls { display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap:.75rem; align-items:end; }
+    label { font-weight:600; font-size:.95rem; }
+    input[type="number"] {
+      width:100%; padding:.6rem .7rem; border-radius:10px; border:1px solid #e5e7eb; background:#fff; outline:none;
+    }
+    input[type="number"]:focus { border-color:var(--accent); box-shadow:0 0 0 6px var(--ring); }
+    button {
+      appearance:none; border:none; background:var(--accent); color:#fff;
+      padding:.8rem 1rem; border-radius:12px; font-weight:700; cursor:pointer;
+    }
+    button:hover { filter: brightness(1.05); }
+    .row { display:grid; grid-template-columns: 1fr 1fr; gap:1rem; }
+    @media (max-width: 880px) { .row { grid-template-columns: 1fr; } .controls { grid-template-columns: 1fr 1fr; } }
+
+    /* Maze canvas container */
+    .maze-wrap {
+      position: relative;
+      width: 100%;
+      height: 360px;
+    }
+    svg#maze {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+    }
+    .door-label {
+      font-size: 12px;
+      fill: #0f172a;
+      font-weight: 700;
+    }
+    .legend { display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; margin-top:.5rem; }
+    .legend .dot { width:12px; height:12px; border-radius:3px; display:inline-block; }
+    .dot.green { background: var(--green); }
+    .dot.orange { background: var(--orange); }
+    .dot.rose { background: var(--rose); }
+    .dot.blue { background: var(--accent); }
+
+    /* Rat */
+    .rat {
+      position: absolute;
+      width: 28px; height: 28px;
+      transform: translate(-50%, -50%);
+      transition: left .6s linear, top .6s linear;
+      will-change: left, top;
+      pointer-events: none;
+      filter: drop-shadow(0 3px 6px rgba(2,6,23,.2));
+    }
+    .rat .emoji { font-size: 22px; line-height: 28px; display:flex; align-items:center; justify-content:center; }
+    .toast {
+      position:absolute; right: 12px; top: 12px; background:#0b1220; color:#e2e8f0; border-radius:10px; padding:.5rem .7rem;
+      font-size:.9rem; box-shadow: 0 6px 20px rgba(2,6,23,.3); display:none;
+    }
+    .mono-box {
+      background:#0b1220; color:#e2e8f0; border-radius:12px; padding:.9rem 1rem; font-size:.95rem; overflow:auto;
+    }
+    canvas { width: 100%; height: 260px; border-radius: 12px; background: #fff; border:1px solid #e5e7eb; }
+  </style>
+  <script>
+    window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Rat in a Three-Door Maze — Simulation & Theory</h1>
+      <p>
+        A rat faces three doors on each attempt:
+        <span class="pill">Door #1: exit in 1 minute</span>,
+        <span class="pill">Door #2: back in 3 minutes</span>,
+        <span class="pill">Door #3: back in 5 minutes</span>.
+        The rat picks uniformly at random on each try ($1/3$ each).
+      </p>
+      <div class="stats" id="quick">
+        <div class="stat"><div class="k">Theoretical mean</div><div class="v" id="theoryMean">—</div></div>
+        <div class="stat"><div class="k">Simulation mean</div><div class="v" id="simMean">—</div></div>
+        <div class="stat"><div class="k">Trials</div><div class="v" id="numTrials">0</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Maze Animation</h2>
+      <div class="maze-wrap">
+        <svg id="maze" viewBox="0 0 1000 360" preserveAspectRatio="xMidYMid meet">
+          <!-- Outer walls -->
+          <rect x="10" y="10" width="980" height="340" rx="14" ry="14" fill="#fbfbfb" stroke="#cbd5e1" stroke-width="2"/>
+          <!-- Inner corridors (simple stylized maze) -->
+          <path d="M 60 70 H 940 M 60 170 H 940 M 60 270 H 940" stroke="#cbd5e1" stroke-width="2" />
+          <path d="M 200 70 V 320 M 420 20 V 270 M 620 70 V 320 M 820 20 V 270" stroke="#cbd5e1" stroke-width="2" />
+          <!-- Doors on the top wall: three gaps with colored arcs -->
+          <!-- Door #1 (exit) at x≈200 -->
+          <path d="M 180 10 a 20 20 0 0 0 40 0" fill="none" stroke="#16a34a" stroke-width="6"/>
+          <text x="200" y="38" text-anchor="middle" class="door-label" fill="#16a34a">Door #1 (Exit)</text>
+          <!-- Door #2 (return) at x≈500 -->
+          <path d="M 480 10 a 20 20 0 0 0 40 0" fill="none" stroke="#ea580c" stroke-width="6"/>
+          <text x="500" y="38" text-anchor="middle" class="door-label" fill="#ea580c">Door #2 (Back 3m)</text>
+          <!-- Door #3 (return) at x≈800 -->
+          <path d="M 780 10 a 20 20 0 0 0 40 0" fill="none" stroke="#e11d48" stroke-width="6"/>
+          <text x="800" y="38" text-anchor="middle" class="door-label" fill="#e11d48">Door #3 (Back 5m)</text>
+          <!-- Start marker -->
+          <circle id="startDot" cx="500" cy="200" r="6" fill="#2563eb"/>
+          <text x="500" y="220" text-anchor="middle" class="door-label" fill="#2563eb">Start</text>
+        </svg>
+        <div id="rat" class="rat" style="left:500px; top:200px;"><div class="emoji">🐭</div></div>
+        <div id="toast" class="toast">Exited! Total time: <span id="toastTime">—</span> min</div>
+      </div>
+      <div class="legend">
+        <span class="dot green"></span> Door #1 Exit
+        <span class="dot orange"></span> Door #2 Back (3m)
+        <span class="dot rose"></span> Door #3 Back (5m)
+        <span class="dot blue"></span> Start
+      </div>
+      <div style="margin-top:.75rem; display:flex; gap:.5rem; flex-wrap:wrap;">
+        <button id="single">Play one animated run</button>
+        <button id="reset">Reset</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Theory via Conditional Expectation</h2>
+      <p>Let $E$ be the expected time (minutes) from the start. Condition on the first door the rat chooses:</p>
+      <div class="mono-box">
+        $$E=\tfrac{1}{3}(1)+\tfrac{1}{3}(3+E)+\tfrac{1}{3}(5+E)
+        =3+\tfrac{2}{3}E \;\Rightarrow\; E=9\ \text{minutes}.$$
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Monte Carlo Simulation</h2>
+      <div class="controls">
+        <div>
+          <label for="trials">Number of trials</label>
+          <input type="number" id="trials" value="20000" min="100" step="100">
+        </div>
+        <div>
+          <label for="seed">Random seed (optional)</label>
+          <input type="number" id="seed" placeholder="e.g., 42">
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <button id="run">Run Simulation</button>
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <button id="showOne">Log one (text only)</button>
+        </div>
+      </div>
+      <div class="row" style="margin-top:1rem">
+        <div class="card" style="margin:0">
+          <h2 style="margin-top:.2rem">Histogram of total times</h2>
+          <canvas id="hist"></canvas>
+        </div>
+        <div class="card" style="margin:0">
+          <h2 style="margin-top:.2rem">One run (log)</h2>
+          <div class="mono-box" id="runLog" style="height:260px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="color:#64748b; font-size:.9rem;">
+      Built for teaching conditional expectations and Monte Carlo simulation. Edit the code to explore other door times or probabilities.
+    </div>
+  </div>
+
+  <script>
+    // --- RNG ---
+    function mulberry32(a) {
+      return function() {
+        var t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      }
+    }
+    const TIMES = [1,3,5];
+    const probs = [1/3,1/3,1/3];
+    const theoryE = 9;
+
+    // Elements
+    const theoryMeanEl = document.getElementById("theoryMean");
+    const simMeanEl = document.getElementById("simMean");
+    const trialsEl = document.getElementById("numTrials");
+    const runBtn = document.getElementById("run");
+    const showOneBtn = document.getElementById("showOne");
+    const trialsInput = document.getElementById("trials");
+    const seedInput = document.getElementById("seed");
+    const histCanvas = document.getElementById("hist");
+    const runLog = document.getElementById("runLog");
+
+    const rat = document.getElementById("rat");
+    const toast = document.getElementById("toast");
+    const toastTime = document.getElementById("toastTime");
+    const playBtn = document.getElementById("single");
+    const resetBtn = document.getElementById("reset");
+
+    theoryMeanEl.textContent = theoryE.toFixed(0);
+
+    // Utility
+    function chooseDoor(rand) {
+      const u = rand();
+      if (u < probs[0]) return 0;
+      if (u < probs[0]+probs[1]) return 1;
+      return 2;
+    }
+
+    function simulateOne(rand=Math.random) {
+      let total = 0;
+      while (true) {
+        const d = chooseDoor(rand);
+        total += TIMES[d];
+        if (d === 0) break;
+      }
+      return total;
+    }
+
+    function simulateMany(n, seed=null) {
+      const r = (seed === null || isNaN(seed)) ? Math.random : mulberry32(seed>>>0);
+      const samples = new Array(n);
+      let sum = 0, sumsq = 0;
+      for (let i=0;i<n;i++) {
+        const x = simulateOne(r);
+        samples[i] = x;
+        sum += x; sumsq += x*x;
+      }
+      const mean = sum/n;
+      const varsample = (sumsq - n*mean*mean) / (n-1);
+      return {samples, mean, varsample};
+    }
+
+    // Drawing histogram (vanilla)
+    function drawHist(canvas, data, bins=40) {
+      if (!data || data.length === 0) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width = canvas.clientWidth;
+      const H = canvas.height = canvas.clientHeight;
+      const xmin = Math.min(...data), xmax = Math.max(...data);
+      const eps = 1e-9, bw = (xmax - xmin + eps) / bins;
+      const counts = new Array(bins).fill(0);
+      for (const x of data) { let b = Math.floor((x - xmin)/bw); if (b>=bins) b=bins-1; if (b<0) b=0; counts[b]++; }
+      const ymax = Math.max(...counts);
+      // clear
+      ctx.clearRect(0,0,W,H);
+      // axes
+      ctx.strokeStyle = "#94a3b8"; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(40, 10); ctx.lineTo(40, H-30); ctx.lineTo(W-10, H-30); ctx.stroke();
+      // bars
+      const plotW = W - 50, plotH = H - 40, barW = plotW / bins;
+      for (let i=0;i<bins;i++) {
+        const h = (counts[i]/ymax) * (plotH-4);
+        const x = 40 + i*barW, y = H-30 - h;
+        ctx.fillStyle = "#cbd5e1";
+        ctx.fillRect(x, y, barW-1, h);
+      }
+      // sample mean
+      const mean = data.reduce((a,b)=>a+b,0)/data.length;
+      const xMean = 40 + ((mean - xmin)/ (xmax - xmin + eps)) * plotW;
+      ctx.strokeStyle = "#2563eb"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(xMean, 10); ctx.lineTo(xMean, H-30); ctx.stroke();
+      ctx.fillStyle = "#2563eb";
+      ctx.font = "12px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial";
+      ctx.fillText("sample mean ≈ " + mean.toFixed(3), xMean + 6, 18);
+      ctx.fillStyle = "#334155"; ctx.fillText("count", 6, 18);
+      ctx.fillText("time (minutes)", W/2 - 40, H-10);
+    }
+
+    // Text log helper
+    function logLine(s) {
+      const p = document.createElement("div"); p.textContent = s;
+      runLog.appendChild(p); runLog.scrollTop = runLog.scrollHeight;
+    }
+
+    // Simulation UI
+    function runSimulation() {
+      const n = Math.max(100, Math.floor(+trialsInput.value || 20000));
+      const seed = seedInput.value === "" ? null : (+seedInput.value);
+      const {samples, mean} = simulateMany(n, seed);
+      drawHist(histCanvas, samples, 40);
+      simMeanEl.textContent = mean.toFixed(3);
+      trialsEl.textContent = n.toLocaleString();
+    }
+    function showOneLog() {
+      runLog.innerHTML = "";
+      const seed = Math.floor(Math.random()*1e9)>>>0;
+      const r = mulberry32(seed);
+      let total = 0, step = 0;
+      while (true) {
+        step++;
+        const d = chooseDoor(r);
+        total += TIMES[d];
+        const msg = (d===0)
+          ? `Step ${step}: Door #1 → exit (+1 min). Total = ${total} min. ✅`
+          : `Step ${step}: Door #${d+1} → back (+${TIMES[d]} min). Total = ${total} min.`;
+        logLine(msg);
+        if (d===0) break;
+      }
+    }
+    runBtn.addEventListener("click", runSimulation);
+    showOneBtn.addEventListener("click", showOneLog);
+    setTimeout(runSimulation, 50);
+
+    // --- Maze animation ---
+    const startX = 500, startY = 200;
+    const doorPos = [
+      {x:200, y:20, color: "#16a34a", label:"Door #1 (Exit)", delayMin: 1},
+      {x:500, y:20, color: "#ea580c", label:"Door #2 (Back 3m)", delayMin: 3},
+      {x:800, y:20, color: "#e11d48", label:"Door #3 (Back 5m)", delayMin: 5},
+    ];
+
+    function setRat(x,y) {
+      rat.style.left = x + "px";
+      rat.style.top  = y + "px";
+    }
+    function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+
+    async function animateTo(x,y) {
+      // break the move into a few segments to create visual travel (straight line)
+      const curX = parseFloat(rat.style.left), curY = parseFloat(rat.style.top);
+      const steps = 6;
+      for (let i=1;i<=steps;i++) {
+        const nx = curX + (x - curX) * (i/steps);
+        const ny = curY + (y - curY) * (i/steps);
+        setRat(nx, ny);
+        await sleep(100);
+      }
+    }
+
+    async function playOneAnimated() {
+      // reset visuals
+      toast.style.display = "none";
+      runLog.innerHTML = "";
+      setRat(startX, startY);
+      const seed = Math.floor(Math.random()*1e9)>>>0;
+      const r = mulberry32(seed);
+      let total = 0, step = 0;
+      while (true) {
+        step++;
+        const d = chooseDoor(r);
+        const target = doorPos[d];
+        logLine(`Step ${step}: Move to ${d===0 ? "Door #1 (Exit)" : "Door #"+(d+1)}.`);
+        await animateTo(target.x, target.y + 20);
+        // "time passes" (scale minutes to milliseconds; keep short)
+        await sleep(200);
+        total += target.delayMin;
+        if (d === 0) {
+          toastTime.textContent = total;
+          toast.style.display = "block";
+          logLine(`Exit! (+${target.delayMin} min). Total = ${total} min. ✅`);
+          break;
+        } else {
+          logLine(`Hit ${target.label}. (+${target.delayMin} min). Returning to start.`);
+          await sleep(200);
+          await animateTo(startX, startY);
+        }
+      }
+    }
+
+    function resetMaze() {
+      toast.style.display = "none";
+      setRat(startX, startY);
+      runLog.innerHTML = "";
+    }
+
+    playBtn.addEventListener("click", playOneAnimated);
+    resetBtn.addEventListener("click", resetMaze);
+  </script>
+</body>
+</html>
