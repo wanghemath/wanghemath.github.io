@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neural Network Convolution Visualizer</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 30px;
+  overflow-x: hidden;
+}
+
+#container {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 40px;
+  backdrop-filter: blur(10px);
+}
+
+h1 {
+  text-align: center;
+  color: #2d3748;
+  margin-bottom: 10px;
+  font-size: 2.5em;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  text-align: center;
+  color: #718096;
+  margin-bottom: 30px;
+  font-size: 1.1em;
+}
+
+#controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.control-btn {
+  padding: 12px 30px;
+  font-size: 16px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.play-btn {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  color: white;
+}
+
+.play-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+}
+
+.pause-btn {
+  background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+  color: white;
+}
+
+.pause-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(237, 137, 54, 0.4);
+}
+
+.reset-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.reset-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+#draw {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+}
+
+svg text {
+  user-select: none;
+}
+
+.cell {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.cell:hover {
+  filter: brightness(1.1);
+}
+
+.cell-text {
+  pointer-events: none;
+  font-weight: 600;
+}
+
+.connection-line {
+  transition: all 0.3s ease;
+}
+
+.volume-title {
+  font-weight: 600;
+  fill: #2d3748;
+}
+
+.layer-label {
+  font-family: 'Courier New', monospace;
+  fill: #4a5568;
+  font-weight: 500;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.highlighted {
+  animation: pulse 1s ease-in-out infinite;
+}
+</style>
+</head>
+<body>
+
+<div id="container">
+  <h1>🧠 Neural Network Convolution Visualizer</h1>
+  <p class="subtitle">Watch how convolutional layers transform input data through filters</p>
+  
+  <div id="controls">
+    <button class="control-btn play-btn" onclick="startAnimation()">▶ Play</button>
+    <button class="control-btn pause-btn" onclick="pauseAnimation()">⏸ Pause</button>
+    <button class="control-btn reset-btn" onclick="resetAnimation()">⟲ Reset</button>
+  </div>
+  
+  <div id="draw"></div>
+</div>
+
+<script>
+// Volume class
+class Vol {
+  constructor(sx, sy, depth, fillValue = 0.0) {
+    this.sx = sx;
+    this.sy = sy;
+    this.depth = depth;
+    this.w = new Float64Array(sx * sy * depth);
+    if (fillValue !== 0.0) {
+      this.w.fill(fillValue);
+    }
+  }
+  
+  get(x, y, d) {
+    return this.w[((this.sx * y) + x) * this.depth + d];
+  }
+  
+  set(x, y, d, v) {
+    this.w[((this.sx * y) + x) * this.depth + d] = v;
+  }
+}
+
+const W1 = 7, H1 = 7, D1 = 3;
+const K = 2, F = 3, S = 2;
+const cs = 30;
+
+let X = new Vol(W1, H1, D1);
+let Ws = [], bs = [];
+let O, svg, iid = -1;
+let fxg = 0, fyg = 0, fdg = 0;
+let computationColors = {};
+
+// Initialize volumes
+function initVolumes() {
+  X = new Vol(W1, H1, D1);
+  for(let q = 0; q < X.w.length; q++) {
+    X.w[q] = Math.floor(Math.random() * 3);
+  }
+  
+  for(let d = 0; d < X.depth; d++) {
+    for(let x = 0; x < X.sx; x++) {
+      for(let y = 0; y < X.sy; y++) {
+        if(x === 0 || x === (X.sx - 1) || y === 0 || y === (X.sy - 1)) {
+          X.set(x, y, d, 0);
+        }
+      }
+    }
+  }
+  
+  Ws = [];
+  bs = [];
+  for(let k = 0; k < K; k++) {
+    const W = new Vol(F, F, D1);
+    for(let q = 0; q < W.w.length; q++) {
+      W.w[q] = Math.floor(Math.random() * 3) - 1;
+    }
+    Ws.push(W);
+    const b = new Vol(1, 1, 1);
+    b.w[0] = 1 - k;
+    bs.push(b);
+  }
+}
+
+function convForward(V, Ws, bs, stride) {
+  const out_sy = Math.floor((V.sy - F) / stride + 1);
+  const out_sx = Math.floor((V.sx - F) / stride + 1);
+  const A = new Vol(out_sx, out_sy, Ws.length, 0.0);
+  
+  computationColors = {};
+  
+  for(let d = 0; d < Ws.length; d++) {
+    const f = Ws[d];
+    let x = 0, y = 0;
+    for(let ay = 0; ay < out_sy; y += stride, ay++) {
+      x = 0;
+      for(let ax = 0; ax < out_sx; x += stride, ax++) {
+        let a = 0.0;
+        const inputCells = [];
+        const filterCells = [];
+        
+        for(let fy = 0; fy < f.sy; fy++) {
+          const oy = y + fy;
+          for(let fx = 0; fx < f.sx; fx++) {
+            const ox = x + fx;
+            if(oy >= 0 && oy < V.sy && ox >= 0 && ox < V.sx) {
+              for(let fd = 0; fd < f.depth; fd++) {
+                a += f.get(fx, fy, fd) * V.get(ox, oy, fd);
+                inputCells.push({x: ox, y: oy, d: fd});
+                filterCells.push({x: fx, y: fy, d: fd});
+              }
+            }
+          }
+        }
+        a += bs[d].w[0];
+        A.set(ax, ay, d, a);
+        
+        computationColors[`o_${ax}_${ay}_${d}`] = {
+          value: a,
+          inputCells: inputCells,
+          filterCells: filterCells,
+          filterId: d
+        };
+      }
+    }
+  }
+  return A;
+}
+
+function getComputationColor(outputKey) {
+  if(!computationColors[outputKey]) return '#e2e8f0';
+  
+  const value = computationColors[outputKey].value;
+  const hue = ((value + 10) * 30) % 360;
+  const saturation = 70;
+  const lightness = 65;
+  
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}
+
+function renderVol(svg, V, xoff, yoff, type, title, vid) {
+  const pad = 4;
+  const dpad = 25;
+  const gyoff = 30;
+  
+  const txt = `${title} (${V.sx}×${V.sy}×${V.depth})`;
+  
+  svg.append('text')
+    .attr('x', xoff)
+    .attr('y', yoff - 10)
+    .attr('font-size', 18)
+    .attr('class', 'volume-title')
+    .text(txt);
+  
+  for(let d = 0; d < V.depth; d++) {
+    svg.append('text')
+      .attr('x', xoff)
+      .attr('y', yoff + d * (V.sy * (cs + pad) + dpad) + gyoff - 8)
+      .attr('font-size', 14)
+      .attr('class', 'layer-label')
+      .text(`${vid}[:,:,${d}]`);
+    
+    for(let x = 0; x < V.sx; x++) {
+      for(let y = 0; y < V.sy; y++) {
+        const xcoord = xoff + x * (cs + pad);
+        const ycoord = yoff + y * (cs + pad) + d * (V.sy * (cs + pad) + dpad) + gyoff;
+        const val = V.get(x, y, d);
+        const cellId = `${vid}_${x}_${y}_${d}`;
+        
+        let thecol;
+        if(type === 'output') {
+          thecol = getComputationColor(cellId);
+        } else if(vid === 'x' && (x === 0 || y === 0 || x === V.sx - 1 || y === V.sy - 1)) {
+          thecol = '#e2e8f0';
+        } else {
+          thecol = '#f7fafc';
+        }
+        
+        svg.append('rect')
+          .attr('x', xcoord)
+          .attr('y', ycoord)
+          .attr('height', cs)
+          .attr('width', cs)
+          .attr('rx', 4)
+          .attr('fill', thecol)
+          .attr('stroke', '#cbd5e0')
+          .attr('stroke-width', '1')
+          .attr('id', cellId)
+          .attr('class', `cell ${vid}`);
+        
+        svg.append('text')
+          .attr('x', xcoord + cs/2)
+          .attr('y', ycoord + cs/2 + 5)
+          .attr('font-size', 13)
+          .attr('text-anchor', 'middle')
+          .attr('class', 'cell-text')
+          .attr('fill', '#2d3748')
+          .attr('font-weight', '600')
+          .text(val.toFixed(0));
+      }
+    }
+  }
+}
+
+function draw() {
+  d3.select('#draw svg').remove();
+  const d3elt = d3.select('#draw');
+  svg = d3elt.append('svg')
+    .attr('width', '100%')
+    .attr('height', '900')
+    .append('g')
+    .attr('transform', 'translate(20, 20)');
+  
+  const yoff = 20;
+  renderVol(svg, X, 10, yoff, 'input', 'Input Volume (+pad 1)', 'x');
+  
+  for(let i = 0; i < Ws.length; i++) {
+    renderVol(svg, Ws[i], 270 + i*180, 30 + yoff, 'filter', `Filter W${i}`, `w${i}`);
+    renderVol(svg, bs[i], 270 + i*180, 450 + yoff, 'filter', `Bias b${i}`, `b${i}`);
+  }
+  
+  renderVol(svg, O, 650, yoff, 'output', 'Output Volume', 'o');
+}
+
+function focusCell() {
+  // Reset strokes only, keep colors
+  for(let i = 0; i < Ws.length; i++) {
+    d3.selectAll(`.w${i}`).attr('stroke', '#cbd5e0').attr('stroke-width', '1').classed('highlighted', false);
+    d3.selectAll(`.b${i}`).attr('stroke', '#cbd5e0').attr('stroke-width', '1').classed('highlighted', false);
+  }
+  d3.selectAll('.x').attr('stroke', '#cbd5e0').attr('stroke-width', '1').classed('highlighted', false);
+  d3.selectAll('.o').attr('stroke', '#cbd5e0').attr('stroke-width', '1').classed('highlighted', false);
+  
+  // Reset input and filter colors to white/default
+  d3.selectAll('.x').each(function() {
+    const elem = d3.select(this);
+    const id = elem.attr('id');
+    const parts = id.split('_');
+    const x = parseInt(parts[1]);
+    const y = parseInt(parts[2]);
+    if(x === 0 || y === 0 || x === X.sx - 1 || y === X.sy - 1) {
+      elem.attr('fill', '#e2e8f0');
+    } else {
+      elem.attr('fill', '#f7fafc');
+    }
+  });
+  
+  for(let i = 0; i < Ws.length; i++) {
+    d3.selectAll(`.w${i}`).attr('fill', '#f7fafc');
+    d3.selectAll(`.b${i}`).attr('fill', '#f7fafc');
+  }
+  
+  const fx = fxg, fy = fyg, fd = fdg;
+  const outputKey = `o_${fx}_${fy}_${fd}`;
+  
+  d3.select(`#${outputKey}`)
+    .attr('stroke', '#9f7aea')
+    .attr('stroke-width', '4')
+    .classed('highlighted', true);
+  
+  if(computationColors[outputKey]) {
+    const computation = computationColors[outputKey];
+    const outputColor = getComputationColor(outputKey);
+    
+    computation.filterCells.forEach(cell => {
+      d3.select(`#w${fd}_${cell.x}_${cell.y}_${cell.d}`)
+        .attr('fill', outputColor)
+        .attr('stroke', '#f56565')
+        .attr('stroke-width', '3')
+        .classed('highlighted', true);
+    });
+    
+    d3.selectAll(`.b${fd}`)
+      .attr('fill', outputColor)
+      .attr('stroke', '#f56565')
+      .attr('stroke-width', '3')
+      .classed('highlighted', true);
+    
+    computation.inputCells.forEach(cell => {
+      d3.select(`#x_${cell.x}_${cell.y}_${cell.d}`)
+        .attr('fill', outputColor)
+        .attr('stroke', '#4299e1')
+        .attr('stroke-width', '3')
+        .classed('highlighted', true);
+    });
+  }
+  
+  d3.selectAll('.connection-line').remove();
+  
+  for(let d = 0; d < D1; d++) {
+    for(let x = 0; x < F; x++) {
+      for(let y = 0; y < F; y++) {
+        const ix = fx * S + x;
+        const iy = fy * S + y;
+        
+        if((x === 0 || x === F-1) && (y === 0 || y === F-1)) {
+          const csel = d3.select(`#x_${ix}_${iy}_${d}`);
+          const wsel = d3.select(`#w${fd}_${x}_${y}_${d}`);
+          
+          const x1 = parseFloat(csel.attr('x')) + (x === F-1 ? cs : 0);
+          const y1 = parseFloat(csel.attr('y')) + (y === F-1 ? cs : 0);
+          const x2 = parseFloat(wsel.attr('x')) + (x === F-1 ? cs : 0);
+          const y2 = parseFloat(wsel.attr('y')) + (y === F-1 ? cs : 0);
+          
+          svg.append('line')
+            .attr('x1', x1)
+            .attr('y1', y1)
+            .attr('x2', x2)
+            .attr('y2', y2)
+            .attr('stroke', '#a0aec0')
+            .attr('stroke-width', '2')
+            .attr('stroke-dasharray', '5,5')
+            .attr('opacity', '0.6')
+            .attr('class', 'connection-line');
+        }
+      }
+    }
+  }
+  
+  fxg++;
+  if(fxg >= O.sx) {
+    fxg = 0;
+    fyg++;
+    if(fyg >= O.sy) {
+      fyg = 0;
+      fdg++;
+      if(fdg >= O.depth) {
+        fdg = 0;
+      }
+    }
+  }
+}
+
+function startAnimation() {
+  if(iid === -1) {
+    iid = setInterval(focusCell, 1000);
+  }
+}
+
+function pauseAnimation() {
+  if(iid !== -1) {
+    clearInterval(iid);
+    iid = -1;
+  }
+}
+
+function resetAnimation() {
+  pauseAnimation();
+  fxg = 0;
+  fyg = 0;
+  fdg = 0;
+  initVolumes();
+  O = convForward(X, Ws, bs, S);
+  draw();
+}
+
+function start() {
+  initVolumes();
+  O = convForward(X, Ws, bs, S);
+  draw();
+  startAnimation();
+}
+
+window.onload = start;
+</script>
+
+</body>
+</html>
