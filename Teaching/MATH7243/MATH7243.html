@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MATH 7243 — Machine Learning & Statistical Learning I</title>
+  <meta name="description" content="Teaching page for MATH 7243: Machine Learning & Statistical Learning I. Syllabus, schedule, resources, policies, and project info." />
+  <style>
+    :root{
+      --bg:#0b1220;
+      --panel:#0f1b33;
+      --card:#111f3d;
+      --text:#e8eefc;
+      --muted:#b8c5e6;
+      --accent:#7aa2ff;
+      --accent2:#8bf0c6;
+      --warn:#ffd27a;
+      --danger:#ff7a7a;
+      --border:rgba(255,255,255,.12);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background:
+        radial-gradient(1200px 700px at 20% 0%, rgba(122,162,255,.22), transparent 55%),
+        radial-gradient(900px 500px at 80% 10%, rgba(139,240,198,.14), transparent 60%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.6;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 26px 18px 70px;
+    }
+
+    header{
+      padding: 26px 22px 18px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+    }
+    header:before{
+      content:"";
+      position:absolute;
+      inset:-140px -140px auto auto;
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle at 30% 30%, rgba(122,162,255,.28), transparent 60%);
+      transform: rotate(16deg);
+      pointer-events:none;
+    }
+    .toprow{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .course{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width: 260px;
+    }
+    .kicker{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    h1{
+      margin: 10px 0 4px;
+      font-size: clamp(26px, 4vw, 40px);
+      line-height:1.15;
+      letter-spacing:-.5px;
+    }
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      max-width: 82ch;
+      font-size: 16px;
+    }
+
+    nav{
+      margin-top: 14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    nav a{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+    nav a:hover{
+      background: rgba(255,255,255,.06);
+      text-decoration:none;
+    }
+
+    main{
+      margin-top: 16px;
+      display:grid;
+      grid-template-columns: 1.12fr .88fr;
+      gap: 16px;
+      align-items:start;
+    }
+    @media (max-width: 920px){
+      main{grid-template-columns:1fr}
+      .sticky{position:static !important}
+    }
+
+    section, aside{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    section{
+      padding: 18px 18px 10px;
+    }
+    section h2{
+      margin: 0 0 10px;
+      font-size: 20px;
+      letter-spacing:-.2px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .icon{
+      width: 26px; height: 26px;
+      border-radius: 10px;
+      background: rgba(122,162,255,.12);
+      border: 1px solid rgba(122,162,255,.25);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 14px;
+      color: var(--accent);
+      flex: 0 0 auto;
+    }
+    .note{
+      margin: 12px 0 14px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(122,162,255,.35);
+      background: rgba(122,162,255,.08);
+      color: var(--muted);
+    }
+
+    aside{padding: 16px}
+    .sticky{position: sticky; top: 14px}
+    .card{
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.10);
+      border-radius: 14px;
+      padding: 14px;
+      margin: 0 0 12px;
+    }
+    .card h3{
+      margin: 0 0 8px;
+      font-size: 16px;
+      letter-spacing:-.2px;
+    }
+
+    ul{margin:10px 0 16px; padding-left: 18px}
+    li{margin: 7px 0}
+    .muted{color:var(--muted)}
+    .small{font-size: 13px}
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 620px){ .grid2{grid-template-columns:1fr} }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      font-size: 12px;
+      color: var(--muted);
+      margin-right: 8px;
+    }
+    .badge.ok{border-color: rgba(139,240,198,.35); background: rgba(139,240,198,.08)}
+    .badge.warn{border-color: rgba(255,210,122,.35); background: rgba(255,210,122,.08)}
+    .badge.no{border-color: rgba(255,122,122,.35); background: rgba(255,122,122,.08)}
+
+    details{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.10);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin: 10px 0;
+    }
+    summary{
+      cursor:pointer;
+      color: var(--text);
+      font-weight: 600;
+      list-style:none;
+    }
+    summary::-webkit-details-marker{display:none}
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,.10);
+      margin: 14px 0;
+    }
+
+    table{
+      width:100%;
+      border-collapse: collapse;
+      margin: 10px 0 14px;
+      overflow:hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    th, td{
+      text-align:left;
+      padding: 10px 10px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      vertical-align: top;
+      font-size: 14px;
+    }
+    th{
+      color: var(--muted);
+      font-weight: 600;
+      background: rgba(255,255,255,.04);
+    }
+    tr:last-child td{border-bottom:none}
+
+    code, pre{font-family:var(--mono); font-size: 13px}
+    pre{
+      margin: 10px 0 14px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.25);
+      overflow:auto;
+    }
+    .btn{
+      appearance:none;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding: 8px 10px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-size: 13px;
+    }
+    .btn:hover{background: rgba(255,255,255,.07)}
+    footer{
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align:center;
+      padding: 10px 0;
+    }
+
+    /* tiny “week builder” */
+    .weeklist{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin: 10px 0 14px;
+    }
+    .week{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.10);
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .week .title{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom: 6px;
+    }
+    .week .title strong{letter-spacing:-.2px}
+    .tags{display:flex; gap:8px; flex-wrap:wrap}
+    .tag{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="toprow">
+        <div class="course">
+          <div class="kicker">
+            <span class="pill">Course: <strong>MATH 7243</strong></span>
+            <span class="pill">Machine Learning & Statistical Learning I</span>
+            <span class="pill">Term: <span id="term">Spring 2026</span></span>
+          </div>
+          <h1>MATH 7243 — Machine Learning & Statistical Learning I</h1>
+          <p class="subtitle">
+            A graduate-level introduction to statistical learning: supervised learning, optimization basics, generalization,
+            regularization, model selection, and modern ML workflows.
+          </p>
+        </div>
+        <div class="pill" style="align-self:flex-start;">
+          Last updated: <span id="updated" style="margin-left:6px;"></span>
+        </div>
+      </div>
+
+      <nav aria-label="Page sections">
+        <a href="#overview">Overview</a>
+        <a href="#learning-outcomes">Learning Outcomes</a>
+        <a href="#logistics">Logistics</a>
+        <a href="#schedule">Schedule</a>
+        <a href="#assessment">Assessment</a>
+        <a href="#resources">Resources</a>
+        <a href="#ai-policy">AI (ChatGPT) Policy</a>
+        <a href="#projects">Projects</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- LEFT COLUMN -->
+      <div>
+        <section id="overview">
+          <h2><span class="icon">📌</span>Course Overview</h2>
+          <p>
+            This course develops core concepts and tools of modern machine learning with a statistical learning lens.
+            You will learn how models are trained, validated, and deployed in a principled way, with emphasis on:
+            objective functions, optimization, regularization, generalization, and interpreting model behavior.
+          </p>
+
+          <div class="grid2">
+            <div class="card">
+              <h3>Topics (high-level)</h3>
+              <ul>
+                <li>Supervised learning: regression & classification</li>
+                <li>Loss functions, risk, empirical risk minimization</li>
+                <li>Optimization: GD/SGD, conditioning, early stopping</li>
+                <li>Regularization: L1/L2, sparsity, bias–variance</li>
+                <li>Model selection: CV, metrics, calibration</li>
+                <li>Linear models, kernels, trees/ensembles, intro to NNs</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Course philosophy</h3>
+              <p class="muted">
+                We aim for fluency across <strong>math</strong> (derivations), <strong>code</strong> (implementations),
+                and <strong>judgment</strong> (choosing methods, diagnosing failure modes).
+              </p>
+              <div class="note" style="margin:10px 0 0;">
+                Expect a mix of proofs/derivations, coding labs, and short writing to explain results.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="learning-outcomes">
+          <h2><span class="icon">🎯</span>Learning Outcomes</h2>
+          <p class="muted">By the end of the course, you should be able to:</p>
+          <ul>
+            <li>Formulate ML problems via loss functions and (regularized) ERM objectives.</li>
+            <li>Derive gradients for common models and implement optimization loops.</li>
+            <li>Explain generalization and overfitting using bias–variance and validation strategies.</li>
+            <li>Design experiments with proper splits, cross-validation, and leakage prevention.</li>
+            <li>Evaluate models using appropriate metrics (including imbalanced settings).</li>
+            <li>Communicate results with clear assumptions, limitations, and reproducible code.</li>
+          </ul>
+        </section>
+
+        <section id="logistics">
+          <h2><span class="icon">🗓️</span>Logistics</h2>
+          <table>
+            <tr><th>Instructor</th><td>Dr. He Wang (edit as needed)</td></tr>
+            <tr><th>Email</th><td><a href="#">(add email)</a></td></tr>
+            <tr><th>Class meetings</th><td>(days/time) • (location / Zoom)</td></tr>
+            <tr><th>Office hours</th><td>(days/time) • (location / Zoom link)</td></tr>
+            <tr><th>Course site</th><td>Canvas / (link)</td></tr>
+            <tr><th>Prerequisites</th><td>Linear algebra, probability/statistics, calculus; basic Python recommended</td></tr>
+            <tr><th>Software</th><td>Python (NumPy, pandas, scikit-learn), optional PyTorch; Jupyter notebooks</td></tr>
+          </table>
+
+          <details>
+            <summary>Recommended background refreshers</summary>
+            <ul class="muted">
+              <li>Linear algebra: norms, projections, eigenvalues, SVD</li>
+              <li>Probability: expectation, variance, conditioning, MLE/MAP basics</li>
+              <li>Optimization: gradients, convexity, Taylor approximation</li>
+              <li>Python: vectorization, plotting, reproducible notebooks</li>
+            </ul>
+          </details>
+        </section>
+
+        <section id="schedule">
+          <h2><span class="icon">🧭</span>Proposed Schedule (editable)</h2>
+          <p class="muted">
+            Below is a sample 12-week outline. You can edit the titles/topics directly in the HTML.
+          </p>
+
+          <div class="weeklist">
+            <div class="week">
+              <div class="title">
+                <strong>Week 1 — Foundations of Statistical Learning</strong>
+                <div class="tags"><span class="tag">risk</span><span class="tag">ERM</span><span class="tag">train/test</span></div>
+              </div>
+              <div class="muted small">Problem setup, loss functions, empirical risk, baseline models, evaluation workflow.</div>
+            </div>
+
+            <div class="week">
+              <div class="title">
+                <strong>Week 2 — Linear Regression & Geometry</strong>
+                <div class="tags"><span class="tag">least squares</span><span class="tag">projections</span><span class="tag">SVD</span></div>
+              </div>
+              <div class="muted small">Normal equations, conditioning, regularization preview, diagnostics.</div>
+            </div>
+
+            <div class="week">
+              <div class="title">
+                <strong>Week 3 — Optimization Basics</strong>
+                <div class="tags"><span class="tag">GD</span><span class="tag">SGD</span><span class="tag">step size</span></div>
+              </div>
+              <div class="muted small">Gradient descent, stochastic gradients, convergence intuition, practical tuning.</div>
+            </div>
+
+            <div class="week">
+              <div class="title">
+                <strong>Week 4 — Regularization & Bias–Variance</strong>
+                <div class="tags"><span class="tag">L2</span><span class="tag">L1</span><span class="tag">overfitting</span></div>
+              </div>
+              <div class="muted small">Ridge/Lasso, sparsity, model complexity, early stopping.</div>
+            </div>
+
+            <div class="week">
+              <div class="title">
+                <strong>Week 5 — Classification: Logistic Regression</strong>
+                <div class="tags"><span class="tag">cross-entropy</span><span class="tag">calibration</span><span class="tag">ROC</span></div>
+              </div>
+              <div class="muted small">Logistic model, likelihood, gradient, thresholding, metrics.</div>
+            </div>
+
+            <div class="week">
+              <div class="title">
+                <strong>Week 6 — Model Selection & Cross-Validation</strong>
+                <div class="tags"><span class="tag">CV</span><span class="tag">leakage</span><span class="tag">pipelines</span></div>
+              </div>
+              <div class="muted small">k-fold CV, nested CV, hyperparameter tuning, data leakage checklist.</div>
+            </div>
+
+            <div class="week">
+              <div class="title">
+                <strong>Week 7 — Kernel Methods & SVM (Intro)</strong>
+                <div class="tags"><span class="tag">kernels</span><span class="tag">margin</span><span class="tag">duality</span></div>
+              </div>
+              <div class="muted small">Kernel trick, soft margin, intuition and practical usage.</div>
+            </div>
+
+            <div class="week">
+              <div class="title">
+                <strong>Week 8 — Trees & Ensembles</strong>
+                <div class="tags"><span class="tag">CART</span><span class="tag">RF</span><span class="tag">boosting</span></div>
+              </div>
+              <div class="muted small">Decision trees, bagging, random forests, boosting; interpretability.</div>
+            </div>
+
+            <div class="week">
+              <div class="title">
+                <strong>Week 9 — Feature Engineering & Pipelines</strong>
+                <div class="tags"><span class="tag">scaling</span><span class="tag">encoding</span><span class="tag">sklearn</span></div>
+              </div>
+              <div class="muted small">Preprocessing, leakage-safe pipelines, embeddings overview.</div>
+            </div>
+
+            <div class="week">
+              <div class="title">
+                <strong>Week 10 — Intro to Neural Networks</strong>
+                <div class="tags"><span class="tag">backprop</span><span class="tag">MLP</span><span class="tag">regularization</span></div>
+              </div>
+              <div class="muted small">Perceptron → MLP, backprop intuition, training stability, overfitting controls.</div>
+            </div>
+
+            <div class="week">
+              <div class="title">
+                <strong>Week 11 — Generalization, Robustness, and Failure Modes</strong>
+                <div class="tags"><span class="tag">distribution shift</span><span class="tag">fairness</span><span class="tag">robustness</span></div>
+              </div>
+              <div class="muted small">Out-of-distribution behavior, error analysis, reliability and limitations.</div>
+            </div>
+
+            <div class="week">
+              <div class="title">
+                <strong>Week 12 — Project Presentations & Review</strong>
+                <div class="tags"><span class="tag">communication</span><span class="tag">reproducibility</span><span class="tag">ethics</span></div>
+              </div>
+              <div class="muted small">Project demos, peer feedback, wrap-up and exam review.</div>
+            </div>
+          </div>
+
+          <details>
+            <summary>Want a more detailed schedule?</summary>
+            <p class="muted small">
+              Replace the “Proposed Schedule” with a table by lecture (date/topic/reading/lab/homework) once your term calendar is set.
+              If you paste your real meeting days/dates, I can generate the full dated schedule.
+            </p>
+          </details>
+        </section>
+
+        <section id="assessment">
+          <h2><span class="icon">🧪</span>Assessment (editable)</h2>
+          <p class="muted">Example structure (edit to match your course):</p>
+          <ul>
+            <li><span class="badge ok">Homework</span> weekly/biweekly problem sets (theory + coding)</li>
+            <li><span class="badge warn">Labs</span> Jupyter-based labs (scikit-learn / PyTorch)</li>
+            <li><span class="badge ok">Quizzes</span> short concept checks (optional)</li>
+            <li><span class="badge warn">Project</span> team/individual final project with report + presentation</li>
+            <li><span class="badge ok">Participation</span> discussions, peer review, in-class exercises</li>
+          </ul>
+
+          <div class="note">
+            Suggested late policy: A small grace window + limited late days encourages pacing without harsh penalties.
+            (Edit as needed.)
+          </div>
+        </section>
+
+        <section id="resources">
+          <h2><span class="icon">📚</span>Resources</h2>
+          <div class="grid2">
+            <div class="card">
+              <h3>Primary references</h3>
+              <ul class="muted">
+                <li>Lecture notes / slides (Canvas)</li>
+                <li>ISLR (Introduction to Statistical Learning)</li>
+                <li>Elements of Statistical Learning (ESL) (optional)</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Tools</h3>
+              <ul class="muted">
+                <li>Python + Jupyter</li>
+                <li>scikit-learn pipelines</li>
+                <li>PyTorch (selected labs)</li>
+              </ul>
+            </div>
+          </div>
+
+          <details>
+            <summary>Reproducibility expectations</summary>
+            <ul class="muted">
+              <li>Use a fixed random seed when appropriate.</li>
+              <li>Report data splits and hyperparameters.</li>
+              <li>Include a short README: how to run your notebook/script.</li>
+            </ul>
+          </details>
+        </section>
+
+        <section id="ai-policy">
+          <h2><span class="icon">🤖</span>AI (ChatGPT) Policy</h2>
+          <p>
+            You may use AI tools in MATH 7243 <strong>as a tutor, not as an author</strong>.
+            Use AI to learn, debug, and practice; do not use AI to bypass required reasoning.
+          </p>
+
+          <div class="grid2">
+            <div class="card">
+              <h3><span class="badge ok">Allowed</span></h3>
+              <ul class="muted">
+                <li>Concept explanations, alternative intuitions</li>
+                <li>Small synthetic examples</li>
+                <li>Debugging your code (after you try)</li>
+                <li>Practice questions and self-quizzes</li>
+                <li>Outlines for reports (you rewrite/verify)</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3><span class="badge no">Not allowed</span></h3>
+              <ul class="muted">
+                <li>Submitting AI-generated solutions as your own</li>
+                <li>Generating full homework derivations</li>
+                <li>Fabricating experiments/citations/results</li>
+                <li>Copy-paste answers without verification</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3 style="margin: 8px 0 6px;">AI Use Disclosure (required when used)</h3>
+          <pre><code id="ai-statement">AI Use Statement:
+I used ChatGPT to (describe what you asked) and to (describe what you used).
+I verified all derivations/results independently and rewrote all explanations in my own words.</code></pre>
+          <button class="btn" type="button" id="copy-ai">Copy AI Use Statement</button>
+          <span id="ai-status" class="muted small" style="display:block; margin-top:8px;"></span>
+
+          <div class="divider"></div>
+
+          <h3 style="margin:0 0 6px;">Prompt starters</h3>
+          <ul class="muted">
+            <li>“Explain cross-entropy vs MSE for classification, and when each is appropriate.”</li>
+            <li>“Derive the gradient for logistic regression with L2 regularization; include dimensions.”</li>
+            <li>“My model overfits—list 3 fixes and how to test each (with code suggestions).”</li>
+            <li>“Check my experimental design for leakage risks: (describe split + features).”</li>
+          </ul>
+        </section>
+
+        <section id="projects">
+          <h2><span class="icon">🧩</span>Projects</h2>
+          <p class="muted">
+            A course project emphasizes end-to-end ML: problem framing, data handling, modeling, validation, and communication.
+          </p>
+          <details open>
+            <summary>Deliverables (example)</summary>
+            <ul class="muted">
+              <li><strong>Proposal</strong> (1–2 pages): question, dataset, baseline, plan</li>
+              <li><strong>Checkpoint</strong>: preliminary results + challenges</li>
+              <li><strong>Final report</strong>: methods, experiments, results, limitations</li>
+              <li><strong>Presentation</strong>: 6–8 minutes + Q&A</li>
+              <li><strong>Repro package</strong>: code/notebook + README</li>
+            </ul>
+          </details>
+
+          <details>
+            <summary>Project ideas (starter list)</summary>
+            <ul class="muted">
+              <li>Classification with imbalanced data (PR curves, calibration, thresholding)</li>
+              <li>Regression with uncertainty (prediction intervals, bootstrapping)</li>
+              <li>Model interpretability (SHAP, permutation importance, partial dependence)</li>
+              <li>Domain shift / robustness analysis</li>
+              <li>Fairness metrics + mitigation strategies (careful: define fairness precisely)</li>
+            </ul>
+          </details>
+        </section>
+
+        <section id="faq">
+          <h2><span class="icon">❓</span>FAQ</h2>
+
+          <details>
+            <summary>Do I need strong programming experience?</summary>
+            <p class="muted small">
+              You should be comfortable reading and modifying Python code. We will provide templates and emphasize best practices.
+              Start early and use office hours.
+            </p>
+          </details>
+
+          <details>
+            <summary>How should I study?</summary>
+            <ul class="muted small">
+              <li>Do derivations by hand for core models (LR, logistic, regularization).</li>
+              <li>Re-implement small models from scratch before relying on libraries.</li>
+              <li>Use validation plots: learning curves, confusion matrices, residuals.</li>
+              <li>Write short “explain it to a peer” summaries.</li>
+            </ul>
+          </details>
+
+          <details>
+            <summary>Can I use ChatGPT for homework?</summary>
+            <p class="muted small">
+              Yes for learning support (explanations, debugging), but not for generating full solutions.
+              If you use AI, include the AI Use Statement.
+            </p>
+          </details>
+
+          <details>
+            <summary>How do I avoid data leakage?</summary>
+            <p class="muted small">
+              Build preprocessing inside cross-validation via pipelines; never fit scalers/encoders on the full dataset before splitting.
+              Keep a leakage checklist in your notebook.
+            </p>
+          </details>
+        </section>
+      </div>
+
+      <!-- RIGHT COLUMN (sidebar) -->
+      <aside class="sticky" aria-label="Sidebar">
+        <div class="card">
+          <h3>Quick Links (edit)</h3>
+          <ul class="muted">
+            <li><a href="#">Canvas</a></li>
+            <li><a href="#">Zoom / Lecture link</a></li>
+            <li><a href="#">Syllabus PDF</a></li>
+            <li><a href="#">Gradescope</a></li>
+            <li><a href="#">Piazza / Ed Discussion</a></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Office Hours</h3>
+          <p class="muted small">
+            (Days/time) • (Location/Zoom)
+            <br />Bring: your attempt, error messages, and a specific question.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Course Norms</h3>
+          <p class="muted small">
+            <span class="badge ok">Be reproducible</span>
+            <span class="badge ok">Ask early</span>
+            <span class="badge warn">Start projects early</span>
+          </p>
+          <ul class="muted small">
+            <li>Submit clean notebooks (restart & run-all).</li>
+            <li>Explain results; don’t just show metrics.</li>
+            <li>Respect collaboration rules.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Suggested Weekly Rhythm</h3>
+          <ul class="muted small">
+            <li>Day 1: read notes + annotate</li>
+            <li>Day 2: do derivations</li>
+            <li>Day 3: implement + run experiments</li>
+            <li>Day 4: write up + check reproducibility</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Contact</h3>
+          <p class="muted small">
+            Email: (add) <br />
+            Response time: (policy) <br />
+            Include: course number + topic in subject line.
+          </p>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <div class="muted">
+        © <span id="year"></span> MATH 7243 • Machine Learning & Statistical Learning I
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // set year + last updated
+    const now = new Date();
+    document.getElementById("year").textContent = now.getFullYear();
+    document.getElementById("updated").textContent =
+      now.toLocaleDateString(undefined, { year:"numeric", month:"long", day:"numeric" });
+
+    // copy AI statement
+    function copyText(text){ return navigator.clipboard.writeText(text); }
+    document.getElementById("copy-ai").addEventListener("click", async () => {
+      const status = document.getElementById("ai-status");
+      const text = document.getElementById("ai-statement").textContent;
+      try{
+        await copyText(text);
+        status.textContent = "Copied to clipboard.";
+        setTimeout(() => status.textContent = "", 1200);
+      }catch(e){
+        status.textContent = "Copy failed — please copy manually.";
+      }
+    });
+  </script>
+</body>
+</html>
