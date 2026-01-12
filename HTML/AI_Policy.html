@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MATH 7243 – AI (ChatGPT) Policy & Prompt Library</title>
+  <meta name="description" content="MATH 7243 Machine Learning: AI (ChatGPT) policy, disclosure rules, verification checklist, and prompt library." />
+  <style>
+    :root{
+      --bg:#0b1220;
+      --panel:#0f1b33;
+      --card:#111f3d;
+      --text:#e8eefc;
+      --muted:#b8c5e6;
+      --accent:#7aa2ff;
+      --accent2:#8bf0c6;
+      --danger:#ff7a7a;
+      --border:rgba(255,255,255,.12);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 14px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background: radial-gradient(1200px 700px at 20% 0%, rgba(122,162,255,.22), transparent 55%),
+                  radial-gradient(900px 500px at 80% 10%, rgba(139,240,198,.14), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+    header{
+      padding: 26px 22px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+    }
+    header:before{
+      content:"";
+      position:absolute;
+      inset:-120px -120px auto auto;
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle at 30% 30%, rgba(122,162,255,.28), transparent 60%);
+      transform: rotate(18deg);
+      pointer-events:none;
+    }
+    .kicker{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    h1{
+      margin: 10px 0 8px;
+      font-size: clamp(26px, 4vw, 38px);
+      line-height:1.15;
+      letter-spacing:-.4px;
+    }
+    .sub{
+      margin: 0;
+      color: var(--muted);
+      max-width: 78ch;
+      font-size: 16px;
+    }
+
+    nav{
+      margin-top: 18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    nav a{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+    nav a:hover{
+      background: rgba(255,255,255,.06);
+      text-decoration:none;
+    }
+
+    main{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 16px;
+      align-items:start;
+    }
+    @media (max-width: 900px){
+      main{grid-template-columns:1fr}
+      .sticky{position:static !important}
+    }
+
+    section, aside{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    section{
+      padding: 18px 18px 6px;
+    }
+    section h2{
+      margin: 0 0 10px;
+      font-size: 20px;
+      letter-spacing:-.2px;
+    }
+    .note{
+      margin: 10px 0 14px;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px dashed rgba(122,162,255,.35);
+      background: rgba(122,162,255,.08);
+      color: var(--muted);
+    }
+
+    aside{
+      padding: 16px;
+    }
+    .sticky{
+      position: sticky;
+      top: 14px;
+    }
+    .card{
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.10);
+      border-radius: 14px;
+      padding: 14px;
+      margin: 0 0 12px;
+    }
+    .card h3{
+      margin: 0 0 8px;
+      font-size: 16px;
+      letter-spacing:-.2px;
+    }
+
+    ul{margin:10px 0 18px; padding-left: 18px}
+    li{margin: 7px 0; color: var(--text)}
+    .muted{color:var(--muted)}
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 600px){ .grid2{grid-template-columns:1fr} }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .badge.ok{border-color: rgba(139,240,198,.35); background: rgba(139,240,198,.08)}
+    .badge.no{border-color: rgba(255,122,122,.35); background: rgba(255,122,122,.08)}
+    code, pre{
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+    pre{
+      margin: 10px 0 16px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.25);
+      overflow:auto;
+    }
+    .prompt{
+      margin: 10px 0 14px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+    }
+    .prompt .label{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .btn{
+      appearance:none;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 10px;
+      cursor:pointer;
+      font-size: 12px;
+    }
+    .btn:hover{background: rgba(255,255,255,.07)}
+    footer{
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align:center;
+      padding: 10px 0;
+    }
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,.10);
+      margin: 14px 0;
+    }
+    .checklist label{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      margin: 10px 0;
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.10);
+    }
+    .checklist input{margin-top:3px}
+    .small{font-size: 13px}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="kicker">
+        <span class="pill">Course: <strong>MATH 7243</strong></span>
+        <span class="pill">Topic: <strong>AI (ChatGPT) Policy</strong></span>
+        <span class="pill">Last updated: <span id="updated"></span></span>
+      </div>
+      <h1>MATH 7243 – AI (ChatGPT) Policy & Prompt Library</h1>
+      <p class="sub">
+        This page explains how you may use AI tools (e.g., ChatGPT) in MATH 7243 to <strong>support learning</strong>
+        while maintaining academic integrity and deep understanding.
+      </p>
+
+      <nav aria-label="Page sections">
+        <a href="#purpose">Purpose</a>
+        <a href="#allowed">Allowed Uses</a>
+        <a href="#not-allowed">Not Allowed</a>
+        <a href="#disclosure">AI Use Disclosure</a>
+        <a href="#checklist">Verification Checklist</a>
+        <a href="#prompts">Prompt Library</a>
+        <a href="#bottom-line">Bottom Line</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- LEFT COLUMN -->
+      <div>
+        <section id="purpose">
+          <h2>1) Purpose</h2>
+          <p>
+            AI tools are allowed in this course as <em>learning assistants</em>, not as replacements for your own thinking.
+            Use ChatGPT like you use a textbook, office hours, or a debugging partner.
+          </p>
+          <div class="note">
+            <strong>Goal:</strong> Understanding first, submission second.
+          </div>
+        </section>
+
+        <section id="allowed">
+          <h2>2) Allowed Uses</h2>
+          <p class="muted">You may use ChatGPT to:</p>
+          <ul>
+            <li>Clarify concepts from lecture or notes (e.g., “Explain bias–variance tradeoff with a geometric example.”)</li>
+            <li>Rephrase definitions or theorems in simpler language</li>
+            <li>Generate small synthetic examples for intuition</li>
+            <li>Debug <em>your own</em> code (after you attempt first)</li>
+            <li>Compare methods conceptually (e.g., SVM vs neural networks)</li>
+            <li>Generate practice problems and quiz questions</li>
+            <li>Draft outlines for reports or project proposals (you rewrite and verify)</li>
+            <li>Help interpret error messages and training behavior</li>
+          </ul>
+
+          <div class="grid2">
+            <div class="card">
+              <div class="badge ok">✅ Good use</div>
+              <p class="small muted">
+                “Explain why L2 regularization shrinks weights, and show the effect on a 2D toy dataset.”
+              </p>
+            </div>
+            <div class="card">
+              <div class="badge ok">✅ Good use</div>
+              <p class="small muted">
+                “Here is my training curve. Suggest 3 likely issues and how to test each.”
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="not-allowed">
+          <h2>3) Not Allowed Uses</h2>
+          <p class="muted">You may <strong>not</strong> use ChatGPT to:</p>
+          <ul>
+            <li>Submit AI-generated solutions as your own work</li>
+            <li>Generate full homework solutions or derivations</li>
+            <li>Produce project code without understanding every step</li>
+            <li>Bypass required proofs or algorithmic reasoning</li>
+            <li>Fabricate experiments, data, citations, or results</li>
+            <li>Copy answers without verification</li>
+            <li>Use AI to replace required intellectual effort</li>
+          </ul>
+
+          <div class="card">
+            <div class="badge no">⛔ Not OK</div>
+            <p class="small muted">
+              “Solve the entire homework and give me the final PDF-ready solutions.”
+            </p>
+          </div>
+        </section>
+
+        <section id="disclosure">
+          <h2>4) AI Use Disclosure (Required)</h2>
+          <p>
+            If you use ChatGPT for any assignment, include an <strong>AI Use Statement</strong> at the end of your submission.
+            This is not a penalty—it's professional transparency.
+          </p>
+          <pre><code>AI Use Statement (example):
+I used ChatGPT to help explain the intuition behind logistic regression loss functions
+and to debug a PyTorch shape mismatch error. I verified all mathematical derivations
+independently and rewrote all explanations in my own words.</code></pre>
+        </section>
+
+        <section id="checklist">
+          <h2>5) Verification Checklist (Before Submission)</h2>
+          <p class="muted">Before turning in work that involved AI, confirm:</p>
+
+          <div class="checklist" role="group" aria-label="Verification checklist">
+            <label><input type="checkbox" /> I can explain the solution without ChatGPT.</label>
+            <label><input type="checkbox" /> I can derive the key equations independently.</label>
+            <label><input type="checkbox" /> I ran and validated all code myself.</label>
+            <label><input type="checkbox" /> I understand every line of code I submit.</label>
+            <label><input type="checkbox" /> Results are numerically and conceptually reasonable.</label>
+            <label><input type="checkbox" /> I acknowledged AI use if applicable.</label>
+          </div>
+
+          <p class="small muted">
+            Tip: If you cannot check all boxes, the work is not ready.
+          </p>
+        </section>
+
+        <section id="prompts">
+          <h2>6) Prompt Library for MATH 7243</h2>
+          <p class="muted">
+            Use these templates. Modify them to fit your assignment and include context from lecture notes when helpful.
+            Click “Copy” to paste a prompt.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3 style="margin:0 0 8px;">A. Conceptual Understanding</h3>
+          <div class="prompt" data-prompt="Explain regularization using geometry and the bias–variance tradeoff. Use a 2D toy example.">
+            <div class="label"><span>Regularization intuition</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">Explain regularization using geometry and the bias–variance tradeoff. Use a 2D toy example.</div>
+          </div>
+          <div class="prompt" data-prompt="Give an intuitive explanation of cross-entropy loss vs MSE for classification, and explain why cross-entropy is typically preferred.">
+            <div class="label"><span>Loss functions</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">Give an intuitive explanation of cross-entropy loss vs MSE for classification, and explain why cross-entropy is typically preferred.</div>
+          </div>
+          <div class="prompt" data-prompt="Explain kernel methods in plain language, then connect the explanation to the kernel trick mathematically.">
+            <div class="label"><span>Kernel methods</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">Explain kernel methods in plain language, then connect the explanation to the kernel trick mathematically.</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3 style="margin:0 0 8px;">B. Mathematical Insight</h3>
+          <div class="prompt" data-prompt="Derive the gradient of logistic regression with L2 regularization step-by-step. Explain each term and the dimensions.">
+            <div class="label"><span>Logistic regression gradient</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">Derive the gradient of logistic regression with L2 regularization step-by-step. Explain each term and the dimensions.</div>
+          </div>
+          <div class="prompt" data-prompt="Explain why convexity matters in optimization for ML. Give examples of convex vs non-convex objectives and what that implies for convergence.">
+            <div class="label"><span>Convexity</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">Explain why convexity matters in optimization for ML. Give examples of convex vs non-convex objectives and what that implies for convergence.</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3 style="margin:0 0 8px;">C. Code Debugging</h3>
+          <div class="prompt" data-prompt="Here is my code and training log (paste). The loss is not decreasing. List 3 likely causes, how to test each, and specific fixes.">
+            <div class="label"><span>Loss not decreasing</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">Here is my code and training log (paste). The loss is not decreasing. List 3 likely causes, how to test each, and specific fixes.</div>
+          </div>
+          <div class="prompt" data-prompt="Explain this error message and fix the bug. Also explain how to prevent it in the future: (paste error).">
+            <div class="label"><span>Error message</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">Explain this error message and fix the bug. Also explain how to prevent it in the future: (paste error).</div>
+          </div>
+          <div class="prompt" data-prompt="Rewrite this NumPy/PyTorch loop using vectorization. Explain the speedup and verify results match the original. (paste code).">
+            <div class="label"><span>Vectorization</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">Rewrite this NumPy/PyTorch loop using vectorization. Explain the speedup and verify results match the original. (paste code).</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3 style="margin:0 0 8px;">D. Model Comparison</h3>
+          <div class="prompt" data-prompt="Compare SVM, logistic regression, and a shallow neural network for a small dataset. Discuss interpretability, bias/variance, and typical failure modes.">
+            <div class="label"><span>SVM vs LR vs NN</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">Compare SVM, logistic regression, and a shallow neural network for a small dataset. Discuss interpretability, bias/variance, and typical failure modes.</div>
+          </div>
+          <div class="prompt" data-prompt="When can k-NN outperform linear models? Provide a concrete synthetic example and explain the geometry.">
+            <div class="label"><span>k-NN intuition</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">When can k-NN outperform linear models? Provide a concrete synthetic example and explain the geometry.</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3 style="margin:0 0 8px;">E. Experiment Design</h3>
+          <div class="prompt" data-prompt="Suggest evaluation metrics and plots for an imbalanced classification task. Explain how each metric can be misleading.">
+            <div class="label"><span>Imbalanced metrics</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">Suggest evaluation metrics and plots for an imbalanced classification task. Explain how each metric can be misleading.</div>
+          </div>
+          <div class="prompt" data-prompt="Help me design a data split strategy to avoid leakage for this dataset/problem: (describe). Include a checklist of leakage risks.">
+            <div class="label"><span>Data leakage</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">Help me design a data split strategy to avoid leakage for this dataset/problem: (describe). Include a checklist of leakage risks.</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3 style="margin:0 0 8px;">F. Project Writing Support</h3>
+          <div class="prompt" data-prompt="Help outline a machine learning project report: problem, data, method, experiments, results, limitations, and next steps.">
+            <div class="label"><span>Report outline</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">Help outline a machine learning project report: problem, data, method, experiments, results, limitations, and next steps.</div>
+          </div>
+          <div class="prompt" data-prompt="Rewrite this paragraph to be more precise and mathematically correct, while keeping it readable. (paste paragraph).">
+            <div class="label"><span>Rewrite paragraph</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">Rewrite this paragraph to be more precise and mathematically correct, while keeping it readable. (paste paragraph).</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3 style="margin:0 0 8px;">G. Practice Problems</h3>
+          <div class="prompt" data-prompt="Generate 5 conceptual quiz questions on regularization (L1 vs L2), with answers and brief explanations.">
+            <div class="label"><span>Regularization quiz</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">Generate 5 conceptual quiz questions on regularization (L1 vs L2), with answers and brief explanations.</div>
+          </div>
+          <div class="prompt" data-prompt="Create a homework-style problem about SGD vs batch GD, including a small numeric example and solution sketch.">
+            <div class="label"><span>SGD practice</span><button class="btn" type="button">Copy</button></div>
+            <div class="muted small">Create a homework-style problem about SGD vs batch GD, including a small numeric example and solution sketch.</div>
+          </div>
+
+          <div class="divider"></div>
+          <p class="small muted">
+            Optional: When using these prompts, include course context (your notation, your constraints, and what you already tried).
+          </p>
+        </section>
+
+        <section id="bottom-line">
+          <h2>7) Bottom Line</h2>
+          <p>
+            You may use ChatGPT in MATH 7243 <strong>as a tutor, not as an author</strong>.
+            Your submitted work must always represent your understanding, reasoning, and verification.
+          </p>
+          <div class="note">
+            If in doubt: ask first, submit later.
+          </div>
+        </section>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <aside class="sticky" aria-label="Quick reference sidebar">
+        <div class="card">
+          <h3>Quick Summary</h3>
+          <p class="muted small">
+            Use AI to learn, debug, and practice. Do not use AI to generate final solutions or bypass required reasoning.
+            Disclose AI use when applicable.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Allowed vs Not Allowed</h3>
+          <p class="small"><span class="badge ok">✅ Allowed</span> Explanations, examples, debugging, practice questions, outlines.</p>
+          <p class="small"><span class="badge no">⛔ Not allowed</span> Full solutions, fabricated results, copy-paste submissions, bypassing proofs.</p>
+        </div>
+
+        <div class="card">
+          <h3>AI Use Statement (Copy)</h3>
+          <pre><code id="ai-statement">AI Use Statement:
+I used ChatGPT to (describe what you asked) and to (describe what you used).
+I verified all derivations/results independently and rewrote all explanations in my own words.</code></pre>
+          <button class="btn" type="button" id="copy-statement">Copy statement</button>
+          <span id="copy-status" class="muted small" style="display:block; margin-top:8px;"></span>
+        </div>
+
+        <div class="card">
+          <h3>Instructor Perspective</h3>
+          <p class="muted small">
+            A core ML skill is knowing when to trust a tool, when to doubt it, and how to verify results mathematically and experimentally.
+          </p>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <div class="muted">
+        © <span id="year"></span> MATH 7243 • Machine Learning • AI Policy & Prompt Library
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // last updated + year
+    const now = new Date();
+    document.getElementById("year").textContent = now.getFullYear();
+    document.getElementById("updated").textContent = now.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+
+    // copy buttons for prompts
+    function copyText(text){
+      return navigator.clipboard.writeText(text);
+    }
+
+    document.querySelectorAll(".prompt .btn").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const box = btn.closest(".prompt");
+        const text = box.getAttribute("data-prompt") || "";
+        try{
+          await copyText(text);
+          const old = btn.textContent;
+          btn.textContent = "Copied!";
+          setTimeout(() => btn.textContent = old, 900);
+        }catch(e){
+          alert("Copy failed. Please select the text and copy manually.");
+        }
+      });
+    });
+
+    // copy AI statement
+    document.getElementById("copy-statement").addEventListener("click", async () => {
+      const text = document.getElementById("ai-statement").textContent;
+      const status = document.getElementById("copy-status");
+      try{
+        await copyText(text);
+        status.textContent = "Copied to clipboard.";
+        setTimeout(() => status.textContent = "", 1200);
+      }catch(e){
+        status.textContent = "Copy failed — please copy manually.";
+      }
+    });
+  </script>
+</body>
+</html>
