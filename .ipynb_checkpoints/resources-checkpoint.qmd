@@ -12,12 +12,7 @@ toc-location: right
 ## Student resources for applied mathematics, data science, and machine learning
 
 This page collects resources for students preparing for careers in data science, machine learning, artificial intelligence, applied mathematics, statistics, and operations research. The materials include programming support, mathematical background, software tools, career preparation, and Northeastern student support links.
-
-::: {.highlight}
-### How to use this page
-
-Start with the **course support** links if you are learning Python, MATLAB, LaTeX, or R for a course. Use the **knowledge topics** section to build background in linear algebra, machine learning, deep learning, computer vision, NLP, and time series. Use the **career preparation** section to plan projects, technical skills, communication skills, and professional profiles.
-:::
+ 
 
 :::
 :::
