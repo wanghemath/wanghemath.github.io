@@ -14,7 +14,7 @@ toc: false
 I am an **Associate Teaching Professor** in the [Department of Mathematics](https://cos.northeastern.edu/mathematics/) at [Northeastern University](https://www.northeastern.edu/). I serve as a **Program Director** for MS Applied Mathematics,
 MS Mathematics, MS Statistics and MS Statistics-Connect. My academic background is in algebraic topology, group theory, and their connections with algebra, geometry, data science, and artificial intelligence.
 
-Before joining Northeastern as a faculty member, I was a **Postdoctoral Fellow** at the [University of Nevada, Reno](https://www.unr.edu/) from 2016 to 2019, working with [Chris Rogers](https://hoalg.net/chrisrogers/). I received my Ph.D. in Mathematics from [Northeastern University](https://www.northeastern.edu/) in 2016 under the supervision of [Alexandru I. Suciu](https://web.northeastern.edu/suciu/). I received my M.S. in Mathematics from Nankai University in 2010 and my B.S. in Mathematics and Applied Mathematics from Hebei Normal University in 2007.
+Before joining Northeastern as a faculty member, I was a **Postdoctoral Fellow** at the [University of Nevada, Reno](https://www.unr.edu/) from 2016 to 2019, working with [Chris Rogers](https://hoalg.net/chrisrogers/). I received my **PhD in Mathematics** from [Northeastern University](https://www.northeastern.edu/) in 2016 under the supervision of [Alexandru I. Suciu](https://web.northeastern.edu/suciu/). I received my **MS** in Mathematics from Nankai University in 2010 and my **BS** in Mathematics and Applied Mathematics from Hebei Normal University in 2007.
 
 My research and teaching connect algebraic topology, group theory, applied mathematics, linear algebra, machine learning, stochastic processes, topological data analysis, and AI-enhanced mathematics education.
 
@@ -40,7 +40,7 @@ My research and teaching connect algebraic topology, group theory, applied mathe
 
 ## Research and Scholarly Interests
 
-My research interests are in algebraic topology and group theory, together with their connections with algebra, geometry, combinatorics, data science, and AI. I am also interested in applications to machine learning, deep learning, and topological data analysis. See the [Research page](research.qmd) for publications, abstracts, and seminar notes.
+My research interests are in algebraic topology and group theory, together with their connections with algebra, geometry, combinatorics, data science, and AI. I am also interested in applications to machine learning, deep learning, and topological data analysis. See the [**Research page**](research.qmd) for publications, abstracts, and seminar notes.
 
 ::: {.grid}
 ::: {.card}
@@ -121,12 +121,11 @@ My teaching combines mathematical structure, computational experimentation, real
 ::: {.card}
 ### Teaching Projects
 
-- [E-book for Applied Linear Algebra](https://wanghemath.github.io/MATH5110Book/)
-- [Interactive simulations and AI-assisted coding activities](Teaching/simulations.qmd)
-- [GitHub simulation with AI](https://wanghemath.github.io/Simulations.html)
-- [Teaching showcase in AI Gallery](https://learning.northeastern.edu/ai-gallery/)
+- [E-book](https://wanghemath.github.io/MATH5110Book/) for Applied Linear Algebra and Matrix Analysis
+- [Interactive simulations and AI-assisted coding activities](Teaching/simulations.qmd) 
+- [Teaching showcase in AI Gallery](https://learning.northeastern.edu/ai-gallery-post-leveraging-chatgpt-to-support-coding-in-applied-math/)
 - Machine learning and applied mathematics labs
-- Teaching showcases on using [ChatGPT](https://chatgpt.com/) and AI tools to support coding, simulation, and mathematical learning
+- Teaching showcases on using ChatGPT and AI tools to support coding, simulation, and mathematical learning
 :::
 :::
 
@@ -145,10 +144,10 @@ I serve as a program director for graduate programs in the [Department of Mathem
 ::: {.card}
 ### Graduate programs in Department of Mathematics
 
-- [MS Applied Mathematics](https://graduate.northeastern.edu/program/master-of-science-in-applied-mathematics-14241/)
-- [MS Mathematics](https://graduate.northeastern.edu/program/master-of-science-in-mathematics-14240/)
-- [MS Statistics](https://graduate.northeastern.edu/program/master-of-science-in-statistics-16647/)
-- [MS Statistics-Connect](https://graduate.northeastern.edu/program/master-of-science-in-statistics-connect-16648/)
+- [MS Applied Mathematics](https://graduate.northeastern.edu/programs/ms-applied-mathematics/master-of-science-in-applied-mathematics/)
+- [MS Mathematics](https://graduate.northeastern.edu/programs/ms-mathematics/master-of-science-in-mathematics/)
+- [MS Statistics](https://graduate.northeastern.edu/programs/ms-statistics/master-of-science-in-statistics/)
+- [MS Statistics-Connect](https://graduate.northeastern.edu/programs/ms-statistics-connect/master-of-science-in-statistics-connect/)
 
 :::
 
