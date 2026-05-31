@@ -142,7 +142,7 @@ I serve as a program director for graduate programs in the [Department of Mathem
 :::
 
 ::: {.card}
-### Graduate programs in Department of Mathematics
+### Graduate programs in the Department of Mathematics
 
 - [MS Applied Mathematics](https://graduate.northeastern.edu/programs/ms-applied-mathematics/master-of-science-in-applied-mathematics/)
 - [MS Mathematics](https://graduate.northeastern.edu/programs/ms-mathematics/master-of-science-in-mathematics/)
