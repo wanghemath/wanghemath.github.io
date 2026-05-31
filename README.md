@@ -1,6 +1,6 @@
 # He Wang Quarto Homepage
 
-This folder contains a Quarto website front page for `https://wanghemath.github.io/`.
+This folder contains a Quarto website front page for `[https://wanghemath.github.io/](https://wanghemath.github.io/)`.
 
 ## Render locally
 
