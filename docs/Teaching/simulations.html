@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Interactive Simulations – He Wang</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">He Wang</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../research.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../talks.html"> 
+<span class="menu-text">Talks</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../resources.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../cv.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/wanghemath"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:he.wang@northeastern.edu"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#interactive-simulations" id="toc-interactive-simulations" class="nav-link active" data-scroll-target="#interactive-simulations">Interactive Simulations</a>
+  <ul class="collapse">
+  <li><a href="#probability-theory" id="toc-probability-theory" class="nav-link" data-scroll-target="#probability-theory">Probability Theory</a></li>
+  <li><a href="#statistics" id="toc-statistics" class="nav-link" data-scroll-target="#statistics">Statistics</a></li>
+  <li><a href="#linear-algebra" id="toc-linear-algebra" class="nav-link" data-scroll-target="#linear-algebra">Linear Algebra</a></li>
+  <li><a href="#machine-learning" id="toc-machine-learning" class="nav-link" data-scroll-target="#machine-learning">Machine Learning</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Interactive Simulations</h1>
+<p class="subtitle lead">Probability, Statistics, Linear Algebra, and Machine Learning</p>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-left">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<style>
+/* Extra styles only for the simulations card gallery. */
+.sim-card {
+  overflow: hidden;
+}
+
+.sim-card .simulation-thumb-link {
+  display: block;
+  margin: -1.45rem -1.45rem 1.1rem -1.45rem;
+  border-bottom: 1px solid var(--border);
+  background: #f3f4f6;
+}
+
+.sim-card .simulation-thumb {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  display: block;
+}
+
+.sim-card h3 {
+  margin-top: 0.25rem;
+}
+
+.sim-card .button {
+  margin-top: 0.5rem;
+}
+
+.sim-note code {
+  background: #f3f4f6;
+  padding: 0.1rem 0.25rem;
+}
+</style>
+<section id="interactive-simulations" class="level1">
+<h1>Interactive Simulations</h1>
+<section>
+<div class="container">
+<p>These interactive simulations help students visualize core ideas in <strong>probability</strong>, <strong>statistics</strong>, <strong>linear algebra</strong>, and <strong>machine learning</strong>. They are designed for classroom demonstrations, self-study, and exploratory learning.</p>
+<p>Use this page as a teaching hub: students can first review the concept in lecture, then open a simulation, change parameters, observe patterns, and connect the visual behavior back to formulas and theory.</p>
+</div>
+</section>
+<section id="probability-theory" class="level2">
+<h2 class="anchored" data-anchor-id="probability-theory">Probability Theory</h2>
+<section>
+<div class="container">
+<p>Probability theory becomes more intuitive when students can repeatedly simulate random experiments and compare empirical behavior with theoretical predictions.</p>
+<div class="grid">
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/clt-simulation.html"><img class="simulation-thumb" src="simulations/images/simulation-preview-images.svg" alt="Central Limit Theorem preview"></a></p>
+<section id="central-limit-theorem" class="level3">
+<h3 class="anchored" data-anchor-id="central-limit-theorem">Central Limit Theorem</h3>
+<p>Explore how the distribution of sample means approaches a normal distribution as the sample size increases, regardless of the original population distribution.</p>
+<p><a href="simulations/clt-simulation.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/monte-carlo-simulation.html"><img class="simulation-thumb" src="simulations/images/monte-carlo-preview.svg" alt="Monte Carlo pi estimation preview"></a></p>
+<section id="monte-carlo-pi-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="monte-carlo-pi-estimation">Monte Carlo <span class="math inline">\(\pi\)</span> Estimation</h3>
+<p>Use random sampling to estimate <span class="math inline">\(\pi\)</span> by generating points in a square and counting how many fall inside an inscribed circle.</p>
+<p><a href="simulations/monte-carlo-simulation.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/monty-hall-simulation.html"><img class="simulation-thumb" src="simulations/images/monty-hall-preview.svg" alt="Monty Hall simulation preview"></a></p>
+<section id="monty-hall-problem" class="level3">
+<h3 class="anchored" data-anchor-id="monty-hall-problem">Monty Hall Problem</h3>
+<p>Test the famous probability puzzle and compare the long-run winning rates for switching versus staying with the original choice.</p>
+<p><a href="simulations/monty-hall-simulation.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/buffons_needle_simulation.html"><img class="simulation-thumb" src="simulations/images/buffons-needle-preview.svg" alt="Buffon's Needle preview"></a></p>
+<section id="buffons-needle" class="level3">
+<h3 class="anchored" data-anchor-id="buffons-needle">Buffon’s Needle</h3>
+<p>Estimate <span class="math inline">\(\pi\)</span> by dropping random needles on parallel lines and observing the crossing frequency.</p>
+<p><a href="simulations/buffons_needle_simulation.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/cauchy_distribution_demo.html"><img class="simulation-thumb" src="simulations/images/cauchy-distribution-preview.svg" alt="Cauchy distribution preview"></a></p>
+<section id="cauchy-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="cauchy-distribution">Cauchy Distribution</h3>
+<p>Visualize how a random angle transformation can produce the heavy-tailed Cauchy distribution.</p>
+<p><a href="simulations/cauchy_distribution_demo.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/hypergeometric-urn-experiment.html"><img class="simulation-thumb" src="simulations/images/hypergeometric-urn-preview.svg" alt="Hypergeometric urn experiment preview"></a></p>
+<section id="hypergeometric-urn-experiment" class="level3">
+<h3 class="anchored" data-anchor-id="hypergeometric-urn-experiment">Hypergeometric Urn Experiment</h3>
+<p>Study sampling without replacement from a finite population and compare simulated outcomes with the hypergeometric distribution.</p>
+<p><a href="simulations/hypergeometric-urn-experiment.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/rat_three_door_maze_with_visual.html"><img class="simulation-thumb" src="simulations/images/maze.png" alt="Rat in a maze preview"></a></p>
+<section id="rat-in-a-three-door-maze" class="level3">
+<h3 class="anchored" data-anchor-id="rat-in-a-three-door-maze">Rat in a Three-Door Maze</h3>
+<p>Use conditional expectation and Monte Carlo simulation to analyze the expected time for a rat to exit a three-door maze.</p>
+<p><a href="simulations/rat_three_door_maze_with_visual.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/negative_binomial_sim.html"><img class="simulation-thumb" src="simulations/images/negative-binomial-preview.svg" alt="Negative binomial simulation preview"></a></p>
+<section id="negative-binomial-simulation" class="level3">
+<h3 class="anchored" data-anchor-id="negative-binomial-simulation">Negative Binomial Simulation</h3>
+<p>Model the number of failures before reaching a fixed number of successes in independent Bernoulli trials.</p>
+<p><a href="simulations/negative_binomial_sim.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/bayesian-simulation.html"><img class="simulation-thumb" src="simulations/images/bayesian-preview.svg" alt="Bayesian coin flip preview"></a></p>
+<section id="bayesian-coin-flip" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-coin-flip">Bayesian Coin Flip</h3>
+<p>See how Bayesian inference updates beliefs about a coin’s fairness as additional flips are observed.</p>
+<p><a href="simulations/bayesian-simulation.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="statistics" class="level2">
+<h2 class="anchored" data-anchor-id="statistics">Statistics</h2>
+<section>
+<div class="container">
+<p>These simulations support statistical reasoning by showing sampling variability, confidence, hypothesis testing, experimental comparison, and model assumptions.</p>
+<div class="grid">
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/confidence-interval-sim.html"><img class="simulation-thumb" src="simulations/images/confidence-interval-preview.svg" alt="Confidence interval simulation preview"></a></p>
+<section id="confidence-interval-simulation" class="level3">
+<h3 class="anchored" data-anchor-id="confidence-interval-simulation">Confidence Interval Simulation</h3>
+<p>Generate repeated confidence intervals and observe the long-run coverage behavior relative to the true population mean.</p>
+<p><a href="simulations/confidence-interval-sim.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/hypothesis-test-sim.html"><img class="simulation-thumb" src="simulations/images/hypothesis-test-preview.png" alt="Hypothesis testing simulation preview"></a></p>
+<section id="hypothesis-testing-simulation" class="level3">
+<h3 class="anchored" data-anchor-id="hypothesis-testing-simulation">Hypothesis Testing Simulation</h3>
+<p>Visualize critical regions, test statistics, <span class="math inline">\(p\)</span>-values, Type I error, Type II error, and power.</p>
+<p><a href="simulations/hypothesis-test-sim.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/ab-testing-sim.html"><img class="simulation-thumb" src="simulations/images/ab-testing-preview.svg" alt="A/B testing simulation preview"></a></p>
+<section id="ab-testing-simulation" class="level3">
+<h3 class="anchored" data-anchor-id="ab-testing-simulation">A/B Testing Simulation</h3>
+<p>Compare control and treatment variants, study lift, confidence intervals, statistical significance, and power analysis.</p>
+<p><a href="simulations/ab-testing-sim.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/gamblers-ruin-example.html"><img class="simulation-thumb" src="simulations/images/gambler_ruin.png" alt="Gambler's ruin simulation preview"></a></p>
+<section id="gamblers-ruin-problem" class="level3">
+<h3 class="anchored" data-anchor-id="gamblers-ruin-problem">Gambler’s Ruin Problem</h3>
+<p>Simulate a gambler’s random walk until ruin or success and compare with theoretical absorption probabilities.</p>
+<p><a href="simulations/gamblers-ruin-example.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/anova-assumptions-demo.html"><img class="simulation-thumb" src="simulations/images/anova-preview.svg" alt="ANOVA assumptions simulation preview"></a></p>
+<section id="one-way-anova-assumptions" class="level3">
+<h3 class="anchored" data-anchor-id="one-way-anova-assumptions">One-Way ANOVA Assumptions</h3>
+<p>Explore normality, homogeneity of variance, and independence in the context of one-way ANOVA.</p>
+<p><a href="simulations/anova-assumptions-demo.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/anova-sim.html"><img class="simulation-thumb" src="simulations/images/anova-preview.svg" alt="ANOVA simulation preview"></a></p>
+<section id="anova-simulation" class="level3">
+<h3 class="anchored" data-anchor-id="anova-simulation">ANOVA Simulation</h3>
+<p>Generate group data, run ANOVA, inspect effect size, and connect between-group and within-group variation.</p>
+<p><a href="simulations/anova-sim.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="linear-algebra" class="level2">
+<h2 class="anchored" data-anchor-id="linear-algebra">Linear Algebra</h2>
+<section>
+<div class="container">
+<p>Linear algebra is especially visual: matrices transform geometry, eigenvectors reveal stable directions, singular values organize information, and Markov chains describe long-run structure.</p>
+<div class="grid">
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/matrix-transformations-2d.html"><img class="simulation-thumb" src="simulations/images/matrix-transformations-preview.svg" alt="2D matrix transformations preview"></a></p>
+<section id="d-matrix-transformations" class="level3">
+<h3 class="anchored" data-anchor-id="d-matrix-transformations">2D Matrix Transformations</h3>
+<p>Visualize how matrices rotate, scale, shear, reflect, and project shapes in the plane.</p>
+<p><a href="simulations/matrix-transformations-2d.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/eigenvector-pca.html"><img class="simulation-thumb" src="simulations/images/pca-visualization-preview.png" alt="Principal component analysis preview"></a></p>
+<section id="principal-component-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="principal-component-analysis">Principal Component Analysis</h3>
+<p>Generate two-dimensional data, compute principal components, and visualize eigenvectors as directions of maximum variance.</p>
+<p><a href="simulations/eigenvector-pca.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/svd-image-compression.html"><img class="simulation-thumb" src="simulations/images/svd-compression-preview.svg" alt="SVD image compression preview"></a></p>
+<section id="svd-image-compression" class="level3">
+<h3 class="anchored" data-anchor-id="svd-image-compression">SVD Image Compression</h3>
+<p>Use singular value decomposition to compress an image and observe the tradeoff between rank, compression, and retained structure.</p>
+<p><a href="simulations/svd-image-compression.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/markov-chain-pagerank.html"><img class="simulation-thumb" src="simulations/images/markov-pagerank-preview.png" alt="Markov chains and PageRank preview"></a></p>
+<section id="markov-chains-and-pagerank" class="level3">
+<h3 class="anchored" data-anchor-id="markov-chains-and-pagerank">Markov Chains and PageRank</h3>
+<p>Explore random walks, transition matrices, stationary distributions, and PageRank values on directed graphs.</p>
+<p><a href="simulations/markov-chain-pagerank.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="machine-learning" class="level2">
+<h2 class="anchored" data-anchor-id="machine-learning">Machine Learning</h2>
+<section>
+<div class="container">
+<p>These simulations connect algorithms to geometry, optimization, statistical learning, and neural-network computation.</p>
+<div class="grid">
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/linear-regression-simulation.html"><img class="simulation-thumb" src="simulations/images/linear-regression-preview.svg" alt="Linear regression simulation preview"></a></p>
+<section id="linear-regression" class="level3">
+<h3 class="anchored" data-anchor-id="linear-regression">Linear Regression</h3>
+<p>Generate noisy data, fit a line, and understand residuals, least squares, fitted slope, intercept, and <span class="math inline">\(R^2\)</span>.</p>
+<p><a href="simulations/linear-regression-simulation.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/linear_regression_demo.html"><img class="simulation-thumb" src="simulations/images/linearGD.png" alt="Gradient descent simulation preview"></a></p>
+<section id="ols-vs-gradient-descent" class="level3">
+<h3 class="anchored" data-anchor-id="ols-vs-gradient-descent">OLS vs Gradient Descent</h3>
+<p>Compare the closed-form ordinary least squares solution with iterative gradient descent for linear regression.</p>
+<p><a href="simulations/linear_regression_demo.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/kmeans-simulation.html"><img class="simulation-thumb" src="simulations/images/kmeans-preview.svg" alt="K-means clustering preview"></a></p>
+<section id="k-means-clustering" class="level3">
+<h3 class="anchored" data-anchor-id="k-means-clustering">K-Means Clustering</h3>
+<p>Watch the K-means algorithm iteratively assign points to clusters and update centroids until convergence.</p>
+<p><a href="simulations/kmeans-simulation.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/bias_variance_simulation.html"><img class="simulation-thumb" src="simulations/images/bias-variance-preview.svg" alt="Bias-variance tradeoff preview"></a></p>
+<section id="bias-variance-tradeoff" class="level3">
+<h3 class="anchored" data-anchor-id="bias-variance-tradeoff">Bias-Variance Tradeoff</h3>
+<p>Study how model complexity, noise, and sample size affect bias, variance, and prediction error.</p>
+<p><a href="simulations/bias_variance_simulation.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/neural-network-simulation.html"><img class="simulation-thumb" src="simulations/images/neural-network-preview.svg" alt="Neural network training preview"></a></p>
+<section id="neural-network-training" class="level3">
+<h3 class="anchored" data-anchor-id="neural-network-training">Neural Network Training</h3>
+<p>Observe a small neural network learn the XOR function through forward propagation, backpropagation, and gradient descent.</p>
+<p><a href="simulations/neural-network-simulation.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+<div class="card sim-card">
+<p><a class="simulation-thumb-link" href="simulations/convolution_demo.html"><img class="simulation-thumb" src="simulations/images/CNN.png" alt="Neural network convolution visualizer preview"></a></p>
+<section id="neural-network-convolution-visualizer" class="level3">
+<h3 class="anchored" data-anchor-id="neural-network-convolution-visualizer">Neural Network Convolution Visualizer</h3>
+<p>Watch how convolutional filters move across input data and transform it into feature maps.</p>
+<p><a href="simulations/convolution_demo.html" class="button primary">View Simulation</a></p>
+</section>
+</div>
+</div>
+</div>
+</section>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

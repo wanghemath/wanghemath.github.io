@@ -1,0 +1,543 @@
+/* ------------------------------------------------------------
+   He Wang academic website style for Quarto
+   Square-corner version with sticky navbar and right-side TOC
+   File: styles.css
+   ------------------------------------------------------------ */
+
+:root {
+  --bg: #f7f8fb;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #5f6b7a;
+  --accent: #b00020;
+  --accent-dark: #7a0016;
+  --border: #e5e7eb;
+  --border-strong: #d1d5db;
+  --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  --nav-height: 56px;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-height) + 24px);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-size: 17px;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-dark);
+  text-decoration: underline;
+}
+
+.quarto-title-block {
+  display: none;
+}
+
+main.content {
+  padding-top: 2.5rem;
+  padding-bottom: 4rem;
+}
+
+.page-layout-full main.content {
+  max-width: 1820px;
+  padding: 0;
+}
+
+.container {
+  width: min(1120px, 92%);
+  margin: 0 auto;
+}
+
+/* ------------------------------------------------------------
+   Strong sticky top navigation bar
+   ------------------------------------------------------------ 
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  min-height: var(--nav-height);
+  background: #eef2f7 !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 2px solid var(--border-strong);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+*/
+
+/* ------------------------------------------------------------
+   Fixed top navigation bar: always visible
+   ------------------------------------------------------------ */
+
+.navbar {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+
+  background: #eef2f7 !important;
+  backdrop-filter: blur(12px);
+
+  border-bottom: 1px solid #d1d5db;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+
+  padding-top: 0rem;
+  padding-bottom: 0rem;
+}
+
+.navbar-title {
+  font-size: 1.45rem;
+  font-weight: 800 !important;
+  color: #111827 !important;
+  letter-spacing: 0.01em;
+}
+
+.navbar-nav .nav-link {
+  font-size: 1.18rem;
+  font-weight: 800 !important;
+  color: #374151 !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link.show,
+.navbar-nav .nav-link:hover {
+  color: var(--accent) !important;
+  text-decoration: none;
+}
+
+/* ------------------------------------------------------------
+   Quarto right sidebar / table of contents
+   ------------------------------------------------------------ */
+
+#quarto-margin-sidebar {
+  padding-top: 2.5rem;
+}
+
+#quarto-sidebar-toc-left,
+#TOC {
+  position: sticky;
+  top: calc(var(--nav-height) + 24px);
+  max-height: calc(100vh - var(--nav-height) - 48px);
+  overflow-y: auto;
+  padding-left: 1rem;
+  border-left: 1px solid var(--border);
+}
+
+#TOC .toc-title,
+.sidebar nav[role="doc-toc"] > h2,
+#quarto-margin-sidebar .toc-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 0.6rem;
+}
+
+#TOC ul {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+#TOC li {
+  margin: 0.2rem 0;
+}
+
+#TOC a,
+.sidebar nav[role="doc-toc"] a {
+  display: block;
+  color: #4b5563;
+  font-size: 0.98rem;
+  line-height: 1.35;
+  padding: 0.3rem 0 0.3rem 0.75rem;
+  border-left: 3px solid transparent;
+  text-decoration: none;
+}
+
+#TOC a:hover,
+.sidebar nav[role="doc-toc"] a:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+#TOC a.active,
+#TOC .active > a,
+.sidebar nav[role="doc-toc"] a.active {
+  color: var(--accent) !important;
+  border-left-color: var(--accent);
+  font-weight: 700;
+}
+
+#TOC ul ul a {
+  font-size: 0.92rem;
+  padding-left: 1.4rem;
+}
+
+/* ------------------------------------------------------------
+   Page banner for ordinary pages
+   Use in qmd:
+   ::: {.page-banner}
+   # Teaching
+   :::
+   ------------------------------------------------------------ */
+
+.page-banner {
+  background: var(--accent);
+  color: #ffffff;
+  padding: 3rem 0;
+  margin-top: 0;
+  margin-bottom: 3rem;
+}
+
+.page-banner h1,
+.page-banner h2 {
+  width: min(1120px, 92%);
+  margin: 0 auto;
+  color: #ffffff;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+/* ------------------------------------------------------------
+   Homepage hero
+   ------------------------------------------------------------ */
+
+.hero {
+  padding: 5rem 0 3rem;
+  margin-top: -2rem;
+  background:
+    radial-gradient(circle at top left, #f7f8fb, transparent 32%),
+    linear-gradient(135deg, #ffffff 0%, #f7f8fb 60%, #eef2f7 100%);
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  font-size: clamp(2.4rem, 6vw, 1.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  margin-bottom: 1.2rem;
+  color: #111827;
+  font-weight: 850;
+}
+
+.hero p {
+  font-size: 1.05rem;
+  color: #111827;
+  max-width: 720px;
+  margin-bottom: 1.2rem;
+}
+
+.tagline {
+  font-weight: 800;
+  color: var(--accent) !important;
+}
+
+/* ------------------------------------------------------------
+   Buttons
+   ------------------------------------------------------------ */
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 1.5rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.1rem;
+  border-radius: 0;
+  border: 1px solid var(--accent);
+  font-weight: 700;
+  transition: 0.18s ease;
+}
+
+.button.primary {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.button.primary:hover {
+  background: var(--accent-dark);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.button.secondary {
+  background: #ffffff;
+  color: var(--accent);
+}
+
+.button.secondary:hover {
+  background: #fff5f7;
+  color: var(--accent-dark);
+  text-decoration: none;
+}
+
+/* ------------------------------------------------------------
+   Profile card
+   ------------------------------------------------------------ */
+
+.profile-card {
+  background: #f7f8fb;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.profile-placeholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 0;
+  background:
+    linear-gradient(135deg, rgba(176, 0, 32, 0.88), rgba(31, 41, 55, 0.92)),
+    radial-gradient(circle at top left, #ffffff, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f7f8fb;
+  font-size: 4.5rem;
+  font-weight: 850;
+  letter-spacing: -0.08em;
+  margin-bottom: 1.2rem;
+}
+
+/* Profile photo */
+.profile-photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+  margin-bottom: 0rem;
+  border: 1px solid var(--border);
+}
+
+.profile-card h2 {
+  font-size: 1.55rem;
+  margin-bottom: 0.35rem;
+  color: #111827;
+}
+
+.profile-card p {
+  color: var(--muted);
+  font-size: 0.98rem;
+  margin-bottom: 0.55rem;
+}
+
+/* ------------------------------------------------------------
+   Sections and headings
+   ------------------------------------------------------------ */
+
+.section {
+  padding: 4.2rem 0;
+}
+
+.section h2 {
+  font-size: 2rem;
+  line-height: 1.2;
+  margin-bottom: 0.7rem;
+  letter-spacing: -0.025em;
+  color: #111827;
+  font-weight: 800;
+}
+
+.section > .container > p,
+.section-intro {
+  color: var(--muted);
+  max-width: 760px;
+  margin-bottom: 2rem;
+  font-size: 1.05rem;
+}
+
+main.content h1,
+main.content h2,
+main.content h3 {
+  color: #111827;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+main.content h2 {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.4rem;
+  margin-top: 2.5rem;
+}
+
+.card h2,
+.card h3,
+.section h2,
+.page-banner h1,
+.page-banner h2,
+.profile-card h2 {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* ------------------------------------------------------------
+   Layouts and cards
+   ------------------------------------------------------------ */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 1.45rem;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.045);
+}
+
+.card h3 {
+  font-size: 1.15rem;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+
+.card p,
+.card li {
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
+.highlight {
+  background: #ffffff;
+  border-top: 4px solid var(--accent);
+  border-radius: 0;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.highlight h3 {
+  margin-top: 0;
+}
+
+/* ------------------------------------------------------------
+   Links list
+   ------------------------------------------------------------ */
+
+.links-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.link-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0.95rem 1.1rem;
+}
+
+/* ------------------------------------------------------------
+   Tables, code, and callouts
+   ------------------------------------------------------------ */
+
+table {
+  background: #ffffff;
+  border: 1px solid var(--border);
+}
+
+thead {
+  background: #f3f4f6;
+}
+
+.callout {
+  border-radius: 0;
+}
+
+pre,
+code {
+  border-radius: 0 !important;
+}
+
+/* ------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------ */
+
+.nav-footer {
+  border-top: 1px solid var(--border);
+  background: #ffffff;
+}
+
+/* ------------------------------------------------------------
+   Responsive behavior
+   ------------------------------------------------------------ */
+
+@media (max-width: 991px) {
+  #quarto-margin-sidebar {
+    display: none;
+  }
+
+  .navbar-title {
+    font-size: 1.25rem;
+  }
+
+  .navbar-nav .nav-link {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-grid,
+  .two-col,
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding-top: 3.8rem;
+  }
+
+  .link-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

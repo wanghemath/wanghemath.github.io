@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal Component Analysis (PCA)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #764ba2;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .controls {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .visualization-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .plot-container {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        canvas {
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            background: white;
+            max-width: 100%;
+        }
+        
+        .stats {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .stat-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .info-box {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .eigenvector-display {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Principal Component Analysis (PCA)</h1>
+        <p class="subtitle">Visualize eigenvectors and dimensionality reduction</p>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label>Number of Points: <span class="value-display" id="pointsValue">200</span></label>
+                <input type="range" id="numPoints" min="50" max="500" value="200" step="10">
+            </div>
+            <div class="control-group">
+                <label>Covariance (ρ): <span class="value-display" id="covValue">0.7</span></label>
+                <input type="range" id="covariance" min="-0.95" max="0.95" value="0.7" step="0.05">
+            </div>
+            <div class="control-group">
+                <label>X Variance: <span class="value-display" id="xVarValue">2.0</span></label>
+                <input type="range" id="xVariance" min="0.5" max="5" value="2" step="0.1">
+            </div>
+            <div class="control-group">
+                <label>Y Variance: <span class="value-display" id="yVarValue">1.0</span></label>
+                <input type="range" id="yVariance" min="0.5" max="5" value="1" step="0.1">
+            </div>
+            <div class="control-group">
+                <button onclick="generateData()">Generate New Data</button>
+                <button onclick="performPCA()">Compute PCA</button>
+            </div>
+        </div>
+        
+        <div class="visualization-grid">
+            <div class="plot-container">
+                <h3>Original Data with Principal Components</h3>
+                <canvas id="originalCanvas" width="400" height="400"></canvas>
+            </div>
+            <div class="plot-container">
+                <h3>Transformed Data (PC Space)</h3>
+                <canvas id="transformedCanvas" width="400" height="400"></canvas>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <h3>PCA Results</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label">PC1 Variance</div>
+                    <div class="stat-value" id="pc1Var">-</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">PC2 Variance</div>
+                    <div class="stat-value" id="pc2Var">-</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">PC1 Explained</div>
+                    <div class="stat-value" id="pc1Explained">-</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">PC2 Explained</div>
+                    <div class="stat-value" id="pc2Explained">-</div>
+                </div>
+            </div>
+            
+            <div class="eigenvector-display">
+                <strong>Eigenvectors (Principal Components):</strong><br>
+                <span id="eigenvectorDisplay">Click "Compute PCA" to see results</span>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h3>Understanding PCA</h3>
+            <p>Principal Component Analysis finds the directions (eigenvectors) along which the data varies the most:</p>
+            <ul>
+                <li><strong>Principal Component 1 (PC1):</strong> The direction of maximum variance</li>
+                <li><strong>Principal Component 2 (PC2):</strong> The direction of maximum variance orthogonal to PC1</li>
+                <li><strong>Eigenvalues:</strong> The variance along each principal component</li>
+                <li><strong>Variance Explained:</strong> How much of the total variance each PC captures</li>
+            </ul>
+            <p>PCA transforms correlated variables into uncorrelated principal components, useful for dimensionality reduction, data visualization, and feature extraction.</p>
+        </div>
+    </div>
+
+    <script>
+        let dataPoints = [];
+        let pcaResult = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Setup range input listeners
+            ['numPoints', 'covariance', 'xVariance', 'yVariance'].forEach(id => {
+                document.getElementById(id).addEventListener('input', function() {
+                    const valueId = id + 'Value';
+                    document.getElementById(valueId).textContent = this.value;
+                });
+            });
+            
+            generateData();
+        });
+        
+        function generateData() {
+            const n = parseInt(document.getElementById('numPoints').value);
+            const rho = parseFloat(document.getElementById('covariance').value);
+            const sigmaX = Math.sqrt(parseFloat(document.getElementById('xVariance').value));
+            const sigmaY = Math.sqrt(parseFloat(document.getElementById('yVariance').value));
+            
+            dataPoints = [];
+            
+            // Generate correlated bivariate normal data
+            for (let i = 0; i < n; i++) {
+                // Box-Muller transform for normal distribution
+                const u1 = Math.random();
+                const u2 = Math.random();
+                const z1 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+                const z2 = Math.sqrt(-2 * Math.log(u1)) * Math.sin(2 * Math.PI * u2);
+                
+                // Create correlated variables
+                const x = sigmaX * z1;
+                const y = sigmaY * (rho * z1 + Math.sqrt(1 - rho * rho) * z2);
+                
+                dataPoints.push({x, y});
+            }
+            
+            drawOriginalData();
+            clearResults();
+        }
+        
+        function performPCA() {
+            if (dataPoints.length === 0) return;
+            
+            // Calculate means
+            const meanX = dataPoints.reduce((sum, p) => sum + p.x, 0) / dataPoints.length;
+            const meanY = dataPoints.reduce((sum, p) => sum + p.y, 0) / dataPoints.length;
+            
+            // Center the data
+            const centeredData = dataPoints.map(p => ({
+                x: p.x - meanX,
+                y: p.y - meanY
+            }));
+            
+            // Calculate covariance matrix
+            let cov11 = 0, cov12 = 0, cov22 = 0;
+            centeredData.forEach(p => {
+                cov11 += p.x * p.x;
+                cov12 += p.x * p.y;
+                cov22 += p.y * p.y;
+            });
+            
+            cov11 /= (dataPoints.length - 1);
+            cov12 /= (dataPoints.length - 1);
+            cov22 /= (dataPoints.length - 1);
+            
+            // Calculate eigenvalues and eigenvectors (2x2 case)
+            const trace = cov11 + cov22;
+            const det = cov11 * cov22 - cov12 * cov12;
+            const discriminant = Math.sqrt(trace * trace - 4 * det);
+            
+            const lambda1 = (trace + discriminant) / 2;
+            const lambda2 = (trace - discriminant) / 2;
+            
+            // Calculate eigenvectors
+            let v1x, v1y, v2x, v2y;
+            
+            if (cov12 !== 0) {
+                v1x = lambda1 - cov22;
+                v1y = cov12;
+                v2x = lambda2 - cov22;
+                v2y = cov12;
+            } else {
+                // Already diagonal
+                v1x = 1;
+                v1y = 0;
+                v2x = 0;
+                v2y = 1;
+            }
+            
+            // Normalize eigenvectors
+            const norm1 = Math.sqrt(v1x * v1x + v1y * v1y);
+            const norm2 = Math.sqrt(v2x * v2x + v2y * v2y);
+            
+            v1x /= norm1;
+            v1y /= norm1;
+            v2x /= norm2;
+            v2y /= norm2;
+            
+            // Store PCA results
+            pcaResult = {
+                eigenvalues: [lambda1, lambda2],
+                eigenvectors: [
+                    {x: v1x, y: v1y},
+                    {x: v2x, y: v2y}
+                ],
+                mean: {x: meanX, y: meanY},
+                transformedData: centeredData.map(p => ({
+                    x: p.x * v1x + p.y * v1y,
+                    y: p.x * v2x + p.y * v2y
+                }))
+            };
+            
+            // Update visualizations
+            drawOriginalData();
+            drawTransformedData();
+            updateResults();
+        }
+        
+        function drawOriginalData() {
+            const canvas = document.getElementById('originalCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Set up coordinate system
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 30;
+            
+            // Draw axes
+            ctx.strokeStyle = '#dee2e6';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(canvas.width, centerY);
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, canvas.height);
+            ctx.stroke();
+            
+            // Draw data points
+            ctx.fillStyle = 'rgba(102, 126, 234, 0.6)';
+            dataPoints.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(centerX + p.x * scale, centerY - p.y * scale, 3, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+            
+            // Draw principal components if available
+            if (pcaResult) {
+                const meanX = pcaResult.mean.x;
+                const meanY = pcaResult.mean.y;
+                
+                // PC1 (red)
+                ctx.strokeStyle = '#dc3545';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                const pc1Scale = Math.sqrt(pcaResult.eigenvalues[0]) * 2;
+                ctx.moveTo(
+                    centerX + (meanX - pcaResult.eigenvectors[0].x * pc1Scale) * scale,
+                    centerY - (meanY - pcaResult.eigenvectors[0].y * pc1Scale) * scale
+                );
+                ctx.lineTo(
+                    centerX + (meanX + pcaResult.eigenvectors[0].x * pc1Scale) * scale,
+                    centerY - (meanY + pcaResult.eigenvectors[0].y * pc1Scale) * scale
+                );
+                ctx.stroke();
+                
+                // PC2 (green)
+                ctx.strokeStyle = '#28a745';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                const pc2Scale = Math.sqrt(pcaResult.eigenvalues[1]) * 2;
+                ctx.moveTo(
+                    centerX + (meanX - pcaResult.eigenvectors[1].x * pc2Scale) * scale,
+                    centerY - (meanY - pcaResult.eigenvectors[1].y * pc2Scale) * scale
+                );
+                ctx.lineTo(
+                    centerX + (meanX + pcaResult.eigenvectors[1].x * pc2Scale) * scale,
+                    centerY - (meanY + pcaResult.eigenvectors[1].y * pc2Scale) * scale
+                );
+                ctx.stroke();
+                
+                // Draw mean point
+                ctx.fillStyle = '#ffc107';
+                ctx.beginPath();
+                ctx.arc(centerX + meanX * scale, centerY - meanY * scale, 6, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+            
+            // Labels
+            ctx.fillStyle = '#495057';
+            ctx.font = '14px sans-serif';
+            ctx.fillText('X', canvas.width - 20, centerY - 10);
+            ctx.fillText('Y', centerX + 10, 20);
+        }
+        
+        function drawTransformedData() {
+            if (!pcaResult) return;
+            
+            const canvas = document.getElementById('transformedCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 30;
+            
+            // Draw axes
+            ctx.strokeStyle = '#dee2e6';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(canvas.width, centerY);
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, canvas.height);
+            ctx.stroke();
+            
+            // Draw transformed data points
+            ctx.fillStyle = 'rgba(102, 126, 234, 0.6)';
+            pcaResult.transformedData.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(centerX + p.x * scale, centerY - p.y * scale, 3, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+            
+            // Draw PC axes
+            ctx.strokeStyle = '#dc3545';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(20, centerY);
+            ctx.lineTo(canvas.width - 20, centerY);
+            ctx.stroke();
+            
+            ctx.strokeStyle = '#28a745';
+            ctx.beginPath();
+            ctx.moveTo(centerX, 20);
+            ctx.lineTo(centerX, canvas.height - 20);
+            ctx.stroke();
+            
+            // Labels
+            ctx.fillStyle = '#dc3545';
+            ctx.font = '14px sans-serif';
+            ctx.fillText('PC1', canvas.width - 40, centerY - 10);
+            ctx.fillStyle = '#28a745';
+            ctx.fillText('PC2', centerX + 10, 20);
+        }
+        
+        function updateResults() {
+            if (!pcaResult) return;
+            
+            const totalVar = pcaResult.eigenvalues[0] + pcaResult.eigenvalues[1];
+            const pc1Percent = (pcaResult.eigenvalues[0] / totalVar * 100).toFixed(1);
+            const pc2Percent = (pcaResult.eigenvalues[1] / totalVar * 100).toFixed(1);
+            
+            document.getElementById('pc1Var').textContent = pcaResult.eigenvalues[0].toFixed(3);
+            document.getElementById('pc2Var').textContent = pcaResult.eigenvalues[1].toFixed(3);
+            document.getElementById('pc1Explained').textContent = pc1Percent + '%';
+            document.getElementById('pc2Explained').textContent = pc2Percent + '%';
+            
+            // Display eigenvectors
+            const ev1 = pcaResult.eigenvectors[0];
+            const ev2 = pcaResult.eigenvectors[1];
+            
+            document.getElementById('eigenvectorDisplay').innerHTML = 
+                `PC1: [${ev1.x.toFixed(3)}, ${ev1.y.toFixed(3)}] (λ₁ = ${pcaResult.eigenvalues[0].toFixed(3)})<br>` +
+                `PC2: [${ev2.x.toFixed(3)}, ${ev2.y.toFixed(3)}] (λ₂ = ${pcaResult.eigenvalues[1].toFixed(3)})`;
+        }
+        
+        function clearResults() {
+            document.getElementById('pc1Var').textContent = '-';
+            document.getElementById('pc2Var').textContent = '-';
+            document.getElementById('pc1Explained').textContent = '-';
+            document.getElementById('pc2Explained').textContent = '-';
+            document.getElementById('eigenvectorDisplay').textContent = 'Click "Compute PCA" to see results';
+            
+            const canvas = document.getElementById('transformedCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    </script>
+</body>
+</html>

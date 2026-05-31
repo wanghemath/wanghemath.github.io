@@ -1,0 +1,325 @@
+---
+title: "Resources"
+page-layout: full
+toc: true
+toc-location: right
+---
+ 
+
+::: {.section}
+::: {.container}
+
+## Student resources for applied mathematics, data science, and machine learning
+
+This page collects resources for students preparing for careers in data science, machine learning, artificial intelligence, applied mathematics, statistics, and operations research. The materials include programming support, mathematical background, software tools, career preparation, and Northeastern student support links.
+
+::: {.highlight}
+### How to use this page
+
+Start with the **course support** links if you are learning Python, MATLAB, LaTeX, or R for a course. Use the **knowledge topics** section to build background in linear algebra, machine learning, deep learning, computer vision, NLP, and time series. Use the **career preparation** section to plan projects, technical skills, communication skills, and professional profiles.
+:::
+
+:::
+:::
+
+::: {.section}
+::: {.container}
+
+## Featured posts and teaching resources
+
+::: {.grid}
+::: {.card}
+### Teaching with AI
+
+A teaching showcase on using ChatGPT to support coding in applied mathematics, with emphasis on mathematical reasoning, programming logic, debugging, and responsible AI use.
+
+[Leveraging ChatGPT to Support Coding in Applied Math](https://learning.northeastern.edu/leveraging-chatgpt-to-support-coding-in-applied-math/)
+:::
+
+::: {.card}
+### GitHub simulation with AI
+
+Interactive simulations and examples designed to help students connect applied mathematics, computation, and AI-assisted learning.
+
+[GitHub simulation with AI](https://wanghemath.github.io/)
+:::
+
+::: {.card}
+### Teaching page
+
+A list of courses taught at Northeastern University, including graduate and undergraduate courses in applied mathematics, machine learning, probability, statistics, and linear algebra.
+
+[Teaching page](teaching.qmd)
+:::
+:::
+
+:::
+:::
+
+::: {.section}
+::: {.container}
+
+## Course support
+
+::: {.links-list}
+::: {.link-row}
+<span>Suggestions to Python Beginners</span>
+<span>[Open](https://hewang.sites.northeastern.edu/2023/05/31/pythonbeginner/)</span>
+:::
+
+::: {.link-row}
+<span>Suggestions to MATLAB Beginners</span>
+<span>[Open](https://hewang.sites.northeastern.edu/2023/06/01/matlab/)</span>
+:::
+
+::: {.link-row}
+<span>Final Project Instructions</span>
+<span>To be added</span>
+:::
+
+::: {.link-row}
+<span>Textbook Resources</span>
+<span>[Open](https://hewang.sites.northeastern.edu/2024/01/09/textbook-resources/)</span>
+:::
+
+::: {.link-row}
+<span>Software Resources</span>
+<span>[Open](https://hewang.sites.northeastern.edu/2024/07/07/software-resources/)</span>
+:::
+:::
+
+:::
+:::
+
+::: {.section}
+::: {.container}
+
+## Knowledge topics
+
+::: {.grid}
+::: {.card}
+### Online resources summary
+
+A general collection of online learning resources, including project-based programming resources.
+
+[Open resource](https://hewang.sites.northeastern.edu/2024/04/15/online-resources-summary/)
+:::
+
+::: {.card}
+### Linear algebra
+
+Resources for reviewing and strengthening linear algebra, especially for applied mathematics, data science, machine learning, and numerical computation.
+
+[Open resource](https://hewang.sites.northeastern.edu/2023/06/07/linear-algebra-resources/)
+:::
+
+::: {.card}
+### Machine learning and statistical learning
+
+Basic machine learning and statistical learning resources for students preparing for applied projects and technical interviews.
+
+[Open resource](https://hewang.sites.northeastern.edu/2023/06/07/machine-learning-and-statistical-learning-recourses/)
+:::
+
+::: {.card}
+### Deep learning
+
+Books and resources for neural networks and deep learning, including online books such as *Dive into Deep Learning* and related references.
+
+[Open resource](https://hewang.sites.northeastern.edu/2023/06/07/deep-learning-resources/)
+:::
+
+::: {.card}
+### Computer vision
+
+Resources for students interested in image data, convolutional neural networks, medical imaging, segmentation, and visual recognition.
+
+[Open resource](https://hewang.sites.northeastern.edu/2023/06/07/computer-vision-resources/)
+:::
+
+::: {.card}
+### Natural language processing
+
+Resources for students interested in text data, language models, embeddings, transformers, and modern NLP applications.
+
+[Open resource](https://hewang.sites.northeastern.edu/2023/06/07/natural-language-processing-resources/)
+:::
+
+::: {.card}
+### Time series
+
+Resources for students interested in stochastic processes, forecasting, sequential data, ARMA-type models, state-space models, and machine learning for time-dependent data.
+
+[Open resource](https://hewang.sites.northeastern.edu/2023/06/07/time-series-resources/)
+:::
+:::
+
+:::
+:::
+
+::: {.section}
+::: {.container}
+
+## Data science career preparation
+
+::: {.two-col}
+::: {.card}
+### Data science skills
+
+A guide for students preparing for data analyst, data scientist, machine learning engineer, AI engineer, and related roles. Topics include mathematical knowledge, programming skills, communication skills, presentation skills, project building, GitHub, Kaggle, LinkedIn, and lifelong learning.
+
+[Open resource](https://hewang.sites.northeastern.edu/2023/06/07/data-science-skills/)
+:::
+
+::: {.card}
+### Resources for MS students at Northeastern
+
+A collection of university support links, including College of Science graduate resources, registrar links, academic calendar, catalog, forms, library, Office of Global Services, Writing Center, and Global Student Success.
+
+[Open resource](https://hewang.sites.northeastern.edu/2023/06/07/resources-for-ms-students-at-northeastern-university/)
+:::
+:::
+
+::: {.highlight}
+### Suggested student checklist
+
+- Build a strong foundation in linear algebra, probability, statistics, optimization, and machine learning.
+- Practice Python, R, MATLAB, SQL, GitHub, and data visualization through real projects.
+- Prepare a professional GitHub, LinkedIn profile, and personal website.
+- Join seminars, workshops, data clubs, research discussions, and project opportunities.
+- Use AI tools carefully: verify results, understand the mathematics, and explain your reasoning clearly.
+:::
+
+:::
+:::
+
+::: {.section}
+::: {.container}
+
+## Useful software and websites
+
+::: {.grid}
+::: {.card}
+### Programming and computation
+
+- [Python](https://www.python.org/)
+- [TensorFlow](https://www.tensorflow.org/)
+- [scikit-learn](https://scikit-learn.org/)
+- [R](https://www.r-project.org/)
+- [MATLAB](https://matlab.mathworks.com/)
+:::
+
+::: {.card}
+### Mathematical software
+
+- [Macaulay2](https://www.math.uiuc.edu/Macaulay2/)
+- [GAP](https://www.gap-system.org/)
+- [Mathematica](https://www.wolfram.com/mathematica/)
+- [Overleaf](https://www.overleaf.com/)
+- [LaTeX Project](https://www.latex-project.org/)
+:::
+
+::: {.card}
+### AI tools
+
+- [ChatGPT](https://chat.openai.com/)
+- [Google Gemini](https://gemini.google.com/)
+- [GitHub Copilot](https://github.com/features/copilot)
+- [Google Colab](https://colab.research.google.com/)
+- [Kaggle](https://www.kaggle.com/)
+:::
+:::
+
+:::
+:::
+
+::: {.section}
+::: {.container}
+
+## Mathematics and research websites
+
+::: {.links-list}
+::: {.link-row}
+<span>MathSciNet</span>
+<span>[Open](https://www.ams.org/mathscinet/)</span>
+:::
+
+::: {.link-row}
+<span>arXiv</span>
+<span>[Open](https://arxiv.org/)</span>
+:::
+
+::: {.link-row}
+<span>Front for the Mathematics ArXiv</span>
+<span>[Open](https://front.math.ucdavis.edu/)</span>
+:::
+
+::: {.link-row}
+<span>Manchester Toric Topology</span>
+<span>[Open](https://www.manchester.ac.uk/)</span>
+:::
+
+::: {.link-row}
+<span>Geometric Group Theory</span>
+<span>[Open](https://math.ucsb.edu/)
+</span>
+:::
+
+::: {.link-row}
+<span>Open Problems in Combinatorial and Geometric Group Theory</span>
+<span>[Open](https://www.sci.ccny.cuny.edu/)</span>
+:::
+
+::: {.link-row}
+<span>Northeastern Applied and Interdisciplinary Mathematics Seminar</span>
+<span>[Open](https://aimath.sites.northeastern.edu/)</span>
+:::
+:::
+
+:::
+:::
+
+::: {.section}
+::: {.container}
+
+## My academic profiles
+
+::: {.links-list}
+::: {.link-row}
+<span>MathSciNet</span>
+<span>[Open](https://www.ams.org/mathscinet/)</span>
+:::
+
+::: {.link-row}
+<span>arXiv</span>
+<span>[Open](https://arxiv.org/)</span>
+:::
+
+::: {.link-row}
+<span>Google Scholar</span>
+<span>[Open](https://scholar.google.com/)</span>
+:::
+
+::: {.link-row}
+<span>ResearchGate</span>
+<span>[Open](https://www.researchgate.net/)</span>
+:::
+:::
+
+:::
+:::
+
+::: {.section}
+::: {.container}
+
+## Contact
+
+::: {.card}
+**Email:** he.wang@northeastern.edu  
+**Office:** NI 550  
+**Office phone:** (+1) 617-373-5674  
+**Mailing address:** 567 Lake Hall, Department of Mathematics, Northeastern University, 360 Huntington Ave, Boston, MA 02115, USA
+:::
+
+:::
+:::

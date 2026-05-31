@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f7fafc"/>
+  <text x="200" y="30" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#2d3748">Cauchy Distribution from Ball Kicks</text>
+  
+  <!-- Person position -->
+  <circle cx="200" cy="200" r="8" fill="#ff6b6b"/>
+  <text x="230" y="205" font-family="Arial" font-size="12" fill="#333">Person</text>
+  
+  <!-- Distance line -->
+  <line x1="200" y1="200" x2="200" y2="100" stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="210" y="150" font-family="Arial" font-size="11" fill="#666">d</text>
+  
+  <!-- Target line -->
+  <line x1="50" y1="100" x2="350" y2="100" stroke="#333" stroke-width="3"/>
+  <text x="350" y="95" font-family="Arial" font-size="12" fill="#333">Target Line</text>
+  
+  <!-- Kick trajectories -->
+  <line x1="200" y1="200" x2="150" y2="100" stroke="#4CAF50" stroke-width="2" opacity="0.6"/>
+  <line x1="200" y1="200" x2="250" y2="100" stroke="#4CAF50" stroke-width="2" opacity="0.6"/>
+  <line x1="200" y1="200" x2="100" y2="100" stroke="#4CAF50" stroke-width="2" opacity="0.6"/>
+  <line x1="200" y1="200" x2="300" y2="100" stroke="#4CAF50" stroke-width="2" opacity="0.6"/>
+  <line x1="200" y1="200" x2="180" y2="100" stroke="#4CAF50" stroke-width="2" opacity="0.6"/>
+  <line x1="200" y1="200" x2="220" y2="100" stroke="#4CAF50" stroke-width="2" opacity="0.6"/>
+  
+  <!-- Hit points -->
+  <circle cx="150" cy="100" r="4" fill="#FFA500" opacity="0.8"/>
+  <circle cx="250" cy="100" r="4" fill="#FFA500" opacity="0.8"/>
+  <circle cx="100" cy="100" r="4" fill="#FFA500" opacity="0.8"/>
+  <circle cx="300" cy="100" r="4" fill="#FFA500" opacity="0.8"/>
+  <circle cx="180" cy="100" r="4" fill="#FFA500" opacity="0.8"/>
+  <circle cx="220" cy="100" r="4" fill="#FFA500" opacity="0.8"/>
+  
+  <!-- Distribution curve -->
+  <path d="M 50 260 Q 125 240, 200 220 Q 275 240, 350 260" stroke="#ff6b6b" stroke-width="3" fill="none"/>
+  
+  <!-- Formula hint -->
+  <text x="200" y="280" text-anchor="middle" font-family="Arial" font-size="11" fill="#667eea">X = d·tan(θ) ~ Cauchy(0, d)</text>
+</svg>

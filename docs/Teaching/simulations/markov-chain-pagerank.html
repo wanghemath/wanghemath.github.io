@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markov Chains and PageRank Algorithm</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #764ba2;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .controls {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9em;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .visualization {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .graph-container {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        canvas {
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            background: white;
+            max-width: 100%;
+            cursor: pointer;
+        }
+        
+        .matrix-container {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .matrix-display {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        
+        .iteration-info {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .pagerank-values {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .pagerank-item {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #dee2e6;
+        }
+        
+        .pagerank-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .pagerank-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .info-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .damping-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .convergence-plot {
+            margin-top: 20px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 Markov Chains and PageRank</h1>
+        <p class="subtitle">Visualize random walks and the PageRank algorithm</p>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label>Graph Preset:</label>
+                <button onclick="loadPreset('simple')">Simple Chain</button>
+                <button onclick="loadPreset('web')">Web Graph</button>
+                <button onclick="loadPreset('cycle')">Cycle</button>
+                <button onclick="loadPreset('star')">Star</button>
+                <button onclick="loadPreset('complete')">Complete</button>
+            </div>
+            
+            <div class="control-group">
+                <label>Damping Factor (d): <span class="damping-display" id="dampingValue">0.85</span></label>
+                <input type="range" id="dampingFactor" min="0" max="1" value="0.85" step="0.05">
+            </div>
+            
+            <div class="control-group">
+                <button onclick="resetPageRank()">Reset</button>
+                <button onclick="stepPageRank()">Step</button>
+                <button onclick="runPageRank()">Run to Convergence</button>
+                <button onclick="simulateRandomWalk()">Random Walk</button>
+            </div>
+        </div>
+        
+        <div class="visualization">
+            <div class="graph-container">
+                <h3>Network Graph</h3>
+                <canvas id="graphCanvas" width="600" height="400"></canvas>
+                <p style="margin-top: 10px; color: #666; font-size: 0.9em;">Click and drag nodes to rearrange • Click edges to reverse direction</p>
+            </div>
+            
+            <div class="matrix-container">
+                <h3>Transition Matrix</h3>
+                <div class="matrix-display" id="matrixDisplay">
+                    Click "Load Preset" to see matrix
+                </div>
+            </div>
+        </div>
+        
+        <div class="iteration-info">
+            <h3>PageRank Values (Iteration <span id="iterationCount">0</span>)</h3>
+            <div class="pagerank-values" id="pagerankValues"></div>
+        </div>
+        
+        <div class="convergence-plot">
+            <h3>Convergence History</h3>
+            <canvas id="convergenceCanvas" width="800" height="200"></canvas>
+        </div>
+        
+        <div class="info-box">
+            <h3>Understanding PageRank</h3>
+            <p>PageRank models web surfing as a Markov chain random walk:</p>
+            <ul>
+                <li><strong>Nodes:</strong> Web pages (or any entities)</li>
+                <li><strong>Edges:</strong> Links between pages (transition probabilities)</li>
+                <li><strong>PageRank:</strong> The stationary distribution - probability of being at each page in the long run</li>
+                <li><strong>Damping Factor (d):</strong> Probability of following a link vs. jumping to a random page</li>
+            </ul>
+            <p>The algorithm iterates: PR(i) = (1-d)/N + d × Σ(PR(j)/L(j)) for all pages j linking to i</p>
+        </div>
+    </div>
+
+    <script>
+        let nodes = [];
+        let edges = [];
+        let pagerank = [];
+        let iteration = 0;
+        let convergenceHistory = [];
+        let selectedNode = null;
+        let isDragging = false;
+        let dampingFactor = 0.85;
+        let walkPosition = null;
+        let walkPath = [];
+        
+        // Canvas setup
+        const canvas = document.getElementById('graphCanvas');
+        const ctx = canvas.getContext('2d');
+        const convergenceCanvas = document.getElementById('convergenceCanvas');
+        const convCtx = convergenceCanvas.getContext('2d');
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('dampingFactor').addEventListener('input', function(e) {
+                dampingFactor = parseFloat(e.target.value);
+                document.getElementById('dampingValue').textContent = dampingFactor.toFixed(2);
+            });
+            
+            // Canvas interaction
+            canvas.addEventListener('mousedown', handleMouseDown);
+            canvas.addEventListener('mousemove', handleMouseMove);
+            canvas.addEventListener('mouseup', handleMouseUp);
+            
+            loadPreset('web');
+        });
+        
+        function loadPreset(type) {
+            nodes = [];
+            edges = [];
+            
+            switch(type) {
+                case 'simple':
+                    nodes = [
+                        {id: 0, label: 'A', x: 150, y: 200},
+                        {id: 1, label: 'B', x: 300, y: 200},
+                        {id: 2, label: 'C', x: 450, y: 200}
+                    ];
+                    edges = [
+                        {from: 0, to: 1},
+                        {from: 1, to: 2},
+                        {from: 2, to: 0}
+                    ];
+                    break;
+                
+                case 'web':
+                    nodes = [
+                        {id: 0, label: 'Home', x: 300, y: 100},
+                        {id: 1, label: 'About', x: 150, y: 200},
+                        {id: 2, label: 'Blog', x: 450, y: 200},
+                        {id: 3, label: 'Contact', x: 300, y: 300}
+                    ];
+                    edges = [
+                        {from: 0, to: 1}, {from: 0, to: 2},
+                        {from: 1, to: 0}, {from: 1, to: 3},
+                        {from: 2, to: 0}, {from: 2, to: 3},
+                        {from: 3, to: 0}
+                    ];
+                    break;
+                
+                case 'cycle':
+                    const n = 6;
+                    for (let i = 0; i < n; i++) {
+                        const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
+                        nodes.push({
+                            id: i,
+                            label: String.fromCharCode(65 + i),
+                            x: 300 + 150 * Math.cos(angle),
+                            y: 200 + 150 * Math.sin(angle)
+                        });
+                    }
+                    for (let i = 0; i < n; i++) {
+                        edges.push({from: i, to: (i + 1) % n});
+                    }
+                    break;
+                
+                case 'star':
+                    nodes = [
+                        {id: 0, label: 'Hub', x: 300, y: 200}
+                    ];
+                    for (let i = 1; i <= 5; i++) {
+                        const angle = ((i - 1) / 5) * 2 * Math.PI;
+                        nodes.push({
+                            id: i,
+                            label: 'N' + i,
+                            x: 300 + 120 * Math.cos(angle),
+                            y: 200 + 120 * Math.sin(angle)
+                        });
+                        edges.push({from: i, to: 0});
+                        edges.push({from: 0, to: i});
+                    }
+                    break;
+                
+                case 'complete':
+                    const k = 4;
+                    for (let i = 0; i < k; i++) {
+                        const angle = (i / k) * 2 * Math.PI - Math.PI / 2;
+                        nodes.push({
+                            id: i,
+                            label: String.fromCharCode(65 + i),
+                            x: 300 + 100 * Math.cos(angle),
+                            y: 200 + 100 * Math.sin(angle)
+                        });
+                    }
+                    for (let i = 0; i < k; i++) {
+                        for (let j = 0; j < k; j++) {
+                            if (i !== j) {
+                                edges.push({from: i, to: j});
+                            }
+                        }
+                    }
+                    break;
+            }
+            
+            resetPageRank();
+            drawGraph();
+            updateMatrix();
+        }
+        
+        function resetPageRank() {
+            iteration = 0;
+            convergenceHistory = [];
+            pagerank = new Array(nodes.length).fill(1.0 / nodes.length);
+            updatePageRankDisplay();
+            drawConvergence();
+        }
+        
+        function stepPageRank() {
+            const n = nodes.length;
+            const newPagerank = new Array(n).fill((1 - dampingFactor) / n);
+            
+            // Calculate new PageRank values
+            for (let i = 0; i < n; i++) {
+                let incomingRank = 0;
+                
+                // Find all nodes that link to node i
+                for (let j = 0; j < n; j++) {
+                    if (edges.some(e => e.from === j && e.to === i)) {
+                        const outDegree = edges.filter(e => e.from === j).length;
+                        incomingRank += pagerank[j] / outDegree;
+                    }
+                }
+                
+                newPagerank[i] += dampingFactor * incomingRank;
+            }
+            
+            // Track convergence
+            const diff = Math.max(...pagerank.map((pr, i) => Math.abs(pr - newPagerank[i])));
+            convergenceHistory.push({iteration: iteration + 1, diff: diff, values: [...newPagerank]});
+            
+            pagerank = newPagerank;
+            iteration++;
+            
+            updatePageRankDisplay();
+            drawGraph();
+            drawConvergence();
+        }
+        
+        function runPageRank() {
+            const maxIterations = 100;
+            const tolerance = 0.0001;
+            
+            let converged = false;
+            let iter = 0;
+            
+            const animate = () => {
+                if (!converged && iter < maxIterations) {
+                    const oldPagerank = [...pagerank];
+                    stepPageRank();
+                    
+                    const diff = Math.max(...pagerank.map((pr, i) => Math.abs(pr - oldPagerank[i])));
+                    if (diff < tolerance) {
+                        converged = true;
+                    }
+                    
+                    iter++;
+                    setTimeout(animate, 100);
+                }
+            };
+            
+            animate();
+        }
+        
+        function simulateRandomWalk() {
+            walkPosition = Math.floor(Math.random() * nodes.length);
+            walkPath = [walkPosition];
+            
+            const steps = 50;
+            let step = 0;
+            
+            const walk = () => {
+                if (step < steps) {
+                    // With probability (1 - dampingFactor), jump to random node
+                    if (Math.random() > dampingFactor) {
+                        walkPosition = Math.floor(Math.random() * nodes.length);
+                    } else {
+                        // Follow a random outgoing edge
+                        const outEdges = edges.filter(e => e.from === walkPosition);
+                        if (outEdges.length > 0) {
+                            const randomEdge = outEdges[Math.floor(Math.random() * outEdges.length)];
+                            walkPosition = randomEdge.to;
+                        }
+                    }
+                    
+                    walkPath.push(walkPosition);
+                    drawGraph();
+                    
+                    step++;
+                    setTimeout(walk, 200);
+                } else {
+                    walkPath = [];
+                    drawGraph();
+                }
+            };
+            
+            walk();
+        }
+        
+        function drawGraph() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw edges
+            ctx.strokeStyle = '#dee2e6';
+            ctx.lineWidth = 2;
+            
+            edges.forEach(edge => {
+                const fromNode = nodes[edge.from];
+                const toNode = nodes[edge.to];
+                
+                ctx.beginPath();
+                ctx.moveTo(fromNode.x, fromNode.y);
+                
+                // Calculate arrow position
+                const dx = toNode.x - fromNode.x;
+                const dy = toNode.y - fromNode.y;
+                const angle = Math.atan2(dy, dx);
+                const length = Math.sqrt(dx * dx + dy * dy);
+                const nodeRadius = 25;
+                
+                const endX = fromNode.x + (length - nodeRadius) * Math.cos(angle);
+                const endY = fromNode.y + (length - nodeRadius) * Math.sin(angle);
+                
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+                
+                // Draw arrowhead
+                ctx.save();
+                ctx.translate(endX, endY);
+                ctx.rotate(angle);
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(-10, -5);
+                ctx.lineTo(-10, 5);
+                ctx.closePath();
+                ctx.fillStyle = '#dee2e6';
+                ctx.fill();
+                ctx.restore();
+            });
+            
+            // Draw walk path if active
+            if (walkPath.length > 1) {
+                ctx.strokeStyle = 'rgba(220, 53, 69, 0.5)';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                
+                for (let i = 1; i < walkPath.length; i++) {
+                    const fromNode = nodes[walkPath[i-1]];
+                    const toNode = nodes[walkPath[i]];
+                    
+                    if (i === 1) {
+                        ctx.moveTo(fromNode.x, fromNode.y);
+                    }
+                    ctx.lineTo(toNode.x, toNode.y);
+                }
+                ctx.stroke();
+            }
+            
+            // Draw nodes
+            nodes.forEach((node, i) => {
+                const radius = 25;
+                const scale = pagerank[i] * nodes.length;
+                const nodeRadius = radius * (0.7 + 0.6 * scale);
+                
+                // Node circle
+                ctx.fillStyle = walkPath.includes(i) ? 'rgba(220, 53, 69, 0.8)' : 
+                               `rgba(102, 126, 234, ${0.3 + 0.7 * scale})`;
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, nodeRadius, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                ctx.strokeStyle = '#667eea';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Node label
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 14px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(node.label, node.x, node.y - 5);
+                
+                // PageRank value
+                ctx.font = '11px sans-serif';
+                ctx.fillText(pagerank[i].toFixed(3), node.x, node.y + 8);
+            });
+        }
+        
+        function updateMatrix() {
+            const n = nodes.length;
+            const matrix = Array(n).fill(null).map(() => Array(n).fill(0));
+            
+            // Build adjacency matrix
+            edges.forEach(edge => {
+                matrix[edge.to][edge.from] = 1;
+            });
+            
+            // Normalize columns (make it stochastic)
+            for (let j = 0; j < n; j++) {
+                const colSum = matrix.reduce((sum, row) => sum + row[j], 0);
+                if (colSum > 0) {
+                    for (let i = 0; i < n; i++) {
+                        matrix[i][j] /= colSum;
+                    }
+                }
+            }
+            
+            // Display matrix
+            let html = '<table style="margin: 0 auto; border-collapse: collapse;">';
+            html += '<tr><th></th>';
+            nodes.forEach(node => {
+                html += `<th style="padding: 5px; border: 1px solid #dee2e6;">${node.label}</th>`;
+            });
+            html += '</tr>';
+            
+            matrix.forEach((row, i) => {
+                html += `<tr><th style="padding: 5px; border: 1px solid #dee2e6;">${nodes[i].label}</th>`;
+                row.forEach(val => {
+                    html += `<td style="padding: 5px; border: 1px solid #dee2e6; text-align: center;">${val.toFixed(2)}</td>`;
+                });
+                html += '</tr>';
+            });
+            html += '</table>';
+            
+            document.getElementById('matrixDisplay').innerHTML = html;
+        }
+        
+        function updatePageRankDisplay() {
+            document.getElementById('iterationCount').textContent = iteration;
+            
+            const container = document.getElementById('pagerankValues');
+            container.innerHTML = '';
+            
+            nodes.forEach((node, i) => {
+                const item = document.createElement('div');
+                item.className = 'pagerank-item';
+                item.innerHTML = `
+                    <div class="pagerank-label">${node.label}</div>
+                    <div class="pagerank-value">${pagerank[i].toFixed(4)}</div>
+                `;
+                container.appendChild(item);
+            });
+        }
+        
+        function drawConvergence() {
+            convCtx.clearRect(0, 0, convergenceCanvas.width, convergenceCanvas.height);
+            
+            if (convergenceHistory.length === 0) return;
+            
+            const margin = 40;
+            const width = convergenceCanvas.width - 2 * margin;
+            const height = convergenceCanvas.height - 2 * margin;
+            
+            // Find max difference for scaling
+            const maxDiff = Math.max(...convergenceHistory.map(h => h.diff));
+            
+            // Draw axes
+            convCtx.strokeStyle = '#dee2e6';
+            convCtx.lineWidth = 1;
+            convCtx.beginPath();
+            convCtx.moveTo(margin, margin);
+            convCtx.lineTo(margin, convergenceCanvas.height - margin);
+            convCtx.lineTo(convergenceCanvas.width - margin, convergenceCanvas.height - margin);
+            convCtx.stroke();
+            
+            // Draw convergence line
+            convCtx.strokeStyle = '#667eea';
+            convCtx.lineWidth = 2;
+            convCtx.beginPath();
+            
+            convergenceHistory.forEach((h, i) => {
+                const x = margin + (i / Math.max(convergenceHistory.length - 1, 1)) * width;
+                const y = convergenceCanvas.height - margin - (h.diff / maxDiff) * height;
+                
+                if (i === 0) {
+                    convCtx.moveTo(x, y);
+                } else {
+                    convCtx.lineTo(x, y);
+                }
+            });
+            convCtx.stroke();
+            
+            // Labels
+            convCtx.fillStyle = '#495057';
+            convCtx.font = '12px sans-serif';
+            convCtx.textAlign = 'center';
+            convCtx.fillText('Iteration', convergenceCanvas.width / 2, convergenceCanvas.height - 10);
+            
+            convCtx.save();
+            convCtx.translate(15, convergenceCanvas.height / 2);
+            convCtx.rotate(-Math.PI / 2);
+            convCtx.fillText('Max Difference', 0, 0);
+            convCtx.restore();
+        }
+        
+        // Mouse interaction handlers
+        function handleMouseDown(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Check if clicking on a node
+            nodes.forEach((node, i) => {
+                const dx = x - node.x;
+                const dy = y - node.y;
+                if (dx * dx + dy * dy < 625) { // 25^2
+                    selectedNode = i;
+                    isDragging = true;
+                }
+            });
+        }
+        
+        function handleMouseMove(e) {
+            if (isDragging && selectedNode !== null) {
+                const rect = canvas.getBoundingClientRect();
+                nodes[selectedNode].x = e.clientX - rect.left;
+                nodes[selectedNode].y = e.clientY - rect.top;
+                drawGraph();
+            }
+        }
+        
+        function handleMouseUp(e) {
+            isDragging = false;
+            selectedNode = null;
+        }
+    </script>
+</body>
+</html>

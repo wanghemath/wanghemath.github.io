@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sampling With vs Without Replacement</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #e0e0e0;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .experiment {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        
+        .experiment h2 {
+            color: #fff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .with-replacement h2::before {
+            content: "🔄";
+        }
+        
+        .without-replacement h2::before {
+            content: "➡️";
+        }
+        
+        .description {
+            color: #aaa;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .pool {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #0f0f0f;
+            border-radius: 8px;
+            min-height: 60px;
+        }
+        
+        .ball {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #000;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            cursor: default;
+            position: relative;
+        }
+        
+        .ball.selected {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+        
+        .ball.removed {
+            opacity: 0.2;
+            transform: scale(0.8);
+        }
+        
+        .sample-area {
+            background: #0f0f0f;
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .sample-area h3 {
+            color: #888;
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .samples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: #444;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .stats {
+            margin-top: 20px;
+            padding: 15px;
+            background: #0f0f0f;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .stats div {
+            margin: 5px 0;
+            color: #aaa;
+        }
+        
+        .stats strong {
+            color: #fff;
+        }
+        
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        input[type="number"] {
+            background: #0f0f0f;
+            color: #fff;
+            border: 1px solid #333;
+            padding: 8px 12px;
+            border-radius: 6px;
+            width: 80px;
+        }
+        
+        label {
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        .color-red { background: #ef4444; }
+        .color-blue { background: #3b82f6; }
+        .color-green { background: #10b981; }
+        .color-yellow { background: #f59e0b; }
+        .color-purple { background: #8b5cf6; }
+    </style>
+</head>
+<body>
+    <h1>Sampling: With vs Without Replacement</h1>
+    <p class="subtitle">Interactive demonstration of different sampling methods</p>
+    
+    <div class="controls">
+        <label>Sample size:</label>
+        <input type="number" id="sampleSize" min="1" max="10" value="5">
+        <button onclick="resetAll()">Reset All</button>
+    </div>
+    
+    <div class="container">
+        <div class="experiment with-replacement">
+            <h2>With Replacement</h2>
+            <p class="description">
+                Each item is returned to the pool after being selected. 
+                The same item can be selected multiple times.
+            </p>
+            
+            <div class="pool" id="poolWith">
+                <!-- Balls will be added here -->
+            </div>
+            
+            <div class="sample-area">
+                <h3>Drawn Samples</h3>
+                <div class="samples" id="samplessWith"></div>
+            </div>
+            
+            <button onclick="drawWithReplacement()" id="btnWith">Draw Sample</button>
+            <button onclick="resetExperiment('with')">Reset</button>
+            
+            <div class="stats" id="statssWith">
+                <div>Total draws: <strong>0</strong></div>
+                <div>Unique items drawn: <strong>0</strong></div>
+                <div>Most frequent: <strong>-</strong></div>
+            </div>
+        </div>
+        
+        <div class="experiment without-replacement">
+            <h2>Without Replacement</h2>
+            <p class="description">
+                Each item is removed from the pool after being selected. 
+                Each item can only be selected once.
+            </p>
+            
+            <div class="pool" id="poolWithout">
+                <!-- Balls will be added here -->
+            </div>
+            
+            <div class="sample-area">
+                <h3>Drawn Samples</h3>
+                <div class="samples" id="samplesWithout"></div>
+            </div>
+            
+            <button onclick="drawWithoutReplacement()" id="btnWithout">Draw Sample</button>
+            <button onclick="resetExperiment('without')">Reset</button>
+            
+            <div class="stats" id="statsWithout">
+                <div>Total draws: <strong>0</strong></div>
+                <div>Items remaining: <strong>10</strong></div>
+                <div>Pool exhausted: <strong>No</strong></div>
+            </div>
+        </div>
+    </div>
+    
+    <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 25px; margin-top: 30px;">
+        <h2 style="color: #fff; margin-bottom: 15px;">📊 Distribution Simulation</h2>
+        <p class="description">
+            Run multiple trials to see how the distributions differ between sampling methods.
+        </p>
+        
+        <div class="controls" style="margin-bottom: 20px;">
+            <label>Number of trials:</label>
+            <input type="number" id="numTrials" min="10" max="10000" value="1000" style="width: 100px;">
+            <label style="margin-left: 20px;">Sample size per trial:</label>
+            <input type="number" id="simSampleSize" min="1" max="10" value="3">
+            <button onclick="runSimulation()" style="margin-left: 20px; background: #10b981;">Run Simulation</button>
+        </div>
+        
+        <div id="simulationResults" style="display: none;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
+                <div>
+                    <h3 style="color: #fff; margin-bottom: 15px;">With Replacement Distribution</h3>
+                    <canvas id="chartWith" width="400" height="300"></canvas>
+                    <div id="statsSimWith" class="stats" style="margin-top: 15px;"></div>
+                </div>
+                <div>
+                    <h3 style="color: #fff; margin-bottom: 15px;">Without Replacement Distribution</h3>
+                    <canvas id="chartWithout" width="400" height="300"></canvas>
+                    <div id="statsSimWithout" class="stats" style="margin-top: 15px;"></div>
+                </div>
+            </div>
+            
+            <div class="stats" style="margin-top: 20px; background: #0f0f0f;">
+                <h3 style="color: #fff; margin-bottom: 10px;">Key Observations</h3>
+                <div id="observations"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const colors = ['color-red', 'color-blue', 'color-green', 'color-yellow', 'color-purple'];
+        const poolSize = 10;
+        let withReplacementSamples = [];
+        let withoutReplacementSamples = [];
+        let availableWithout = [];
+
+        function createBall(number, colorClass) {
+            const ball = document.createElement('div');
+            ball.className = `ball ${colorClass}`;
+            ball.textContent = number;
+            return ball;
+        }
+
+        function initializePools() {
+            const poolWith = document.getElementById('poolWith');
+            const poolWithout = document.getElementById('poolWithout');
+            
+            poolWith.innerHTML = '';
+            poolWithout.innerHTML = '';
+            availableWithout = [];
+            
+            for (let i = 1; i <= poolSize; i++) {
+                const colorClass = colors[(i - 1) % colors.length];
+                poolWith.appendChild(createBall(i, colorClass));
+                
+                const ballWithout = createBall(i, colorClass);
+                ballWithout.id = `ball-without-${i}`;
+                poolWithout.appendChild(ballWithout);
+                availableWithout.push(i);
+            }
+        }
+
+        function drawWithReplacement() {
+            const sampleSize = parseInt(document.getElementById('sampleSize').value);
+            const samplesContainer = document.getElementById('samplessWith');
+            const poolBalls = document.querySelectorAll('#poolWith .ball');
+            
+            // Clear previous animation
+            poolBalls.forEach(ball => ball.classList.remove('selected'));
+            
+            // Draw samples
+            for (let i = 0; i < sampleSize; i++) {
+                setTimeout(() => {
+                    const randomIndex = Math.floor(Math.random() * poolSize);
+                    const selectedNumber = randomIndex + 1;
+                    const colorClass = colors[randomIndex % colors.length];
+                    
+                    // Animate selection
+                    poolBalls[randomIndex].classList.add('selected');
+                    setTimeout(() => poolBalls[randomIndex].classList.remove('selected'), 300);
+                    
+                    // Add to samples
+                    withReplacementSamples.push(selectedNumber);
+                    samplesContainer.appendChild(createBall(selectedNumber, colorClass));
+                    
+                    updateWithReplacementStats();
+                }, i * 400);
+            }
+        }
+
+        function drawWithoutReplacement() {
+            if (availableWithout.length === 0) return;
+            
+            const sampleSize = Math.min(parseInt(document.getElementById('sampleSize').value), availableWithout.length);
+            const samplesContainer = document.getElementById('samplesWithout');
+            
+            for (let i = 0; i < sampleSize; i++) {
+                setTimeout(() => {
+                    const randomIndex = Math.floor(Math.random() * availableWithout.length);
+                    const selectedNumber = availableWithout[randomIndex];
+                    const colorClass = colors[(selectedNumber - 1) % colors.length];
+                    
+                    // Remove from available
+                    availableWithout.splice(randomIndex, 1);
+                    
+                    // Animate removal
+                    const ball = document.getElementById(`ball-without-${selectedNumber}`);
+                    ball.classList.add('selected');
+                    setTimeout(() => {
+                        ball.classList.remove('selected');
+                        ball.classList.add('removed');
+                    }, 300);
+                    
+                    // Add to samples
+                    withoutReplacementSamples.push(selectedNumber);
+                    samplesContainer.appendChild(createBall(selectedNumber, colorClass));
+                    
+                    updateWithoutReplacementStats();
+                    
+                    // Disable button if pool is empty
+                    if (availableWithout.length === 0) {
+                        document.getElementById('btnWithout').disabled = true;
+                    }
+                }, i * 400);
+            }
+        }
+
+        function updateWithReplacementStats() {
+            const stats = document.getElementById('statssWith');
+            const frequency = {};
+            withReplacementSamples.forEach(num => {
+                frequency[num] = (frequency[num] || 0) + 1;
+            });
+            
+            const uniqueCount = Object.keys(frequency).length;
+            let mostFrequent = '-';
+            let maxFreq = 0;
+            
+            for (const [num, freq] of Object.entries(frequency)) {
+                if (freq > maxFreq) {
+                    maxFreq = freq;
+                    mostFrequent = `${num} (${freq} times)`;
+                }
+            }
+            
+            stats.innerHTML = `
+                <div>Total draws: <strong>${withReplacementSamples.length}</strong></div>
+                <div>Unique items drawn: <strong>${uniqueCount}</strong></div>
+                <div>Most frequent: <strong>${mostFrequent}</strong></div>
+            `;
+        }
+
+        function updateWithoutReplacementStats() {
+            const stats = document.getElementById('statsWithout');
+            const exhausted = availableWithout.length === 0 ? 'Yes' : 'No';
+            
+            stats.innerHTML = `
+                <div>Total draws: <strong>${withoutReplacementSamples.length}</strong></div>
+                <div>Items remaining: <strong>${availableWithout.length}</strong></div>
+                <div>Pool exhausted: <strong>${exhausted}</strong></div>
+            `;
+        }
+
+        function resetExperiment(type) {
+            if (type === 'with') {
+                withReplacementSamples = [];
+                document.getElementById('samplessWith').innerHTML = '';
+                updateWithReplacementStats();
+            } else {
+                withoutReplacementSamples = [];
+                document.getElementById('samplesWithout').innerHTML = '';
+                document.getElementById('btnWithout').disabled = false;
+                
+                // Reset pool visibility
+                for (let i = 1; i <= poolSize; i++) {
+                    const ball = document.getElementById(`ball-without-${i}`);
+                    ball.classList.remove('removed', 'selected');
+                }
+                availableWithout = Array.from({length: poolSize}, (_, i) => i + 1);
+                updateWithoutReplacementStats();
+            }
+        }
+
+        function resetAll() {
+            resetExperiment('with');
+            resetExperiment('without');
+        }
+
+        // Initialize on load
+        initializePools();
+
+        // Simulation functions
+        function runSimulation() {
+            const numTrials = parseInt(document.getElementById('numTrials').value);
+            const sampleSize = parseInt(document.getElementById('simSampleSize').value);
+            
+            // Initialize frequency counters
+            const freqWith = Array(poolSize).fill(0);
+            const freqWithout = Array(poolSize).fill(0);
+            
+            // Run trials for sampling with replacement
+            for (let trial = 0; trial < numTrials; trial++) {
+                for (let i = 0; i < sampleSize; i++) {
+                    const selected = Math.floor(Math.random() * poolSize);
+                    freqWith[selected]++;
+                }
+            }
+            
+            // Run trials for sampling without replacement
+            for (let trial = 0; trial < numTrials; trial++) {
+                const available = Array.from({length: poolSize}, (_, i) => i);
+                const maxSamples = Math.min(sampleSize, poolSize);
+                
+                for (let i = 0; i < maxSamples; i++) {
+                    const idx = Math.floor(Math.random() * available.length);
+                    const selected = available.splice(idx, 1)[0];
+                    freqWithout[selected]++;
+                }
+            }
+            
+            // Display results
+            document.getElementById('simulationResults').style.display = 'block';
+            drawCharts(freqWith, freqWithout, numTrials, sampleSize);
+            displaySimulationStats(freqWith, freqWithout, numTrials, sampleSize);
+        }
+        
+        function drawCharts(freqWith, freqWithout, numTrials, sampleSize) {
+            // Draw chart for with replacement
+            const ctxWith = document.getElementById('chartWith').getContext('2d');
+            drawBarChart(ctxWith, freqWith, '#3b82f6', 'With Replacement');
+            
+            // Draw chart for without replacement
+            const ctxWithout = document.getElementById('chartWithout').getContext('2d');
+            drawBarChart(ctxWithout, freqWithout, '#10b981', 'Without Replacement');
+        }
+        
+        function drawBarChart(ctx, frequencies, color, title) {
+            const canvas = ctx.canvas;
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Set styling
+            ctx.fillStyle = '#0f0f0f';
+            ctx.fillRect(0, 0, width, height);
+            
+            const maxFreq = Math.max(...frequencies);
+            const barWidth = (width - 60) / frequencies.length;
+            const chartHeight = height - 60;
+            
+            // Draw bars
+            frequencies.forEach((freq, i) => {
+                const barHeight = (freq / maxFreq) * chartHeight;
+                const x = 30 + i * barWidth;
+                const y = height - 30 - barHeight;
+                
+                // Bar
+                ctx.fillStyle = color;
+                ctx.fillRect(x + barWidth * 0.1, y, barWidth * 0.8, barHeight);
+                
+                // Value on top
+                ctx.fillStyle = '#fff';
+                ctx.font = '12px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(freq, x + barWidth * 0.5, y - 5);
+                
+                // Label
+                ctx.fillText(i + 1, x + barWidth * 0.5, height - 15);
+            });
+            
+            // Y-axis label
+            ctx.save();
+            ctx.translate(15, height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillStyle = '#888';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Frequency', 0, 0);
+            ctx.restore();
+            
+            // X-axis label
+            ctx.fillStyle = '#888';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Ball Number', width / 2, height - 2);
+        }
+        
+        function displaySimulationStats(freqWith, freqWithout, numTrials, sampleSize) {
+            // Calculate statistics for with replacement
+            const totalDrawsWith = numTrials * sampleSize;
+            const expectedWith = totalDrawsWith / poolSize;
+            const varianceWith = freqWith.reduce((sum, freq) => sum + Math.pow(freq - expectedWith, 2), 0) / poolSize;
+            const stdDevWith = Math.sqrt(varianceWith);
+            
+            // Calculate statistics for without replacement
+            const totalDrawsWithout = numTrials * Math.min(sampleSize, poolSize);
+            const expectedWithout = totalDrawsWithout / poolSize;
+            const varianceWithout = freqWithout.reduce((sum, freq) => sum + Math.pow(freq - expectedWithout, 2), 0) / poolSize;
+            const stdDevWithout = Math.sqrt(varianceWithout);
+            
+            // Display stats
+            document.getElementById('statsSimWith').innerHTML = `
+                <div>Total draws: <strong>${totalDrawsWith}</strong></div>
+                <div>Expected per ball: <strong>${expectedWith.toFixed(1)}</strong></div>
+                <div>Standard deviation: <strong>${stdDevWith.toFixed(2)}</strong></div>
+                <div>Range: <strong>${Math.min(...freqWith)} - ${Math.max(...freqWith)}</strong></div>
+            `;
+            
+            document.getElementById('statsSimWithout').innerHTML = `
+                <div>Total draws: <strong>${totalDrawsWithout}</strong></div>
+                <div>Expected per ball: <strong>${expectedWithout.toFixed(1)}</strong></div>
+                <div>Standard deviation: <strong>${stdDevWithout.toFixed(2)}</strong></div>
+                <div>Range: <strong>${Math.min(...freqWithout)} - ${Math.max(...freqWithout)}</strong></div>
+            `;
+            
+            // Key observations
+            const observations = document.getElementById('observations');
+            observations.innerHTML = `
+                <div>• <strong>Uniformity:</strong> Without replacement shows ${stdDevWithout < stdDevWith ? 'more' : 'less'} uniform distribution (lower standard deviation)</div>
+                <div>• <strong>Range:</strong> With replacement has a ${Math.max(...freqWith) - Math.min(...freqWith) > Math.max(...freqWithout) - Math.min(...freqWithout) ? 'wider' : 'narrower'} range of frequencies</div>
+                <div>• <strong>Predictability:</strong> Without replacement guarantees each ball appears at most ${Math.min(sampleSize, poolSize)} time${Math.min(sampleSize, poolSize) > 1 ? 's' : ''} per trial</div>
+                <div>• <strong>Sample size effect:</strong> ${sampleSize > poolSize ? 'Without replacement is limited to pool size, while with replacement continues sampling' : 'Both methods can complete all requested samples'}</div>
+            `;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypergeometric Distribution: Urn Experiment</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            background: #ddd;
+            border-radius: 5px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        
+        .value-display {
+            font-size: 1.2em;
+            color: #667eea;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 5px;
+        }
+        
+        .urn-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .urn {
+            text-align: center;
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 15px;
+            min-width: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .urn h3 {
+            margin-top: 0;
+            color: #444;
+        }
+        
+        .balls-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+            margin: 15px 0;
+            min-height: 100px;
+            max-width: 300px;
+            margin: 15px auto;
+        }
+        
+        .ball {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .ball.red {
+            background: linear-gradient(135deg, #ff6b6b, #ff4757);
+        }
+        
+        .ball.green {
+            background: linear-gradient(135deg, #51cf66, #0be881);
+        }
+        
+        .ball.selected {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+        
+        .probability-display {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2em;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .formula {
+            background: white;
+            color: #333;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .run-experiment {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            transition: transform 0.2s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .run-experiment:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .run-experiment:active {
+            transform: translateY(0);
+        }
+        
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .result-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result-value {
+            font-size: 2em;
+            color: #667eea;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .explanation {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        @keyframes draw {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-20px) scale(1.1);
+            }
+            100% {
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .drawing {
+            animation: draw 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎱 Hypergeometric Distribution: Urn Experiment</h1>
+        
+        <div class="explanation">
+            <strong>The Problem:</strong> We have an urn with N balls (M red, N-M green). 
+            We draw K balls at once without replacement. What's the probability of getting exactly x red balls?
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="totalBalls">Total Balls (N)</label>
+                <input type="range" id="totalBalls" min="10" max="100" value="50">
+                <div class="value-display" id="totalBallsValue">50</div>
+            </div>
+            
+            <div class="control-group">
+                <label for="redBalls">Red Balls (M)</label>
+                <input type="range" id="redBalls" min="1" max="50" value="20">
+                <div class="value-display" id="redBallsValue">20</div>
+            </div>
+            
+            <div class="control-group">
+                <label for="sampleSize">Sample Size (K)</label>
+                <input type="range" id="sampleSize" min="1" max="50" value="10">
+                <div class="value-display" id="sampleSizeValue">10</div>
+            </div>
+            
+            <div class="control-group">
+                <label for="targetRed">Target Red Balls (x)</label>
+                <input type="range" id="targetRed" min="0" max="10" value="4">
+                <div class="value-display" id="targetRedValue">4</div>
+            </div>
+        </div>
+        
+        <button class="run-experiment" onclick="runExperiment()">Run Single Experiment</button>
+        
+        <div class="urn-container">
+            <div class="urn">
+                <h3>Original Urn</h3>
+                <div id="originalBalls" class="balls-container"></div>
+                <p>Red: <span id="urnRed">20</span> | Green: <span id="urnGreen">30</span></p>
+            </div>
+            
+            <div class="urn">
+                <h3>Sample Drawn</h3>
+                <div id="sampleBalls" class="balls-container"></div>
+                <p>Red: <span id="sampleRed">0</span> | Green: <span id="sampleGreen">0</span></p>
+            </div>
+        </div>
+        
+        <div class="probability-display">
+            <div>Probability of exactly <span id="probX">4</span> red balls:</div>
+            <div class="formula" id="formula"></div>
+            <div style="font-size: 2em; margin-top: 10px;">P(X = <span id="probX2">4</span>) = <span id="probability">0.0000</span></div>
+        </div>
+        
+        <div class="results">
+            <div class="result-card">
+                <h4>Expected Red Balls</h4>
+                <div class="result-value" id="expected">0.00</div>
+                <small>E[X] = K × M/N</small>
+            </div>
+            
+            <div class="result-card">
+                <h4>Variance</h4>
+                <div class="result-value" id="variance">0.00</div>
+                <small>Var[X] = K × (M/N) × (1-M/N) × (N-K)/(N-1)</small>
+            </div>
+            
+            <div class="result-card">
+                <h4>Most Likely Outcome</h4>
+                <div class="result-value" id="mode">0</div>
+                <small>Mode of the distribution</small>
+            </div>
+        </div>
+        
+        <button class="run-experiment" onclick="runSimulation()">Run 1000 Simulations</button>
+        
+        <div id="simulationResults" style="margin-top: 20px;"></div>
+        
+        <canvas id="histogramCanvas" width="800" height="400" style="display: none; margin: 20px auto; max-width: 100%;"></canvas>
+    </div>
+    
+    <script>
+        let N, M, K, x;
+        
+        function updateValues() {
+            N = parseInt(document.getElementById('totalBalls').value);
+            M = parseInt(document.getElementById('redBalls').value);
+            K = parseInt(document.getElementById('sampleSize').value);
+            x = parseInt(document.getElementById('targetRed').value);
+            
+            // Update constraints
+            document.getElementById('redBalls').max = N;
+            document.getElementById('sampleSize').max = N;
+            document.getElementById('targetRed').max = Math.min(K, M);
+            
+            // Adjust values if needed
+            if (M > N) {
+                M = N;
+                document.getElementById('redBalls').value = M;
+            }
+            if (K > N) {
+                K = N;
+                document.getElementById('sampleSize').value = K;
+            }
+            if (x > Math.min(K, M)) {
+                x = Math.min(K, M);
+                document.getElementById('targetRed').value = x;
+            }
+            
+            // Update displays
+            document.getElementById('totalBallsValue').textContent = N;
+            document.getElementById('redBallsValue').textContent = M;
+            document.getElementById('sampleSizeValue').textContent = K;
+            document.getElementById('targetRedValue').textContent = x;
+            document.getElementById('probX').textContent = x;
+            document.getElementById('probX2').textContent = x;
+            document.getElementById('urnRed').textContent = M;
+            document.getElementById('urnGreen').textContent = N - M;
+            
+            updateUrn();
+            calculateProbability();
+            calculateStatistics();
+        }
+        
+        function factorial(n) {
+            if (n <= 1) return 1;
+            let result = 1;
+            for (let i = 2; i <= n; i++) {
+                result *= i;
+            }
+            return result;
+        }
+        
+        function choose(n, k) {
+            if (k > n || k < 0) return 0;
+            if (k === 0 || k === n) return 1;
+            
+            // Use the more efficient formula: C(n,k) = n! / (k!(n-k)!)
+            // But calculate it as: n × (n-1) × ... × (n-k+1) / k!
+            let result = 1;
+            for (let i = 0; i < k; i++) {
+                result *= (n - i);
+                result /= (i + 1);
+            }
+            return Math.round(result);
+        }
+        
+        function calculateProbability() {
+            const numerator = choose(M, x) * choose(N - M, K - x);
+            const denominator = choose(N, K);
+            const probability = denominator > 0 ? numerator / denominator : 0;
+            
+            document.getElementById('formula').innerHTML = 
+                `C(${M}, ${x}) × C(${N - M}, ${K - x}) / C(${N}, ${K}) = ${numerator} / ${denominator}`;
+            document.getElementById('probability').textContent = probability.toFixed(4);
+        }
+        
+        function calculateStatistics() {
+            // Expected value
+            const expected = K * M / N;
+            document.getElementById('expected').textContent = expected.toFixed(2);
+            
+            // Variance
+            const p = M / N;
+            const variance = K * p * (1 - p) * (N - K) / (N - 1);
+            document.getElementById('variance').textContent = variance.toFixed(2);
+            
+            // Mode (most likely outcome)
+            const mode = Math.floor((K + 1) * (M + 1) / (N + 2));
+            document.getElementById('mode').textContent = mode;
+        }
+        
+        function updateUrn() {
+            const originalContainer = document.getElementById('originalBalls');
+            originalContainer.innerHTML = '';
+            
+            // Show a sample of balls (max 100 for performance)
+            const showBalls = Math.min(N, 100);
+            const redToShow = Math.round(showBalls * M / N);
+            const greenToShow = showBalls - redToShow;
+            
+            for (let i = 0; i < redToShow; i++) {
+                const ball = document.createElement('div');
+                ball.className = 'ball red';
+                originalContainer.appendChild(ball);
+            }
+            
+            for (let i = 0; i < greenToShow; i++) {
+                const ball = document.createElement('div');
+                ball.className = 'ball green';
+                originalContainer.appendChild(ball);
+            }
+        }
+        
+        function runExperiment() {
+            // Create array of all balls
+            const allBalls = [];
+            for (let i = 0; i < M; i++) allBalls.push('red');
+            for (let i = 0; i < N - M; i++) allBalls.push('green');
+            
+            // Shuffle and select K balls
+            const shuffled = allBalls.sort(() => Math.random() - 0.5);
+            const sample = shuffled.slice(0, K);
+            
+            // Count red balls in sample
+            const redCount = sample.filter(b => b === 'red').length;
+            
+            // Display sample
+            const sampleContainer = document.getElementById('sampleBalls');
+            sampleContainer.innerHTML = '';
+            
+            sample.forEach((color, index) => {
+                setTimeout(() => {
+                    const ball = document.createElement('div');
+                    ball.className = `ball ${color} drawing`;
+                    sampleContainer.appendChild(ball);
+                }, index * 50);
+            });
+            
+            document.getElementById('sampleRed').textContent = redCount;
+            document.getElementById('sampleGreen').textContent = K - redCount;
+        }
+        
+        function runSimulation() {
+            const results = new Array(K + 1).fill(0);
+            const trials = 1000;
+            
+            for (let trial = 0; trial < trials; trial++) {
+                const allBalls = [];
+                for (let i = 0; i < M; i++) allBalls.push('red');
+                for (let i = 0; i < N - M; i++) allBalls.push('green');
+                
+                const shuffled = allBalls.sort(() => Math.random() - 0.5);
+                const sample = shuffled.slice(0, K);
+                const redCount = sample.filter(b => b === 'red').length;
+                results[redCount]++;
+            }
+            
+            // Display results
+            let html = '<h3>Simulation Results (1000 trials)</h3>';
+            html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 30px;">';
+            
+            for (let i = 0; i <= Math.min(K, M); i++) {
+                const empirical = results[i] / trials;
+                const theoretical = calculateExactProbability(i);
+                html += `
+                    <div class="result-card">
+                        <strong>${i} red balls</strong><br>
+                        Empirical: ${(empirical * 100).toFixed(1)}%<br>
+                        Theoretical: ${(theoretical * 100).toFixed(1)}%
+                    </div>
+                `;
+            }
+            html += '</div>';
+            
+            document.getElementById('simulationResults').innerHTML = html;
+            
+            // Draw histogram
+            drawHistogram(results, trials);
+        }
+        
+        function drawHistogram(results, trials) {
+            const canvas = document.getElementById('histogramCanvas');
+            canvas.style.display = 'block';
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Calculate data range
+            const maxX = Math.min(K, M);
+            const empiricalProbs = [];
+            const theoreticalProbs = [];
+            
+            for (let i = 0; i <= maxX; i++) {
+                empiricalProbs.push(results[i] / trials);
+                theoreticalProbs.push(calculateExactProbability(i));
+            }
+            
+            const maxProb = Math.max(...empiricalProbs, ...theoreticalProbs) * 1.1;
+            
+            // Set up drawing parameters
+            const padding = 60;
+            const chartWidth = canvas.width - 2 * padding;
+            const chartHeight = canvas.height - 2 * padding;
+            const barWidth = chartWidth / (maxX + 1) * 0.35;
+            const barSpacing = chartWidth / (maxX + 1);
+            
+            // Draw axes
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.stroke();
+            
+            // Draw title
+            ctx.font = 'bold 20px Arial';
+            ctx.fillStyle = '#333';
+            ctx.textAlign = 'center';
+            ctx.fillText('Empirical vs Theoretical Distribution', canvas.width / 2, 30);
+            
+            // Draw y-axis labels
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'right';
+            for (let i = 0; i <= 5; i++) {
+                const y = canvas.height - padding - (i / 5) * chartHeight;
+                const value = (i / 5 * maxProb).toFixed(2);
+                ctx.fillText(value, padding - 10, y + 4);
+                
+                // Draw grid lines
+                ctx.strokeStyle = '#e0e0e0';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(canvas.width - padding, y);
+                ctx.stroke();
+            }
+            
+            // Draw bars and x-axis labels
+            ctx.textAlign = 'center';
+            ctx.font = '14px Arial';
+            
+            for (let i = 0; i <= maxX; i++) {
+                const x = padding + i * barSpacing + barSpacing / 2;
+                const empiricalHeight = (empiricalProbs[i] / maxProb) * chartHeight;
+                const theoreticalHeight = (theoreticalProbs[i] / maxProb) * chartHeight;
+                
+                // Draw empirical bar (blue)
+                ctx.fillStyle = 'rgba(102, 126, 234, 0.7)';
+                ctx.fillRect(x - barWidth - 2, canvas.height - padding - empiricalHeight, barWidth, empiricalHeight);
+                
+                // Draw theoretical bar (purple)
+                ctx.fillStyle = 'rgba(118, 75, 162, 0.7)';
+                ctx.fillRect(x + 2, canvas.height - padding - theoreticalHeight, barWidth, theoreticalHeight);
+                
+                // Draw x-axis label
+                ctx.fillStyle = '#333';
+                ctx.fillText(i, x, canvas.height - padding + 20);
+            }
+            
+            // Draw x-axis label
+            ctx.font = '16px Arial';
+            ctx.fillText('Number of Red Balls', canvas.width / 2, canvas.height - 10);
+            
+            // Draw y-axis label
+            ctx.save();
+            ctx.translate(15, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.textAlign = 'center';
+            ctx.fillText('Probability', 0, 0);
+            ctx.restore();
+            
+            // Draw legend
+            const legendX = canvas.width - padding - 150;
+            const legendY = padding + 20;
+            
+            ctx.fillStyle = 'rgba(102, 126, 234, 0.7)';
+            ctx.fillRect(legendX, legendY, 20, 15);
+            ctx.fillStyle = '#333';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Empirical', legendX + 25, legendY + 12);
+            
+            ctx.fillStyle = 'rgba(118, 75, 162, 0.7)';
+            ctx.fillRect(legendX, legendY + 25, 20, 15);
+            ctx.fillStyle = '#333';
+            ctx.fillText('Theoretical', legendX + 25, legendY + 37);
+        }
+        
+        function calculateExactProbability(redBalls) {
+            const numerator = choose(M, redBalls) * choose(N - M, K - redBalls);
+            const denominator = choose(N, K);
+            return denominator > 0 ? numerator / denominator : 0;
+        }
+        
+        // Initialize
+        document.getElementById('totalBalls').addEventListener('input', updateValues);
+        document.getElementById('redBalls').addEventListener('input', updateValues);
+        document.getElementById('sampleSize').addEventListener('input', updateValues);
+        document.getElementById('targetRed').addEventListener('input', updateValues);
+        
+        updateValues();
+    </script>
+</body>
+</html>

@@ -1,0 +1,473 @@
+---
+title: "Programs"
+description: "Graduate programs, concentrations, advising information, and student opportunities in Mathematics at Northeastern University."
+page-layout: full
+toc: true
+toc-depth: 3
+--- 
+
+::: {.section #programs-overview}
+::: {.container}
+
+## Graduate Programs and Student Pathways
+
+This page provides an overview of graduate programs, concentrations, advising information, and student opportunities connected to mathematics, applied mathematics, statistics, operations research, data science, and artificial intelligence.
+
+The goal is to help students understand how different programs and course pathways fit together, how to choose courses strategically, and how to connect mathematical training with research, industry projects, co-op preparation, and long-term career goals.
+
+::: {.highlight}
+### Program advising philosophy
+
+Graduate study in mathematics should build both **deep mathematical foundations** and **practical problem-solving ability**. Students are encouraged to develop a coherent academic plan that connects coursework, computation, communication, experiential learning, and career preparation.
+:::
+
+::: {.buttons}
+[Graduate Catalog](https://catalog.northeastern.edu/graduate/science/mathematics/){.button .primary}
+[Department of Mathematics](https://cos.northeastern.edu/mathematics/){.button .secondary}
+[College of Science](https://cos.northeastern.edu/){.button .secondary}
+[Khoury College](https://www.khoury.northeastern.edu/){.button .secondary}
+:::
+
+:::
+:::
+
+::: {.section #programs}
+::: {.container}
+
+## Graduate Programs
+
+::: {.grid}
+
+::: {.card}
+### MS in Applied Mathematics
+
+The MS in Applied Mathematics is designed for students who want strong mathematical training connected to computation, modeling, data science, optimization, probability, statistics, and artificial intelligence.
+
+Students may choose courses that emphasize mathematical foundations, applied modeling, machine learning, stochastic systems, numerical methods, or interdisciplinary applications.
+:::
+
+::: {.card}
+### MS in Mathematics
+
+The MS in Mathematics provides advanced training in core mathematical areas such as algebra, analysis, topology, geometry, probability, and related fields.
+
+This pathway is especially appropriate for students interested in deeper theoretical preparation, PhD study, research-oriented careers, or mathematically intensive professional work.
+:::
+
+::: {.card}
+### MS in Statistics
+
+The MS in Statistics prepares students for statistical modeling, inference, machine learning, data analysis, computational statistics, and applications in science, industry, technology, and healthcare.
+
+Students typically combine probability, statistical theory, computation, data analysis, and applied electives.
+:::
+
+::: {.card}
+### MS in Statistics--Connect
+
+The Connect pathway is intended for students who need additional preparation before entering the standard MS Statistics curriculum.
+
+It provides foundational coursework in linear algebra, probability, statistics, and mathematical tools before students move into advanced graduate statistics courses.
+:::
+
+::: {.card}
+### Operations Research Pathway
+
+Operations research connects mathematical modeling, optimization, probability, stochastic systems, algorithms, and decision-making.
+
+Students interested in this area may build a pathway through applied mathematics courses in optimization, stochastic processes, linear algebra, probability, computation, and data-driven decision systems.
+:::
+
+::: {.card}
+### Interdisciplinary Pathways
+
+Many students combine mathematics with computer science, engineering, data science, finance, biology, healthcare, or public policy.
+
+A strong plan often includes mathematical foundations together with computational implementation, real data, communication, and project experience.
+:::
+
+:::
+
+:::
+:::
+
+::: {.section #concentrations}
+::: {.container}
+
+## Concentrations and Focus Areas
+
+::: {.grid}
+
+::: {.card}
+### Data Science
+
+A data science pathway emphasizes linear algebra, probability, statistics, optimization, statistical learning, computation, and data analysis.
+
+Recommended themes include regression, classification, clustering, PCA, SVD, stochastic modeling, machine learning, and project-based work with real datasets.
+:::
+
+::: {.card}
+### Mathematical Foundations of Intelligence
+
+This pathway focuses on the mathematical foundations behind artificial intelligence and machine learning.
+
+Core themes include linear algebra, probability, optimization, numerical methods, statistical learning theory, deep learning, reinforcement learning, computer vision, natural language processing, and trustworthy AI.
+:::
+
+::: {.card}
+### Optimization and Operations Research
+
+This focus area prepares students to formulate and solve decision problems using optimization, stochastic models, algorithms, simulation, and data-driven methods.
+
+It is useful for careers in logistics, analytics, finance, healthcare operations, supply chains, technology, and AI systems.
+:::
+
+::: {.card}
+### Probability and Stochastic Modeling
+
+This area emphasizes uncertainty, random processes, Markov chains, Brownian motion, queueing systems, Monte Carlo methods, and stochastic simulation.
+
+It is valuable for students interested in finance, risk, networks, machine learning, operations, and scientific modeling.
+:::
+
+::: {.card}
+### Statistics and Machine Learning
+
+Students interested in statistical learning may combine statistical theory, inference, computational statistics, machine learning, data mining, and applied projects.
+
+This direction is useful for data science, AI, bioinformatics, business analytics, research, and industry roles.
+:::
+
+::: {.card}
+### Pure and Applied Mathematical Research
+
+Students interested in research may build a pathway through advanced courses, reading courses, independent study, seminar participation, and faculty-supervised projects.
+
+Possible areas include algebra, analysis, topology, geometry, probability, combinatorics, data science, and mathematical AI.
+:::
+
+:::
+
+:::
+:::
+
+::: {.section #advising}
+::: {.container}
+
+## Advising Information
+
+Graduate advising is most effective when students think about both immediate course registration and long-term academic direction.
+
+::: {.two-col}
+
+::: {.card}
+### Before choosing courses
+
+Students should consider:
+
+- degree requirements and concentration requirements;
+- prerequisite knowledge and mathematical preparation;
+- balance between theory, computation, and applications;
+- whether they plan to pursue co-op, research, PhD study, or industry roles;
+- course workload, sequencing, and schedule constraints.
+:::
+
+::: {.card}
+### During the program
+
+Students are encouraged to:
+
+- meet with an advisor before registration when possible;
+- keep a coherent two-semester or one-year plan;
+- develop Python, R, MATLAB, or other computational skills;
+- build a portfolio of projects and writing samples;
+- attend seminars, workshops, and professional events;
+- communicate early if they face academic or scheduling difficulties.
+:::
+
+:::
+
+::: {.highlight}
+### A practical advising principle
+
+A good graduate plan should answer three questions: **What mathematical foundation am I building? What computational or modeling skill am I developing? What evidence of my ability will I be able to show through projects, writing, research, or professional experience?**
+:::
+
+:::
+:::
+
+::: {.section #suggested-pathways}
+::: {.container}
+
+## Suggested Course Planning Themes
+
+These are sample themes rather than official degree plans. Students should always check current catalog requirements and consult program advising when making final course selections.
+
+::: {.grid}
+
+::: {.card}
+### AI and Machine Learning Pathway
+
+Possible themes:
+
+- applied linear algebra and matrix analysis;
+- probability and statistics;
+- optimization;
+- statistical learning theory;
+- machine learning and deep learning;
+- numerical computation and data-driven projects.
+:::
+
+::: {.card}
+### Data Science and Analytics Pathway
+
+Possible themes:
+
+- linear algebra, probability, and statistics;
+- regression and classification;
+- clustering and dimension reduction;
+- data visualization and communication;
+- databases or programming electives;
+- real-world project experience.
+:::
+
+::: {.card}
+### Statistics Pathway
+
+Possible themes:
+
+- probability theory;
+- statistical inference;
+- computational statistics;
+- statistical learning;
+- applied modeling;
+- domain-focused data analysis projects.
+:::
+
+::: {.card}
+### Optimization and Decision Science Pathway
+
+Possible themes:
+
+- linear algebra;
+- deterministic optimization;
+- stochastic processes;
+- simulation;
+- algorithms;
+- applications in logistics, operations, finance, and AI.
+:::
+
+::: {.card}
+### Mathematical Research Pathway
+
+Possible themes:
+
+- algebra, analysis, topology, or geometry;
+- advanced reading courses;
+- seminar participation;
+- independent study;
+- mathematical writing;
+- preparation for PhD-level work.
+:::
+
+::: {.card}
+### Computational Mathematics Pathway
+
+Possible themes:
+
+- numerical linear algebra;
+- matrix computations;
+- scientific computing;
+- optimization algorithms;
+- stochastic simulation;
+- reproducible computational notebooks.
+:::
+
+:::
+
+:::
+:::
+
+::: {.section #opportunities}
+::: {.container}
+
+## Student Opportunities
+
+::: {.grid}
+
+::: {.card}
+### Experiential Learning
+
+Students are encouraged to connect classroom learning with practical work through projects, case studies, industry-sponsored problems, co-op, internships, and applied research.
+
+Strong experiential projects usually combine mathematical modeling, computation, data analysis, interpretation, and clear communication.
+:::
+
+::: {.card}
+### Research and Independent Study
+
+Students may pursue reading courses or independent study when there is a clear topic, preparation, timeline, and expected outcome.
+
+Possible outputs include a written report, presentation, computational notebook, literature review, software prototype, or research proposal.
+:::
+
+::: {.card}
+### Graduate Math Data Club
+
+Student clubs and informal learning communities can help students practice Python, SQL, machine learning, data analysis, Kaggle-style projects, interview preparation, and professional communication.
+
+Participation can also help students build community across programs.
+:::
+
+::: {.card}
+### Seminars and Workshops
+
+Seminars expose students to current research and professional mathematical communication.
+
+Students are encouraged to attend talks in mathematics, statistics, data science, AI, computer science, engineering, and interdisciplinary areas.
+:::
+
+::: {.card}
+### Course Projects
+
+Many graduate courses include projects involving real data, mathematical modeling, simulation, optimization, machine learning, or statistical analysis.
+
+Students should save polished versions of projects for portfolios, interviews, and future applications.
+:::
+
+::: {.card}
+### Career Preparation
+
+Students should develop both technical and communication skills. Useful preparation includes a strong resume, project portfolio, GitHub page, LinkedIn profile, interview practice, and clear explanations of mathematical work.
+:::
+
+:::
+
+:::
+:::
+
+::: {.section #student-success}
+::: {.container}
+
+## Student Success Checklist
+
+::: {.links-list}
+
+::: {.link-row}
+**Build mathematical depth**  
+Take core courses seriously and understand definitions, theorems, examples, and proofs.
+:::
+
+::: {.link-row}
+**Develop computational fluency**  
+Practice Python, R, MATLAB, numerical experiments, simulation, and reproducible notebooks.
+:::
+
+::: {.link-row}
+**Create visible project evidence**  
+Turn class projects into polished reports, slides, notebooks, or portfolio pages.
+:::
+
+::: {.link-row}
+**Use advising early**  
+Ask questions before registration, before changing pathways, and before academic difficulties become serious.
+:::
+
+::: {.link-row}
+**Connect courses to goals**  
+Choose electives based on preparation, interests, career direction, and long-term plans.
+:::
+
+::: {.link-row}
+**Communicate professionally**  
+Practice mathematical writing, presentations, email communication, teamwork, and project documentation.
+:::
+
+:::
+
+:::
+:::
+
+::: {.section #resources}
+::: {.container}
+
+## Useful Resources
+
+::: {.grid}
+
+::: {.card}
+### Program and Catalog Information
+
+Use the official graduate catalog and department pages for degree requirements, course descriptions, and current policies.
+
+[Graduate Catalog](https://catalog.northeastern.edu/graduate/science/mathematics/)
+:::
+
+::: {.card}
+### Course Pages and Teaching Materials
+
+Public course pages may include syllabi, selected notes, links, simulations, and book resources. Enrolled students should use Canvas for full course materials.
+
+[Teaching page](teaching.qmd)
+:::
+
+::: {.card}
+### MATH 5110 Applied Linear Algebra Book
+
+A public e-book for Applied Linear Algebra and Matrix Analysis, with chapters, labs, computation, and applications to data science and AI.
+
+[MATH 5110 E-book](https://wanghemath.github.io/MATH5110Book/)
+:::
+
+::: {.card}
+### Interactive Simulations
+
+Interactive demonstrations can help students visualize probability, statistics, linear algebra, stochastic processes, and machine learning ideas.
+
+[Interactive Simulations](https://wanghemath.github.io/Simulations.html)
+:::
+
+::: {.card}
+### Canvas
+
+Canvas is the main platform for enrolled students to access assignments, announcements, labs, solutions, exams, project information, and course communication.
+
+[Canvas](https://canvas.northeastern.edu/)
+:::
+
+::: {.card}
+### Northeastern Career Resources
+
+Students preparing for co-op, internships, or full-time roles should use university career resources together with program advising and project preparation.
+
+[Northeastern Employer Engagement and Career Design](https://careers.northeastern.edu/)
+:::
+
+:::
+
+:::
+:::
+
+::: {.section #contact}
+::: {.container}
+
+## Advising and Contact
+
+For advising questions, students should include their program, expected graduation term, completed courses, current courses, and the specific decision they need help with.
+
+::: {.highlight}
+### Suggested advising email format
+
+**Subject:** Advising question: program, course planning, or concentration pathway  
+**Message:** Briefly explain your program, current status, courses completed, courses planned, and your question. Include any relevant constraints such as co-op, graduation timeline, prerequisites, or career goals.
+:::
+
+::: {.buttons}
+[Department of Mathematics](https://cos.northeastern.edu/mathematics/){.button .primary}
+[Graduate Catalog](https://catalog.northeastern.edu/graduate/science/mathematics/){.button .secondary}
+[Teaching](teaching.qmd){.button .secondary}
+[Research](research.qmd){.button .secondary}
+:::
+
+:::
+:::

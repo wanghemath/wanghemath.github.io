@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f7fafc"/>
+  <text x="200" y="30" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#764ba2">SVD Image Compression</text>
+  
+  <!-- Original image representation -->
+  <g transform="translate(50, 60)">
+    <rect x="0" y="0" width="120" height="120" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+    <text x="60" y="-5" text-anchor="middle" font-family="Arial" font-size="12" fill="#495057">Original</text>
+    
+    <!-- Pattern to represent image -->
+    <rect x="10" y="10" width="100" height="100" fill="url(#pattern1)"/>
+  </g>
+  
+  <!-- Compressed image representation -->
+  <g transform="translate(230, 60)">
+    <rect x="0" y="0" width="120" height="120" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+    <text x="60" y="-5" text-anchor="middle" font-family="Arial" font-size="12" fill="#495057">Compressed (Rank 10)</text>
+    
+    <!-- Simplified pattern -->
+    <rect x="10" y="10" width="100" height="100" fill="url(#pattern2)"/>
+  </g>
+  
+  <!-- Pattern definitions -->
+  <defs>
+    <pattern id="pattern1" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="5" cy="5" r="3" fill="#667eea" opacity="0.8"/>
+      <circle cx="15" cy="15" r="3" fill="#764ba2" opacity="0.8"/>
+      <rect x="8" y="8" width="4" height="4" fill="#667eea" opacity="0.4"/>
+    </pattern>
+    
+    <pattern id="pattern2" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="20" height="20" fill="#667eea" opacity="0.3"/>
+      <rect x="20" y="20" width="20" height="20" fill="#764ba2" opacity="0.3"/>
+    </pattern>
+  </defs>
+  
+  <!-- Singular values plot -->
+  <g transform="translate(50, 210)">
+    <text x="150" y="-5" text-anchor="middle" font-family="Arial" font-size="12" fill="#495057">Singular Values</text>
+    <rect x="0" y="0" width="300" height="60" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+    
+    <!-- Bars representing singular values -->
+    <rect x="10" y="50" width="8" height="40" fill="#667eea" transform="scale(1,-1) translate(0,-100)"/>
+    <rect x="20" y="50" width="8" height="35" fill="#667eea" transform="scale(1,-1) translate(0,-100)"/>
+    <rect x="30" y="50" width="8" height="30" fill="#667eea" transform="scale(1,-1) translate(0,-100)"/>
+    <rect x="40" y="50" width="8" height="25" fill="#667eea" transform="scale(1,-1) translate(0,-100)"/>
+    <rect x="50" y="50" width="8" height="20" fill="#667eea" transform="scale(1,-1) translate(0,-100)"/>
+    <rect x="60" y="50" width="8" height="15" fill="#667eea" transform="scale(1,-1) translate(0,-100)"/>
+    <rect x="70" y="50" width="8" height="12" fill="#667eea" transform="scale(1,-1) translate(0,-100)"/>
+    <rect x="80" y="50" width="8" height="10" fill="#667eea" transform="scale(1,-1) translate(0,-100)"/>
+    <rect x="90" y="50" width="8" height="8" fill="#667eea" transform="scale(1,-1) translate(0,-100)"/>
+    <rect x="100" y="50" width="8" height="6" fill="#667eea" transform="scale(1,-1) translate(0,-100)"/>
+    
+    <!-- Cutoff line -->
+    <line x1="108" y1="0" x2="108" y2="60" stroke="#dc3545" stroke-width="2" stroke-dasharray="3,3"/>
+    
+    <!-- Grayed out values -->
+    <rect x="110" y="50" width="8" height="5" fill="#dee2e6" transform="scale(1,-1) translate(0,-100)"/>
+    <rect x="120" y="50" width="8" height="4" fill="#dee2e6" transform="scale(1,-1) translate(0,-100)"/>
+    <rect x="130" y="50" width="8" height="3" fill="#dee2e6" transform="scale(1,-1) translate(0,-100)"/>
+  </g>
+  
+  <!-- Stats -->
+  <text x="200" y="200" text-anchor="middle" font-family="Arial" font-size="11" fill="#667eea" font-weight="bold">Compression: 5.2:1 | Energy: 92.3%</text>
+</svg>

@@ -1,0 +1,303 @@
+[
+  {
+    "objectID": "resources.html",
+    "href": "resources.html",
+    "title": "Resources",
+    "section": "",
+    "text": "This page collects resources for students preparing for careers in data science, machine learning, artificial intelligence, applied mathematics, statistics, and operations research. The materials include programming support, mathematical background, software tools, career preparation, and Northeastern student support links.\n\n\nStart with the course support links if you are learning Python, MATLAB, LaTeX, or R for a course. Use the knowledge topics section to build background in linear algebra, machine learning, deep learning, computer vision, NLP, and time series. Use the career preparation section to plan projects, technical skills, communication skills, and professional profiles."
+  },
+  {
+    "objectID": "resources.html#student-resources-for-applied-mathematics-data-science-and-machine-learning",
+    "href": "resources.html#student-resources-for-applied-mathematics-data-science-and-machine-learning",
+    "title": "Resources",
+    "section": "",
+    "text": "This page collects resources for students preparing for careers in data science, machine learning, artificial intelligence, applied mathematics, statistics, and operations research. The materials include programming support, mathematical background, software tools, career preparation, and Northeastern student support links.\n\n\nStart with the course support links if you are learning Python, MATLAB, LaTeX, or R for a course. Use the knowledge topics section to build background in linear algebra, machine learning, deep learning, computer vision, NLP, and time series. Use the career preparation section to plan projects, technical skills, communication skills, and professional profiles."
+  },
+  {
+    "objectID": "resources.html#featured-posts-and-teaching-resources",
+    "href": "resources.html#featured-posts-and-teaching-resources",
+    "title": "Resources",
+    "section": "Featured posts and teaching resources",
+    "text": "Featured posts and teaching resources\n\n\nTeaching with AI\nA teaching showcase on using ChatGPT to support coding in applied mathematics, with emphasis on mathematical reasoning, programming logic, debugging, and responsible AI use.\nLeveraging ChatGPT to Support Coding in Applied Math\n\n\nGitHub simulation with AI\nInteractive simulations and examples designed to help students connect applied mathematics, computation, and AI-assisted learning.\nGitHub simulation with AI\n\n\nTeaching page\nA list of courses taught at Northeastern University, including graduate and undergraduate courses in applied mathematics, machine learning, probability, statistics, and linear algebra.\nTeaching page"
+  },
+  {
+    "objectID": "resources.html#course-support",
+    "href": "resources.html#course-support",
+    "title": "Resources",
+    "section": "Course support",
+    "text": "Course support\n\n\nSuggestions to Python Beginners Open\n\n\nSuggestions to MATLAB Beginners Open\n\n\nFinal Project Instructions To be added\n\n\nTextbook Resources Open\n\n\nSoftware Resources Open"
+  },
+  {
+    "objectID": "resources.html#knowledge-topics",
+    "href": "resources.html#knowledge-topics",
+    "title": "Resources",
+    "section": "Knowledge topics",
+    "text": "Knowledge topics\n\n\nOnline resources summary\nA general collection of online learning resources, including project-based programming resources.\nOpen resource\n\n\nLinear algebra\nResources for reviewing and strengthening linear algebra, especially for applied mathematics, data science, machine learning, and numerical computation.\nOpen resource\n\n\nMachine learning and statistical learning\nBasic machine learning and statistical learning resources for students preparing for applied projects and technical interviews.\nOpen resource\n\n\nDeep learning\nBooks and resources for neural networks and deep learning, including online books such as Dive into Deep Learning and related references.\nOpen resource\n\n\nComputer vision\nResources for students interested in image data, convolutional neural networks, medical imaging, segmentation, and visual recognition.\nOpen resource\n\n\nNatural language processing\nResources for students interested in text data, language models, embeddings, transformers, and modern NLP applications.\nOpen resource\n\n\nTime series\nResources for students interested in stochastic processes, forecasting, sequential data, ARMA-type models, state-space models, and machine learning for time-dependent data.\nOpen resource"
+  },
+  {
+    "objectID": "resources.html#data-science-career-preparation",
+    "href": "resources.html#data-science-career-preparation",
+    "title": "Resources",
+    "section": "Data science career preparation",
+    "text": "Data science career preparation\n\n\nData science skills\nA guide for students preparing for data analyst, data scientist, machine learning engineer, AI engineer, and related roles. Topics include mathematical knowledge, programming skills, communication skills, presentation skills, project building, GitHub, Kaggle, LinkedIn, and lifelong learning.\nOpen resource\n\n\nResources for MS students at Northeastern\nA collection of university support links, including College of Science graduate resources, registrar links, academic calendar, catalog, forms, library, Office of Global Services, Writing Center, and Global Student Success.\nOpen resource\n\n\n\nSuggested student checklist\n\nBuild a strong foundation in linear algebra, probability, statistics, optimization, and machine learning.\nPractice Python, R, MATLAB, SQL, GitHub, and data visualization through real projects.\nPrepare a professional GitHub, LinkedIn profile, and personal website.\nJoin seminars, workshops, data clubs, research discussions, and project opportunities.\nUse AI tools carefully: verify results, understand the mathematics, and explain your reasoning clearly."
+  },
+  {
+    "objectID": "resources.html#useful-software-and-websites",
+    "href": "resources.html#useful-software-and-websites",
+    "title": "Resources",
+    "section": "Useful software and websites",
+    "text": "Useful software and websites\n\n\nProgramming and computation\n\nPython\nTensorFlow\nscikit-learn\nR\nMATLAB\n\n\n\nMathematical software\n\nMacaulay2\nGAP\nMathematica\nOverleaf\nLaTeX Project\n\n\n\nAI tools\n\nChatGPT\nGoogle Gemini\nGitHub Copilot\nGoogle Colab\nKaggle"
+  },
+  {
+    "objectID": "resources.html#mathematics-and-research-websites",
+    "href": "resources.html#mathematics-and-research-websites",
+    "title": "Resources",
+    "section": "Mathematics and research websites",
+    "text": "Mathematics and research websites\n\n\nMathSciNet Open\n\n\narXiv Open\n\n\nFront for the Mathematics ArXiv Open\n\n\nManchester Toric Topology Open\n\n\nGeometric Group Theory Open \n\n\nOpen Problems in Combinatorial and Geometric Group Theory Open\n\n\nNortheastern Applied and Interdisciplinary Mathematics Seminar Open"
+  },
+  {
+    "objectID": "resources.html#my-academic-profiles",
+    "href": "resources.html#my-academic-profiles",
+    "title": "Resources",
+    "section": "My academic profiles",
+    "text": "My academic profiles\n\n\nMathSciNet Open\n\n\narXiv Open\n\n\nGoogle Scholar Open\n\n\nResearchGate Open"
+  },
+  {
+    "objectID": "resources.html#contact",
+    "href": "resources.html#contact",
+    "title": "Resources",
+    "section": "Contact",
+    "text": "Contact\n\nEmail: he.wang@northeastern.edu\nOffice: NI 550\nOffice phone: (+1) 617-373-5674\nMailing address: 567 Lake Hall, Department of Mathematics, Northeastern University, 360 Huntington Ave, Boston, MA 02115, USA"
+  },
+  {
+    "objectID": "Teaching/simulations.html",
+    "href": "Teaching/simulations.html",
+    "title": "Interactive Simulations",
+    "section": "",
+    "text": "These interactive simulations help students visualize core ideas in probability, statistics, linear algebra, and machine learning. They are designed for classroom demonstrations, self-study, and exploratory learning.\nUse this page as a teaching hub: students can first review the concept in lecture, then open a simulation, change parameters, observe patterns, and connect the visual behavior back to formulas and theory.\n\n\n\n\n\n\nProbability theory becomes more intuitive when students can repeatedly simulate random experiments and compare empirical behavior with theoretical predictions.\n\n\n\n\n\nExplore how the distribution of sample means approaches a normal distribution as the sample size increases, regardless of the original population distribution.\nView Simulation\n\n\n\n\n\n\nUse random sampling to estimate \\(\\pi\\) by generating points in a square and counting how many fall inside an inscribed circle.\nView Simulation\n\n\n\n\n\n\nTest the famous probability puzzle and compare the long-run winning rates for switching versus staying with the original choice.\nView Simulation\n\n\n\n\n\n\nEstimate \\(\\pi\\) by dropping random needles on parallel lines and observing the crossing frequency.\nView Simulation\n\n\n\n\n\n\nVisualize how a random angle transformation can produce the heavy-tailed Cauchy distribution.\nView Simulation\n\n\n\n\n\n\nStudy sampling without replacement from a finite population and compare simulated outcomes with the hypergeometric distribution.\nView Simulation\n\n\n\n\n\n\nUse conditional expectation and Monte Carlo simulation to analyze the expected time for a rat to exit a three-door maze.\nView Simulation\n\n\n\n\n\n\nModel the number of failures before reaching a fixed number of successes in independent Bernoulli trials.\nView Simulation\n\n\n\n\n\n\nSee how Bayesian inference updates beliefs about a coin’s fairness as additional flips are observed.\nView Simulation\n\n\n\n\n\n\n\n\n\n\nThese simulations support statistical reasoning by showing sampling variability, confidence, hypothesis testing, experimental comparison, and model assumptions.\n\n\n\n\n\nGenerate repeated confidence intervals and observe the long-run coverage behavior relative to the true population mean.\nView Simulation\n\n\n\n\n\n\nVisualize critical regions, test statistics, \\(p\\)-values, Type I error, Type II error, and power.\nView Simulation\n\n\n\n\n\n\nCompare control and treatment variants, study lift, confidence intervals, statistical significance, and power analysis.\nView Simulation\n\n\n\n\n\n\nSimulate a gambler’s random walk until ruin or success and compare with theoretical absorption probabilities.\nView Simulation\n\n\n\n\n\n\nExplore normality, homogeneity of variance, and independence in the context of one-way ANOVA.\nView Simulation\n\n\n\n\n\n\nGenerate group data, run ANOVA, inspect effect size, and connect between-group and within-group variation.\nView Simulation\n\n\n\n\n\n\n\n\n\n\nLinear algebra is especially visual: matrices transform geometry, eigenvectors reveal stable directions, singular values organize information, and Markov chains describe long-run structure.\n\n\n\n\n\nVisualize how matrices rotate, scale, shear, reflect, and project shapes in the plane.\nView Simulation\n\n\n\n\n\n\nGenerate two-dimensional data, compute principal components, and visualize eigenvectors as directions of maximum variance.\nView Simulation\n\n\n\n\n\n\nUse singular value decomposition to compress an image and observe the tradeoff between rank, compression, and retained structure.\nView Simulation\n\n\n\n\n\n\nExplore random walks, transition matrices, stationary distributions, and PageRank values on directed graphs.\nView Simulation\n\n\n\n\n\n\n\n\n\n\nThese simulations connect algorithms to geometry, optimization, statistical learning, and neural-network computation.\n\n\n\n\n\nGenerate noisy data, fit a line, and understand residuals, least squares, fitted slope, intercept, and \\(R^2\\).\nView Simulation\n\n\n\n\n\n\nCompare the closed-form ordinary least squares solution with iterative gradient descent for linear regression.\nView Simulation\n\n\n\n\n\n\nWatch the K-means algorithm iteratively assign points to clusters and update centroids until convergence.\nView Simulation\n\n\n\n\n\n\nStudy how model complexity, noise, and sample size affect bias, variance, and prediction error.\nView Simulation\n\n\n\n\n\n\nObserve a small neural network learn the XOR function through forward propagation, backpropagation, and gradient descent.\nView Simulation\n\n\n\n\n\n\nWatch how convolutional filters move across input data and transform it into feature maps.\nView Simulation"
+  },
+  {
+    "objectID": "Teaching/simulations.html#probability-theory",
+    "href": "Teaching/simulations.html#probability-theory",
+    "title": "Interactive Simulations",
+    "section": "",
+    "text": "Probability theory becomes more intuitive when students can repeatedly simulate random experiments and compare empirical behavior with theoretical predictions.\n\n\n\n\n\nExplore how the distribution of sample means approaches a normal distribution as the sample size increases, regardless of the original population distribution.\nView Simulation\n\n\n\n\n\n\nUse random sampling to estimate \\(\\pi\\) by generating points in a square and counting how many fall inside an inscribed circle.\nView Simulation\n\n\n\n\n\n\nTest the famous probability puzzle and compare the long-run winning rates for switching versus staying with the original choice.\nView Simulation\n\n\n\n\n\n\nEstimate \\(\\pi\\) by dropping random needles on parallel lines and observing the crossing frequency.\nView Simulation\n\n\n\n\n\n\nVisualize how a random angle transformation can produce the heavy-tailed Cauchy distribution.\nView Simulation\n\n\n\n\n\n\nStudy sampling without replacement from a finite population and compare simulated outcomes with the hypergeometric distribution.\nView Simulation\n\n\n\n\n\n\nUse conditional expectation and Monte Carlo simulation to analyze the expected time for a rat to exit a three-door maze.\nView Simulation\n\n\n\n\n\n\nModel the number of failures before reaching a fixed number of successes in independent Bernoulli trials.\nView Simulation\n\n\n\n\n\n\nSee how Bayesian inference updates beliefs about a coin’s fairness as additional flips are observed.\nView Simulation"
+  },
+  {
+    "objectID": "Teaching/simulations.html#statistics",
+    "href": "Teaching/simulations.html#statistics",
+    "title": "Interactive Simulations",
+    "section": "",
+    "text": "These simulations support statistical reasoning by showing sampling variability, confidence, hypothesis testing, experimental comparison, and model assumptions.\n\n\n\n\n\nGenerate repeated confidence intervals and observe the long-run coverage behavior relative to the true population mean.\nView Simulation\n\n\n\n\n\n\nVisualize critical regions, test statistics, \\(p\\)-values, Type I error, Type II error, and power.\nView Simulation\n\n\n\n\n\n\nCompare control and treatment variants, study lift, confidence intervals, statistical significance, and power analysis.\nView Simulation\n\n\n\n\n\n\nSimulate a gambler’s random walk until ruin or success and compare with theoretical absorption probabilities.\nView Simulation\n\n\n\n\n\n\nExplore normality, homogeneity of variance, and independence in the context of one-way ANOVA.\nView Simulation\n\n\n\n\n\n\nGenerate group data, run ANOVA, inspect effect size, and connect between-group and within-group variation.\nView Simulation"
+  },
+  {
+    "objectID": "Teaching/simulations.html#linear-algebra",
+    "href": "Teaching/simulations.html#linear-algebra",
+    "title": "Interactive Simulations",
+    "section": "",
+    "text": "Linear algebra is especially visual: matrices transform geometry, eigenvectors reveal stable directions, singular values organize information, and Markov chains describe long-run structure.\n\n\n\n\n\nVisualize how matrices rotate, scale, shear, reflect, and project shapes in the plane.\nView Simulation\n\n\n\n\n\n\nGenerate two-dimensional data, compute principal components, and visualize eigenvectors as directions of maximum variance.\nView Simulation\n\n\n\n\n\n\nUse singular value decomposition to compress an image and observe the tradeoff between rank, compression, and retained structure.\nView Simulation\n\n\n\n\n\n\nExplore random walks, transition matrices, stationary distributions, and PageRank values on directed graphs.\nView Simulation"
+  },
+  {
+    "objectID": "Teaching/simulations.html#machine-learning",
+    "href": "Teaching/simulations.html#machine-learning",
+    "title": "Interactive Simulations",
+    "section": "",
+    "text": "These simulations connect algorithms to geometry, optimization, statistical learning, and neural-network computation.\n\n\n\n\n\nGenerate noisy data, fit a line, and understand residuals, least squares, fitted slope, intercept, and \\(R^2\\).\nView Simulation\n\n\n\n\n\n\nCompare the closed-form ordinary least squares solution with iterative gradient descent for linear regression.\nView Simulation\n\n\n\n\n\n\nWatch the K-means algorithm iteratively assign points to clusters and update centroids until convergence.\nView Simulation\n\n\n\n\n\n\nStudy how model complexity, noise, and sample size affect bias, variance, and prediction error.\nView Simulation\n\n\n\n\n\n\nObserve a small neural network learn the XOR function through forward propagation, backpropagation, and gradient descent.\nView Simulation\n\n\n\n\n\n\nWatch how convolutional filters move across input data and transform it into feature maps.\nView Simulation"
+  },
+  {
+    "objectID": "talks.html",
+    "href": "talks.html",
+    "title": "Talks",
+    "section": "",
+    "text": "This page collects selected conference talks, posters, seminar talks, and workshops. The talks are centered around algebraic topology, group theory, Lie algebras associated to groups, formality properties, resonance varieties, Chen ranks, configuration spaces, and related topics."
+  },
+  {
+    "objectID": "talks.html#talks-posters-and-seminar-presentations",
+    "href": "talks.html#talks-posters-and-seminar-presentations",
+    "title": "Talks",
+    "section": "",
+    "text": "This page collects selected conference talks, posters, seminar talks, and workshops. The talks are centered around algebraic topology, group theory, Lie algebras associated to groups, formality properties, resonance varieties, Chen ranks, configuration spaces, and related topics."
+  },
+  {
+    "objectID": "talks.html#featured-topic-areas",
+    "href": "talks.html#featured-topic-areas",
+    "title": "Talks",
+    "section": "Featured Topic Areas",
+    "text": "Featured Topic Areas\n\n\nFormality Properties\nTalks on 1-formality, graded-formality, filtered-formality, rational homotopy theory, Malcev Lie algebras, and their applications to finitely generated groups.\n\n\nResonance and Chen Ranks\nPresentations on resonance varieties, Chen ranks, Alexander invariants, cohomology jumping loci, and resonance–Chen rank formulas.\n\n\nBraid-Like Groups\nTalks involving pure braid groups, welded braid groups, McCool groups, configuration spaces, and algebraic invariants of braid-type groups."
+  },
+  {
+    "objectID": "talks.html#conference-talks",
+    "href": "talks.html#conference-talks",
+    "title": "Talks",
+    "section": "Conference Talks",
+    "text": "Conference Talks\n\n\n\nThe 8th International Conference on Matrix Analysis and Applications (ICMAA 2019) University of Nevada, Reno, NV, July 15–18, 2019 Title: Matrix methods in algebraic topology\n\n\nConference\n\n\n\n\nAMS 2017 Fall Western Sectional Meeting Special Session on Homotopy Theory, University of California, Riverside, November 4–5, 2017 Title: Formality properties: generalizations and applications\n\n\nAbstract · Slides\n\n\n\n\nAMS 2016 Spring Eastern Sectional Meeting Special Session on Topology and Combinatorics of Arrangements in honor of Mike Falk, Stony Brook University, March 19–20, 2016 Title: Towards a new resonance–Chen ranks formula: the case of welded braids\n\n\nAbstract · Slides\n\n\n\n\nCombinatorial Constructions in Topology University of Regina, Canada, August 17–21, 2015 Title: Resonance varieties and Chen ranks of braid-like groups\n\n\nSlides\n\n\n\n\nComputational Geometric Topology in Arrangement Theory ICERM, Brown University, July 6–10, 2015 Title: Formality properties, resonance varieties, and Chen ranks\n\n\nSlides\n\n\n\n\nMaurice Auslander Distinguished Lectures and International Conference 2015 Woods Hole, MA, April 29–May 4, 2015 Title: Resonance varieties, Hilbert series and Chen ranks\n\n\nSlides\n\n\n\n\nAMS 2015 Spring Eastern Sectional Meeting Special Session on Algebraic Structures Motivated by and Applied to Knot Theory, Georgetown University, Washington, D.C., March 7–8, 2015 Title: Cohomology jump loci of configuration spaces\n\n\nSlides\n\n\n\n\nMaurice Auslander Distinguished Lectures and International Conference 2014 Woods Hole, MA, May 1–6, 2014 Title: Lie algebras of finitely generated groups and their formality properties\n\n\nSlides"
+  },
+  {
+    "objectID": "talks.html#conference-posters",
+    "href": "talks.html#conference-posters",
+    "title": "Talks",
+    "section": "Conference Posters",
+    "text": "Conference Posters\n\n\nConference for Advancing Evidence-Based Learning\nCATLR, April 30, 2024\nPoster title: Undergraduate and Graduate Mathematics Education in the Era of AI\n\n\nMathWorks Day at Northeastern University\nMarch 1, 2023\nPoster title: Machine Learning in Applied Math Curriculum using MATLAB\nPoster download\n\n\nComputational Geometric Topology in Arrangement Theory\nICERM, Brown University, July 6–10, 2015\nPoster title: Formality properties of finitely generated groups\nPoster download"
+  },
+  {
+    "objectID": "talks.html#seminar-talks",
+    "href": "talks.html#seminar-talks",
+    "title": "Talks",
+    "section": "Seminar Talks",
+    "text": "Seminar Talks\n\n\n\nThe Algebra Seminar, Department of Mathematics, Temple University Philadelphia, October 22, 2018 Title: Moduli spaces in rational homotopy theory\n\n\nSeminar\n\n\n\n\nDepartment of Mathematics & Statistics Colloquium University of Nevada, Reno, October 20, 2016 Title: Formality properties in topology and group theory\n\n\nColloquium\n\n\n\n\nPhD Thesis Defense Northeastern University, April 21, 2016 Title: Resonance varieties, Chen ranks and formality properties of finitely generated groups\n\n\nSlides\n\n\n\n\nGraduate Student Seminar Northeastern University, Spring 2016 Title: Algebraic and geometric invariants of finitely generated groups\n\n\n\n\n\n\n\nGeometry, Algebra, Singularities, Combinatorics Seminar Northeastern University, Boston, November 9, 2015 Title: Algebraic invariants of pure braid-like groups\n\n\n\n\n\n\n\nGraduate Student Seminar Northeastern University, Spring 2015 Title: Some functors from topological spaces to Lie algebras and varieties\n\n\nNotes\n\n\n\n\nGraduate Student Seminar Northeastern University, Fall 2013 Title: The computation of the holonomy Lie algebra of a discrete group\n\n\n\n\n\n\n\nGraduate Student Seminar Northeastern University, Spring 2013 Title: A new application of Toda brackets\n\n\n\n\n\n\n\nAlgebraic Topology Seminar Nankai University, Fall 2012 Title: (Co)homology jump loci and algebraic invariants\n\n\n\n\n\n\n\nGraduate Student Seminar Northeastern University, Spring 2012 Title: Massey Products and Its Applications"
+  },
+  {
+    "objectID": "talks.html#conferences-and-workshops-attended",
+    "href": "talks.html#conferences-and-workshops-attended",
+    "title": "Talks",
+    "section": "Conferences and Workshops Attended",
+    "text": "Conferences and Workshops Attended\nThe following list records selected conferences, workshops, summer schools, and meetings attended.\n\n\nShow conference and workshop list\n\n\nWest Coast Algebraic Topology Summer School: Homotopy Theory of Moduli Spaces, 2010\nThe 9th Annual Graduate Student Topology and Geometry Conference, 2011\n2012 Joint Mathematics Meetings\n2012 Texas Geometry and Topology Conference\nThe 38th International Symposium on Symbolic and Algebraic Computation, 2013\nMaurice Auslander Distinguished Lectures and International Conference, 2014\nAMS 2015 Spring Eastern Sectional Meeting, Special Session on Algebraic Structures Motivated by and Applied to Knot Theory\nMaurice Auslander Distinguished Lectures and International Conference, 2015\nComputational Geometric Topology in Arrangement Theory, ICERM, 2015\nCombinatorial Constructions in Topology, 2015\nAMS 2016 Spring Eastern Sectional Meeting, Special Session on Topology and Combinatorics of Arrangements\nSecond Annual Graduate Student Conference in Algebra, Geometry, and Topology, 2016\n2017 Joint Mathematics Meetings\nHomotopy Theory: Tools and Applications, University of Illinois at Urbana-Champaign, 2017\nGAP XV: Quantization, Pennsylvania State University, 2017\n2019 Joint Mathematics Meetings"
+  },
+  {
+    "objectID": "talks.html#archive-note",
+    "href": "talks.html#archive-note",
+    "title": "Talks",
+    "section": "Archive Note",
+    "text": "Archive Note\nSome older talk files and seminar abstracts may be hosted on legacy Northeastern or external conference pages. The button below links to the original archive page.\n\nOriginal Talks Archive"
+  },
+  {
+    "objectID": "teaching.html",
+    "href": "teaching.html",
+    "title": "Teaching",
+    "section": "",
+    "text": "Here is a list of courses I have taught at Northeastern University and related public teaching resources. The main purpose of this page is to help students learn about course topics and make informed registration decisions.\nThe links below include public course pages, selected lecture notes, syllabi, interactive demonstrations, and course-related resources. Full teaching materials such as assignments, computer labs, exams, final projects, solutions, and active course communication are hosted on Canvas for enrolled Northeastern students."
+  },
+  {
+    "objectID": "teaching.html#courses-i-have-taught",
+    "href": "teaching.html#courses-i-have-taught",
+    "title": "Teaching",
+    "section": "",
+    "text": "Here is a list of courses I have taught at Northeastern University and related public teaching resources. The main purpose of this page is to help students learn about course topics and make informed registration decisions.\nThe links below include public course pages, selected lecture notes, syllabi, interactive demonstrations, and course-related resources. Full teaching materials such as assignments, computer labs, exams, final projects, solutions, and active course communication are hosted on Canvas for enrolled Northeastern students."
+  },
+  {
+    "objectID": "teaching.html#graduate-courses",
+    "href": "teaching.html#graduate-courses",
+    "title": "Teaching",
+    "section": "Graduate Courses",
+    "text": "Graduate Courses\n\n\nMATH 5010 Foundations of Statistical Theory and Probability\nA graduate-level course on probability and statistical theory, with emphasis on mathematical foundations, models of uncertainty, estimation, inference, and computational techniques.\n\n\nMATH 5110 Applied Linear Algebra and Matrix Analysis\nA rigorous treatment of linear algebra and matrix analysis, emphasizing computation, geometry, matrix factorizations, spectral theory, least squares, SVD, PCA, optimization, and applications to data science and AI.\nCourse e-book\n\n\nMATH 6241 Stochastic Processes\nA graduate course on stochastic processes and probabilistic modeling, including Markov chains, renewal processes, Poisson processes, continuous-time Markov chains, Brownian motion, queueing models, simulations, and applications.\n\n\nMATH 7243 Machine Learning and Statistical Learning Theory I\nIntroduces the mathematical and statistical theory of learning together with implementation of modern machine learning algorithms for data science.\n\n\nMATH 7339 Machine Learning and Statistical Learning Theory II\nContinues MATH 7243 with advanced topics in regression, classification, statistical learning, machine learning, deep learning, computational experiments, and data-driven projects.\n\n\nMATH 7741 Readings in Probability and Statistics\nA reading course arranged between an individual student and instructor on a mutually chosen topic in probability, statistics, stochastic processes, data science, or related areas.\n\n\nMATH 7978 Independent Study\nIndependent work under faculty supervision. Previous topics have included generative adversarial networks, image style transfer using convolutional neural networks, and student-designed applied mathematics projects.\n\n\nRational Homotopy Theory\nA graduate summer course on rational homotopy theory, Sullivan models, differential graded algebras, spectral sequences, and connections between topology and algebra.\n\n\nResearch and Reading Projects\nGraduate reading and research projects may include algebraic topology, topological data analysis, right-angled Artin groups, random graphs, stochastic modeling, machine learning, and mathematical foundations of AI."
+  },
+  {
+    "objectID": "teaching.html#undergraduate-courses",
+    "href": "teaching.html#undergraduate-courses",
+    "title": "Teaching",
+    "section": "Undergraduate Courses",
+    "text": "Undergraduate Courses\n\n\nMATH 4570 Matrix Methods in Data Analysis and Machine Learning\nA course on linear algebra, matrix methods, data analysis, and machine learning. Topics include matrix algebra, vector spaces, inner products, least squares, regression, gradient descent, PCA, SVD, and neural-network-related matrix computations.\n\n\nMATH 2331 Linear Algebra\nCovers matrices, systems of linear equations, Gaussian elimination, determinants, vector spaces, linear transformations, eigenvalues, eigenspaces, orthogonality, symmetric matrices, and singular value decomposition.\n\n\nMATH 3081 Probability and Statistics\nA calculus-based course in probability and statistics, developing mathematical tools for modeling uncertainty, analyzing data, and solving real-world problems.\n\n\nMATH 2321 Calculus 3 for Science and Engineering\nExtends calculus to functions of several variables and vector fields. Topics include lines and planes, partial derivatives, gradients, optimization, multiple integrals, line and surface integrals, Green’s theorem, Stokes’ theorem, and the divergence theorem.\n\n\nMATH 182 Calculus 2\nCovers techniques and applications of integration, sequences, series, power series, Taylor series, differential equations, arc length, work, improper integrals, and approximation methods.\n\n\nMATH 1231 Calculus for Business and Economics\nIntroduces derivatives and integrals through applications in business and economics, including optimization, marginal analysis, average value, accumulated change, and future value of income streams.\n\n\nMATH 4970 Junior/Senior Honors Project 1\nAn undergraduate honors project course supporting independent mathematical study, writing, and research under faculty guidance.\n\n\nMATH 4971 Junior/Senior Honors Project 2\nContinuation of undergraduate honors project work, typically involving deeper reading, computation, presentation, and written exposition."
+  },
+  {
+    "objectID": "teaching.html#teaching-projects-and-public-resources",
+    "href": "teaching.html#teaching-projects-and-public-resources",
+    "title": "Teaching",
+    "section": "Teaching Projects and Public Resources",
+    "text": "Teaching Projects and Public Resources\n\n\nInteractive Simulations Page by AI\nA collection of interactive simulations in probability, statistics, linear algebra, and machine learning. These pages help students visualize concepts such as the central limit theorem, Monte Carlo simulation, confidence intervals, hypothesis testing, matrix transformations, PCA, SVD image compression, PageRank, linear regression, gradient descent, clustering, and neural networks.\n\n\nLinear Algebra in the AI Age\nAn online book for MATH 5110: Applied Linear Algebra and Matrix Analysis. The book presents linear algebra as a language for geometry, computation, data, algorithms, modeling, and artificial intelligence.\n\n\nComputational Labs\nMany courses include Python-based labs, simulations, notebooks, and applied projects. These labs help students connect theory with computation, data analysis, visualization, and algorithmic thinking.\n\n\nProject-Based Learning\nGraduate and undergraduate projects often involve real data, mathematical modeling, machine learning, stochastic simulation, optimization, linear algebra, and interdisciplinary applications.\n\n\nAI-Assisted Learning\nSome public teaching resources explore how AI tools can support coding, visualization, debugging, simulation, mathematical explanation, and independent study while preserving mathematical rigor.\n\n\nStudent Advising and Independent Study\nI supervise reading courses, independent studies, honors projects, and student research projects in applied mathematics, statistics, probability, machine learning, topology, and data science.\n\n\n\nTeaching Philosophy\nMy teaching connects mathematical structure, computation, real data, and modern applications. In my courses, students learn not only definitions and theorems, but also how mathematical ideas become algorithms, models, simulations, and tools for data science, machine learning, probability, statistics, optimization, and artificial intelligence."
+  },
+  {
+    "objectID": "research.html",
+    "href": "research.html",
+    "title": "Research",
+    "section": "",
+    "text": "My research interests are in algebraic topology and group theory, and their relations with algebra, geometry, combinatorics, and data science. I am also interested in applications of algebraic and topological ideas to machine learning, deep learning, and topological data analysis."
+  },
+  {
+    "objectID": "research.html#research-overview",
+    "href": "research.html#research-overview",
+    "title": "Research",
+    "section": "",
+    "text": "My research interests are in algebraic topology and group theory, and their relations with algebra, geometry, combinatorics, and data science. I am also interested in applications of algebraic and topological ideas to machine learning, deep learning, and topological data analysis."
+  },
+  {
+    "objectID": "research.html#research-areas",
+    "href": "research.html#research-areas",
+    "title": "Research",
+    "section": "Research Areas",
+    "text": "Research Areas\n\n\nAlgebraic Topology\nRational homotopy theory, formality properties, Massey products, spectral sequences, twisted cohomology, and stable homotopy computations.\n\n\nGroup Theory and Lie Algebras\nFinitely generated groups, Malcev Lie algebras, holonomy Lie algebras, Chen Lie algebras, lower central series ranks, and filtered-formality.\n\n\nCohomology Jumping Loci\nResonance varieties, characteristic varieties, Chen ranks, Alexander-type invariants, and their relation to the structure of groups.\n\n\nBraid-Type Groups\nPure braid groups, virtual braid groups, welded braid groups, McCool groups, upper McCool groups, and their algebraic and topological invariants.\n\n\nTopological Data Analysis\nPersistent homology, simplicial complexes, clique complexes, shape of data, and algebraic-topological methods in data science.\n\n\nMathematics of AI\nLinear algebra, geometry, probability, optimization, and topology as mathematical foundations for machine learning and artificial intelligence."
+  },
+  {
+    "objectID": "research.html#publications",
+    "href": "research.html#publications",
+    "title": "Research",
+    "section": "Publications",
+    "text": "Publications\n\n10. Taylor expansions of groups and filtered-formality\nHe Wang and Alexander I. Suciu\nEuropean Journal of Mathematics, 6, 1073–1096, 2020.\nDOI · arXiv:1905.10355\n\n\nAbstract\n\nLet \\(G\\) be a finitely generated group, and let \\(\\Bbbk G\\) be its group algebra over a field of characteristic \\(0\\). A Taylor expansion is a certain type of map from \\(G\\) to the degree completion of the associated graded algebra of \\(\\Bbbk G\\) which generalizes the Magnus expansion of a free group. The group \\(G\\) is said to be filtered-formal if its Malcev Lie algebra is isomorphic to the degree completion of its associated graded Lie algebra. We show that \\(G\\) is filtered-formal if and only if it admits a Taylor expansion, and derive some consequences.\n\n\n\n9. Chen ranks and resonance varieties of the upper McCool groups\nHe Wang and Alexander I. Suciu\nAdvances in Applied Mathematics, 110, 197–234, 2019.\nMR3983125 · arXiv:1804.06006\n\n\nAbstract\n\nThe group of basis-conjugating automorphisms of the free group of rank \\(n\\), also known as the McCool group or the welded braid group \\(P\\Sigma_n\\), contains a much-studied subgroup called the upper McCool group \\(P\\Sigma_n^+\\). Starting from the cohomology ring of \\(P\\Sigma_n^+\\), we use a Gröbner basis computation to find a simple presentation for the infinitesimal Alexander invariant of this group, from which we determine the resonance varieties and the Chen ranks of the upper McCool groups. These computations show that the Chen ranks conjecture does not hold for \\(P\\Sigma_n^+\\) for any \\(n \\ge 4\\). We also determine the scheme structure of the resonance varieties \\(\\mathcal{R}_1(P\\Sigma_n^+)\\) and show that these schemes are not reduced for \\(n \\ge 4\\).\n\n\n\n8. Formality properties of finitely generated groups and Lie algebras\nHe Wang and Alexander I. Suciu\nForum Mathematicum, 31 no. 4, 867–905, 2019.\nDOI · MR3975666 · arXiv:1504.08294\n\n\nAbstract\n\nWe explore the graded and filtered formality properties of finitely generated groups by studying the various Lie algebras over a field of characteristic \\(0\\) attached to such groups, including the Malcev Lie algebra, the associated graded Lie algebra, the holonomy Lie algebra, and the Chen Lie algebra. We explain how these notions behave with respect to split injections, coproducts, direct products, and field extensions, and how they are inherited by solvable and nilpotent quotients. A key tool is the \\(1\\)-minimal model of the group and its relation to these Lie algebras. Another approach to formality is provided by Taylor expansions from the group to the completion of the associated graded algebra of the group ring.\n\n\n\n7. Cup products, lower central series, and holonomy Lie algebras\nHe Wang and Alexander I. Suciu\nJournal of Pure and Applied Algebra, 223 no. 8, 3359–3385, 2019.\nDOI · MR3926216 · arXiv:1701.07768\n\n\nAbstract\n\nWe generalize basic results relating the associated graded Lie algebra and the holonomy Lie algebra from finitely presented commutator-relators groups to arbitrary finitely presented groups. In the process, we give an explicit formula for the cup product in the cohomology of a finite \\(2\\)-complex, and an algorithm for computing the corresponding holonomy Lie algebra using a Magnus expansion method. Examples include link groups, one-relator groups, and fundamental groups of Seifert fibered manifolds.\n\n\n\n6. Pure virtual braids, resonance, and formality\nHe Wang and Alexander I. Suciu\nMathematische Zeitschrift, 286 no. 3–4, 1495–1524, 2017.\nDOI · MR3671586 · arXiv:1602.04273\n\n\nAbstract\n\nWe investigate the resonance varieties, lower central series ranks, and Chen ranks of the pure virtual braid groups and their upper-triangular subgroups. As an application, we give a complete answer to the \\(1\\)-formality question for this class of groups. We also explore connections between Alexander-type invariants of finitely generated groups and several graded Lie algebras associated to them.\n\n\n\n5. The pure braid groups and their relatives\nHe Wang and Alexander I. Suciu\nIn Perspectives in Lie Theory, 403–426, Springer INdAM Series vol. 19, 2017.\nDOI · MR3751136 · arXiv:1602.05291\n\n\nAbstract\n\nThis survey investigates the resonance varieties, lower central series ranks, Chen ranks, and formality properties of several families of braid-like groups: the pure braid groups \\(P_n\\), the welded pure braid groups \\(wP_n\\), the virtual pure braid groups \\(vP_n\\), and their upper variants \\(wP_n^+\\) and \\(vP_n^+\\). We also discuss natural homomorphisms between these groups and methods for distinguishing among pure braid groups and their relatives.\n\n\n\n4. On a spectral sequence for twisted cohomologies\nHe Wang, Weiping Li, and Xiugui Liu\nChinese Annals of Mathematics, Series B, 35 no. 4, 633–658, 2014.\nDOI · MR3227750 · arXiv:0911.1417\n\n\nAbstract\n\nLet \\((\\Omega^{\\ast}(M), d)\\) be the de Rham cochain complex for a smooth compact closed manifold \\(M\\). For an odd-degree closed form \\(H\\), there is a twisted de Rham cochain complex \\((\\Omega^{\\ast}(M), d + H_\\wedge)\\) and its associated twisted de Rham cohomology \\(H^*(M,H)\\). We construct a spectral sequence derived from the filtration of \\(\\Omega^{\\ast}(M)\\) that converges to the twisted de Rham cohomology, and describe the differentials in terms of cup products and Massey products.\n\n\n\n3. Some products involving the fourth Greek letter family element in the Adams spectral sequence\nHe Wang and Xiugui Liu\nTurkish Journal of Mathematics, 35 no. 2, 311–321, 2011.\nDOI · MR2839725\n\n\nAbstract\n\nThis paper studies products in the cohomology of the mod \\(p\\) Steenrod algebra using the classical Adams spectral sequence. For an odd prime \\(p\\), we analyze the nontriviality of certain products involving elements in the fourth Greek letter family and provide explicit computations in the \\(E_2\\)-term of the Adams spectral sequence.\n\n\n\n2. On the cohomology of the mod \\(p\\) Steenrod algebra\nHe Wang and Xiugui Liu\nProceedings of the Japan Academy, Series A, Mathematical Sciences, 85 no. 9, 143–148, 2009.\nDOI · MR2573964\n\n\nAbstract\n\nFor an odd prime \\(p &gt; 7\\), this paper proves nontriviality and triviality results for certain products in the cohomology of the mod \\(p\\) Steenrod algebra. The proof uses explicit combinatorial analysis of the modified May spectral sequence.\n\n\n\n1. Ph.D. Thesis\nResonance varieties, Chen ranks and formality properties of finitely generated groups\nNortheastern University, 2016.\nMathSciNet: MR3517822\n\n\nDescription\n\nThe thesis studies resonance varieties, Chen ranks, and formality properties of finitely generated groups, with emphasis on the interaction between group theory, algebraic topology, and Lie-theoretic invariants."
+  },
+  {
+    "objectID": "research.html#seminar-and-workshop-notes",
+    "href": "research.html#seminar-and-workshop-notes",
+    "title": "Research",
+    "section": "Seminar and Workshop Notes",
+    "text": "Seminar and Workshop Notes\n\n\nNotes on spectral sequences Seminar notes\n\n\nHigher Massey products and their applications Seminar notes\n\n\nSome functors from topological spaces to Lie algebras and varieties Seminar notes\n\n\nRational homotopy theory Seminar notes"
+  },
+  {
+    "objectID": "research.html#selected-research-links",
+    "href": "research.html#selected-research-links",
+    "title": "Research",
+    "section": "Selected Research Links",
+    "text": "Selected Research Links\n\n\nScholar Profiles\n\nGoogle Scholar\nMathSciNet\narXiv author page\n\n\n\nResearch Keywords\n\nAlgebraic topology\nGroup theory\nRational homotopy theory\nResonance varieties\nChen ranks\nFormality properties\nTopological data analysis\n\n\n\nCurrent Directions\n\nTopological data analysis and machine learning\nRandom graphs and right-angled Artin groups\nAlgebraic and topological invariants for data\nMathematical foundations of AI"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "He Wang",
+    "section": "",
+    "text": "I am an Associate Teaching Professor in the Department of Mathematics at Northeastern University. I serve as a Program Director for MS Applied Mathematics, MS Mathematics, MS Statistics and MS Statistics-Connect. My academic background is in algebraic topology, group theory, and their connections with algebra, geometry, data science, and artificial intelligence.\nBefore joining Northeastern as a faculty member, I was a Postdoctoral Fellow at the University of Nevada, Reno from 2016 to 2019, working with Chris Rogers. I received my Ph.D. in Mathematics from Northeastern University in 2016 under the supervision of Alexandru I. Suciu. I received my M.S. in Mathematics from Nankai University in 2010 and my B.S. in Mathematics and Applied Mathematics from Hebei Normal University in 2007.\nMy research and teaching connect algebraic topology, group theory, applied mathematics, linear algebra, machine learning, stochastic processes, topological data analysis, and AI-enhanced mathematics education.\n\n\n\n\n\n\n\nAssociate Teaching Professor\nDirector for MS Programs\nDepartment of Mathematics\nNortheastern University"
+  },
+  {
+    "objectID": "index.html#he-wang",
+    "href": "index.html#he-wang",
+    "title": "He Wang",
+    "section": "",
+    "text": "Associate Teaching Professor\nDirector for MS Programs\nDepartment of Mathematics\nNortheastern University"
+  },
+  {
+    "objectID": "index.html#research-and-scholarly-interests",
+    "href": "index.html#research-and-scholarly-interests",
+    "title": "He Wang",
+    "section": "Research and Scholarly Interests",
+    "text": "Research and Scholarly Interests\nMy research interests are in algebraic topology and group theory, together with their connections with algebra, geometry, combinatorics, data science, and AI. I am also interested in applications to machine learning, deep learning, and topological data analysis. See the Research page for publications, abstracts, and seminar notes.\n\n\nAlgebraic Topology and Homotopy Theory\nRational homotopy theory, moduli spaces of \\(C_\\infty\\)-structures, formality, Massey products, spectral sequences, and stable homotopy computations.\n\n\nGroups, Lie Algebras, and Jumping Loci\nCohomology jumping loci, characteristic varieties, resonance varieties, Chen ranks, lower central series ranks, holonomy Lie algebras, and formality properties of finitely generated groups.\n\n\nConfiguration Spaces and Braid-Type Groups\nConfiguration spaces, pure braid groups, pure virtual braid groups, pure welded braid groups, McCool groups, fundamental groups of algebraic varieties, and related combinatorial structures.\n\n\nTopological Data Analysis\nPersistent homology, simplicial complexes, shape of data, computational topology, and the use of algebraic-topological ideas in data science.\n\n\nRandom Graphs and RAAGs\nRandom right-angled Artin groups, clique complexes, Betti numbers, resonance varieties, Chen ranks, and probabilistic algebraic topology.\n\n\nMathematics of AI\nLinear algebra, probability, optimization, and geometry as foundations for machine learning and artificial intelligence."
+  },
+  {
+    "objectID": "index.html#teaching",
+    "href": "index.html#teaching",
+    "title": "He Wang",
+    "section": "Teaching",
+    "text": "Teaching\nMy teaching combines mathematical structure, computational experimentation, real data, and project-based learning. The materials on this website are mainly lecture notes, syllabi, course pages, and public resources. Full course sites, assignments, computer labs, exams, and projects are usually hosted on Northeastern Canvas.\n\n\nGraduate Courses\n\nMATH 5010 Foundations of Statistical Theory and Probability\nMATH 5110 Applied Linear Algebra and Matrix Analysis\nNew Applied Linear Algebra e-book\nMATH 6241 Stochastic Processes\nMATH 7243 Machine Learning and Statistical Learning Theory I\nMATH 7339 Machine Learning and Statistical Learning Theory II\nMATH 7741 Readings in Probability and Statistics\nMATH 7978 Independent Study\nMath 8984 Research\nRational Homotopy Theory\n\n\n\nUndergraduate Courses\n\nMATH 4971 Junior/Senior Honors Project 2\nMATH 4970 Junior/Senior Honors Project 1\nMATH 4570 Matrix Methods in Data Analysis and Machine Learning\nMATH 3081 Probability and Statistics\nMATH 2331 Linear Algebra\nMATH 2321 Calculus 3 for Science and Engineering\nMATH 182 Calculus 2\nMATH 1231 Calculus for Business and Economics\n\n\n\nTeaching Projects\n\nE-book for Applied Linear Algebra\nInteractive simulations and AI-assisted coding activities\nGitHub simulation with AI\nTeaching showcase in AI Gallery\nMachine learning and applied mathematics labs\nTeaching showcases on using ChatGPT and AI tools to support coding, simulation, and mathematical learning"
+  },
+  {
+    "objectID": "index.html#program-leadership",
+    "href": "index.html#program-leadership",
+    "title": "He Wang",
+    "section": "Program Leadership",
+    "text": "Program Leadership\nI serve as a program director for graduate programs in the Department of Mathematics at Northeastern University. My work includes curriculum development, student advising, interdisciplinary program planning, experiential learning, industry connections, and support for graduate student success."
+  },
+  {
+    "objectID": "index.html#seminars-student-activities-and-outreach",
+    "href": "index.html#seminars-student-activities-and-outreach",
+    "title": "He Wang",
+    "section": "Seminars, Student Activities, and Outreach",
+    "text": "Seminars, Student Activities, and Outreach\n\n\nAIM Seminar\nI organize the Northeastern Applied and Interdisciplinary Mathematics Seminar, which supports conversations across mathematics, computation, modeling, and applications.\n\n\nData Club\nI organize the Northeastern Graduate Math Data Club for MS students in the mathematics department. The club supports student learning in Python, SQL, data science, machine learning, projects, career preparation, and peer collaboration.\n\n\nTalks and Teaching Innovation\nMy talks and posters include topics in algebraic topology, group theory, matrix methods, AI in mathematics education, and machine learning in the applied mathematics curriculum. See the Talks page for selected talks, posters, and workshop materials."
+  },
+  {
+    "objectID": "index.html#selected-links",
+    "href": "index.html#selected-links",
+    "title": "He Wang",
+    "section": "Selected Links",
+    "text": "Selected Links\nCourse materials, projects, and professional links.\n\n\nScholar Accounts\n\nGoogle Scholar\nMathSciNet\narXiv\nResearchGate\n\n\n\nSeminars\n\nAIM Seminar\nData Club\n\n\n\nProfessional\n\nGitHub\nLinkedIn\nCurriculum Vitae"
+  },
+  {
+    "objectID": "index.html#contacts",
+    "href": "index.html#contacts",
+    "title": "He Wang",
+    "section": "Contacts",
+    "text": "Contacts\n\nMailing Address\n567 Lake Hall, Department of Mathematics, Northeastern University, 360 Huntington Ave, Boston, MA 02115\nEmail: he.wang@northeastern.edu\nOffice: NI 550 (Northeastern map)\nOffice Phone: (+1) 617-373-5674"
+  },
+  {
+    "objectID": "cv.html",
+    "href": "cv.html",
+    "title": "CV",
+    "section": "",
+    "text": "CV\nAdd a link to your CV PDF here.\nDownload CV"
+  }
+]

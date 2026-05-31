@@ -1,0 +1,461 @@
+---
+title: "Interactive Simulations"
+subtitle: "Probability, Statistics, Linear Algebra, and Machine Learning"
+page-layout: full
+toc: true
+toc-location: right
+format:
+  html:
+    css: ../styles.css
+---
+
+::: {.page-banner}
+# Interactive Simulations
+:::
+
+::: {.section}
+::: {.container}
+
+These interactive simulations help students visualize core ideas in **probability**, **statistics**, **linear algebra**, and **machine learning**. They are designed for classroom demonstrations, self-study, and exploratory learning.
+
+Use this page as a teaching hub: students can first review the concept in lecture, then open a simulation, change parameters, observe patterns, and connect the visual behavior back to formulas and theory.
+
+::: {.buttons}
+[Probability](#probability-theory){.button .primary}
+[Statistics](#statistics){.button .secondary}
+[Linear Algebra](#linear-algebra){.button .secondary}
+[Machine Learning](#machine-learning){.button .secondary}
+:::
+
+::: {.highlight}
+### How to use this page
+
+Each card links to an interactive HTML file stored in `Teaching/simulations/`. Since this QMD file is intended to live inside the `Teaching/` folder, all simulation links are written as relative links of the form `simulations/filename.html`.
+:::
+
+:::
+:::
+
+## Probability Theory
+
+::: {.section}
+::: {.container}
+
+Probability theory becomes more intuitive when students can repeatedly simulate random experiments and compare empirical behavior with theoretical predictions.
+
+::: {.grid}
+
+::: {.card}
+### Central Limit Theorem
+
+Explore how the distribution of sample means approaches a normal distribution as the sample size increases, regardless of the original population distribution.
+
+[View Simulation](simulations/clt-simulation.html){.button .primary}
+:::
+
+::: {.card}
+### Monte Carlo $\pi$ Estimation
+
+Use random sampling to estimate $\pi$ by generating points in a square and counting how many fall inside an inscribed circle.
+
+[View Simulation](simulations/monte-carlo-simulation.html){.button .primary}
+:::
+
+::: {.card}
+### Monty Hall Problem
+
+Test the famous probability puzzle and compare the long-run winning rates for switching versus staying with the original choice.
+
+[View Simulation](simulations/monty-hall-simulation.html){.button .primary}
+:::
+
+::: {.card}
+### Buffon's Needle
+
+Estimate $\pi$ by dropping random needles on parallel lines and observing the crossing frequency.
+
+[View Simulation](simulations/buffons_needle_simulation.html){.button .primary}
+:::
+
+::: {.card}
+### Cauchy Distribution
+
+Visualize how a random angle transformation can produce the heavy-tailed Cauchy distribution.
+
+[View Simulation](simulations/cauchy_distribution_demo.html){.button .primary}
+:::
+
+::: {.card}
+### Hypergeometric Urn Experiment
+
+Study sampling without replacement from a finite population and compare simulated outcomes with the hypergeometric distribution.
+
+[View Simulation](simulations/hypergeometric-urn-experiment.html){.button .primary}
+:::
+
+::: {.card}
+### Rat in a Three-Door Maze
+
+Use conditional expectation and Monte Carlo simulation to analyze the expected time for a rat to exit a three-door maze.
+
+[View Simulation](simulations/rat_three_door_maze_with_visual.html){.button .primary}
+:::
+
+::: {.card}
+### Negative Binomial Simulation
+
+Model the number of failures before reaching a fixed number of successes in independent Bernoulli trials.
+
+[View Simulation](simulations/negative_binomial_sim.html){.button .primary}
+:::
+
+::: {.card}
+### Bayesian Coin Flip
+
+See how Bayesian inference updates beliefs about a coin's fairness as additional flips are observed.
+
+[View Simulation](simulations/bayesian-simulation.html){.button .primary}
+:::
+
+:::
+:::
+:::
+
+## Statistics
+
+::: {.section}
+::: {.container}
+
+These simulations support statistical reasoning by showing sampling variability, confidence, hypothesis testing, experimental comparison, and model assumptions.
+
+::: {.grid}
+
+::: {.card}
+### Confidence Interval Simulation
+
+Generate repeated confidence intervals and observe the long-run coverage behavior relative to the true population mean.
+
+[View Simulation](simulations/confidence-interval-sim.html){.button .primary}
+:::
+
+::: {.card}
+### Hypothesis Testing Simulation
+
+Visualize critical regions, test statistics, $p$-values, Type I error, Type II error, and power.
+
+[View Simulation](simulations/hypothesis-test-sim.html){.button .primary}
+:::
+
+::: {.card}
+### A/B Testing Simulation
+
+Compare control and treatment variants, study lift, confidence intervals, statistical significance, and power analysis.
+
+[View Simulation](simulations/ab-testing-sim.html){.button .primary}
+:::
+
+::: {.card}
+### Gambler's Ruin Problem
+
+Simulate a gambler's random walk until ruin or success and compare with theoretical absorption probabilities.
+
+[View Simulation](simulations/gamblers-ruin-example.html){.button .primary}
+:::
+
+::: {.card}
+### One-Way ANOVA Assumptions
+
+Explore normality, homogeneity of variance, and independence in the context of one-way ANOVA.
+
+[View Simulation](simulations/anova-assumptions-demo.html){.button .primary}
+:::
+
+::: {.card}
+### ANOVA Simulation
+
+Generate group data, run ANOVA, inspect effect size, and connect between-group and within-group variation.
+
+[View Simulation](simulations/anova-sim.html){.button .primary}
+:::
+
+:::
+:::
+:::
+
+## Linear Algebra
+
+::: {.section}
+::: {.container}
+
+Linear algebra is especially visual: matrices transform geometry, eigenvectors reveal stable directions, singular values organize information, and Markov chains describe long-run structure.
+
+::: {.grid}
+
+::: {.card}
+### 2D Matrix Transformations
+
+Visualize how matrices rotate, scale, shear, reflect, and project shapes in the plane.
+
+[View Simulation](simulations/matrix-transformations-2d.html){.button .primary}
+:::
+
+::: {.card}
+### Principal Component Analysis
+
+Generate two-dimensional data, compute principal components, and visualize eigenvectors as directions of maximum variance.
+
+[View Simulation](simulations/eigenvector-pca.html){.button .primary}
+:::
+
+::: {.card}
+### SVD Image Compression
+
+Use singular value decomposition to compress an image and observe the tradeoff between rank, compression, and retained structure.
+
+[View Simulation](simulations/svd-image-compression.html){.button .primary}
+:::
+
+::: {.card}
+### Markov Chains and PageRank
+
+Explore random walks, transition matrices, stationary distributions, and PageRank values on directed graphs.
+
+[View Simulation](simulations/markov-chain-pagerank.html){.button .primary}
+:::
+
+:::
+:::
+:::
+
+## Machine Learning
+
+::: {.section}
+::: {.container}
+
+These simulations connect algorithms to geometry, optimization, statistical learning, and neural-network computation.
+
+::: {.grid}
+
+::: {.card}
+### Linear Regression
+
+Generate noisy data, fit a line, and understand residuals, least squares, fitted slope, intercept, and $R^2$.
+
+[View Simulation](simulations/linear-regression-simulation.html){.button .primary}
+:::
+
+::: {.card}
+### OLS vs Gradient Descent
+
+Compare the closed-form ordinary least squares solution with iterative gradient descent for linear regression.
+
+[View Simulation](simulations/linear_regression_demo.html){.button .primary}
+:::
+
+::: {.card}
+### K-Means Clustering
+
+Watch the K-means algorithm iteratively assign points to clusters and update centroids until convergence.
+
+[View Simulation](simulations/kmeans-simulation.html){.button .primary}
+:::
+
+::: {.card}
+### Bias-Variance Tradeoff
+
+Study how model complexity, noise, and sample size affect bias, variance, and prediction error.
+
+[View Simulation](simulations/bias_variance_simulation.html){.button .primary}
+:::
+
+::: {.card}
+### Neural Network Training
+
+Observe a small neural network learn the XOR function through forward propagation, backpropagation, and gradient descent.
+
+[View Simulation](simulations/neural-network-simulation.html){.button .primary}
+:::
+
+::: {.card}
+### Neural Network Convolution Visualizer
+
+Watch how convolutional filters move across input data and transform it into feature maps.
+
+[View Simulation](simulations/convolution_demo.html){.button .primary}
+:::
+
+:::
+:::
+:::
+
+## Quick Link Index
+
+::: {.section}
+::: {.container}
+
+::: {.links-list}
+
+::: {.link-row}
+**Central Limit Theorem**  
+[Open](simulations/clt-simulation.html)
+:::
+
+::: {.link-row}
+**Monte Carlo $\pi$ Estimation**  
+[Open](simulations/monte-carlo-simulation.html)
+:::
+
+::: {.link-row}
+**Monty Hall Problem**  
+[Open](simulations/monty-hall-simulation.html)
+:::
+
+::: {.link-row}
+**Buffon's Needle**  
+[Open](simulations/buffons_needle_simulation.html)
+:::
+
+::: {.link-row}
+**Cauchy Distribution**  
+[Open](simulations/cauchy_distribution_demo.html)
+:::
+
+::: {.link-row}
+**Hypergeometric Urn Experiment**  
+[Open](simulations/hypergeometric-urn-experiment.html)
+:::
+
+::: {.link-row}
+**Rat in a Three-Door Maze**  
+[Open](simulations/rat_three_door_maze_with_visual.html)
+:::
+
+::: {.link-row}
+**Negative Binomial Simulation**  
+[Open](simulations/negative_binomial_sim.html)
+:::
+
+::: {.link-row}
+**Bayesian Coin Flip**  
+[Open](simulations/bayesian-simulation.html)
+:::
+
+::: {.link-row}
+**Confidence Interval Simulation**  
+[Open](simulations/confidence-interval-sim.html)
+:::
+
+::: {.link-row}
+**Hypothesis Testing Simulation**  
+[Open](simulations/hypothesis-test-sim.html)
+:::
+
+::: {.link-row}
+**A/B Testing Simulation**  
+[Open](simulations/ab-testing-sim.html)
+:::
+
+::: {.link-row}
+**Gambler's Ruin Problem**  
+[Open](simulations/gamblers-ruin-example.html)
+:::
+
+::: {.link-row}
+**One-Way ANOVA Assumptions**  
+[Open](simulations/anova-assumptions-demo.html)
+:::
+
+::: {.link-row}
+**ANOVA Simulation**  
+[Open](simulations/anova-sim.html)
+:::
+
+::: {.link-row}
+**2D Matrix Transformations**  
+[Open](simulations/matrix-transformations-2d.html)
+:::
+
+::: {.link-row}
+**Principal Component Analysis**  
+[Open](simulations/eigenvector-pca.html)
+:::
+
+::: {.link-row}
+**SVD Image Compression**  
+[Open](simulations/svd-image-compression.html)
+:::
+
+::: {.link-row}
+**Markov Chains and PageRank**  
+[Open](simulations/markov-chain-pagerank.html)
+:::
+
+::: {.link-row}
+**Linear Regression**  
+[Open](simulations/linear-regression-simulation.html)
+:::
+
+::: {.link-row}
+**OLS vs Gradient Descent**  
+[Open](simulations/linear_regression_demo.html)
+:::
+
+::: {.link-row}
+**K-Means Clustering**  
+[Open](simulations/kmeans-simulation.html)
+:::
+
+::: {.link-row}
+**Bias-Variance Tradeoff**  
+[Open](simulations/bias_variance_simulation.html)
+:::
+
+::: {.link-row}
+**Neural Network Training**  
+[Open](simulations/neural-network-simulation.html)
+:::
+
+::: {.link-row}
+**Neural Network Convolution Visualizer**  
+[Open](simulations/convolution_demo.html)
+:::
+
+:::
+:::
+:::
+
+## Suggested classroom use
+
+::: {.section}
+::: {.container}
+
+::: {.two-col}
+
+::: {.card}
+### Before class
+
+Ask students to open one simulation and predict what will happen when a parameter changes. For example, before discussing the Central Limit Theorem, ask what happens when sample size increases.
+:::
+
+::: {.card}
+### During class
+
+Use the simulation as a live demonstration. Pause after each run and connect the visual output to definitions, formulas, and assumptions.
+:::
+
+::: {.card}
+### After class
+
+Assign a short reflection: students should change two parameters, record what changed, and explain the result mathematically.
+:::
+
+::: {.card}
+### For projects
+
+Students can extend a simulation, add a new distribution, modify an algorithm, or compare empirical results with theoretical predictions.
+:::
+
+:::
+
+:::
+:::

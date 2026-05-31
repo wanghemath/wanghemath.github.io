@@ -1,0 +1,44 @@
+{
+  "programs.qmd": {
+    "programs.html": "d82ea377"
+  },
+  "teaching.qmd": {
+    "teaching.html": "e6696287"
+  },
+  "research.qmd": {
+    "research.html": "f0dac038"
+  },
+  "index.qmd": {
+    "index.html": "ae02ea53"
+  },
+  "publications.qmd": {
+    "publications.html": "a77d7a55"
+  },
+  "cv.qmd": {
+    "cv.html": "527d0ae2"
+  },
+  "talks.qmd": {
+    "talks.html": "f59e2ca0"
+  },
+  "resources.qmd": {
+    "resources.html": "eb16fdfe"
+  },
+  "Teaching/simulations.qmd": {
+    "simulations.html": "b788be87"
+  },
+  "Teaching/simulations_with_preview_images.qmd": {
+    "simulations_with_preview_images.html": "ecf42a1d"
+  },
+  "index_with_keyword_links.qmd": {
+    "index_with_keyword_links.html": "5a74c719"
+  },
+  "index_no_wikipedia_links.qmd": {
+    "index_no_wikipedia_links.html": "24443fbf"
+  },
+  "index_old_website_links_only.qmd": {
+    "index_old_website_links_only.html": "28ae2998"
+  },
+  "index (1).qmd": {
+    "index (1).html": "344fae52"
+  }
+}

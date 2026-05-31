@@ -1,0 +1,38 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "He Wang"
+  navbar:
+    title: "He Wang"
+    left:
+      - href: index.qmd
+        text: Home
+      - href: teaching.qmd
+        text: Teaching
+      - href: research.qmd
+        text: Research
+      - href: talks.qmd
+        text: Talks
+      - href: resources.qmd
+        text: Resources
+      - href: cv.qmd
+        text: CV
+    right:
+      - icon: github
+        href: https://github.com/wanghemath
+      - icon: envelope
+        href: mailto:he.wang@northeastern.edu
+ 
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    toc-location: right
+    toc-title: "Contents"
+    page-layout: article
+    
+execute:
+  freeze: auto

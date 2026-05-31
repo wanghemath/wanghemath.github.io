@@ -1,0 +1,96 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="headerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="800" height="600" fill="url(#bgGradient)"/>
+  
+  <!-- Main container -->
+  <rect x="40" y="40" width="720" height="520" fill="rgba(255,255,255,0.95)" rx="15"/>
+  
+  <!-- Header -->
+  <rect x="40" y="40" width="720" height="80" fill="url(#headerGradient)" rx="15 15 0 0"/>
+  <text x="400" y="85" font-family="Arial, sans-serif" font-size="28" font-weight="300" fill="white" text-anchor="middle">A/B Testing Dashboard</text>
+  
+  <!-- Variant Cards -->
+  <!-- Control (A) -->
+  <g transform="translate(70, 150)">
+    <rect width="300" height="180" fill="#f8f9fa" stroke="#3498db" stroke-width="3" rx="10"/>
+    <rect x="0" y="0" width="300" height="5" fill="#3498db"/>
+    <text x="150" y="35" font-family="Arial" font-size="20" font-weight="600" fill="#333" text-anchor="middle">Control</text>
+    <rect x="230" y="15" width="60" height="30" fill="#3498db" rx="15"/>
+    <text x="260" y="35" font-family="Arial" font-size="14" font-weight="600" fill="white" text-anchor="middle">A</text>
+    
+    <text x="150" y="90" font-family="Arial" font-size="48" font-weight="700" fill="#333" text-anchor="middle">8.5%</text>
+    <text x="150" y="110" font-family="Arial" font-size="14" fill="#666" text-anchor="middle">Conversion Rate</text>
+    
+    <line x1="20" y1="130" x2="280" y2="130" stroke="#e0e0e0"/>
+    
+    <text x="75" y="155" font-family="Arial" font-size="20" font-weight="600" fill="#333" text-anchor="middle">425</text>
+    <text x="75" y="170" font-family="Arial" font-size="12" fill="#666" text-anchor="middle">Conversions</text>
+    
+    <text x="225" y="155" font-family="Arial" font-size="20" font-weight="600" fill="#333" text-anchor="middle">5,000</text>
+    <text x="225" y="170" font-family="Arial" font-size="12" fill="#666" text-anchor="middle">Visitors</text>
+  </g>
+  
+  <!-- Treatment (B) -->
+  <g transform="translate(430, 150)">
+    <rect width="300" height="180" fill="#f8f9fa" stroke="#e74c3c" stroke-width="3" rx="10"/>
+    <rect x="0" y="0" width="300" height="5" fill="#e74c3c"/>
+    <text x="150" y="35" font-family="Arial" font-size="20" font-weight="600" fill="#333" text-anchor="middle">Treatment</text>
+    <rect x="230" y="15" width="60" height="30" fill="#e74c3c" rx="15"/>
+    <text x="260" y="35" font-family="Arial" font-size="14" font-weight="600" fill="white" text-anchor="middle">B</text>
+    
+    <!-- Animated winner badge -->
+    <circle cx="260" cy="30" r="35" fill="none" stroke="#27ae60" stroke-width="3" stroke-dasharray="5,5">
+      <animateTransform attributeName="transform" type="rotate" from="0 260 30" to="360 260 30" dur="10s" repeatCount="indefinite"/>
+    </circle>
+    
+    <text x="150" y="90" font-family="Arial" font-size="48" font-weight="700" fill="#333" text-anchor="middle">10.2%</text>
+    <text x="150" y="110" font-family="Arial" font-size="14" fill="#666" text-anchor="middle">Conversion Rate</text>
+    
+    <line x1="20" y1="130" x2="280" y2="130" stroke="#e0e0e0"/>
+    
+    <text x="75" y="155" font-family="Arial" font-size="20" font-weight="600" fill="#333" text-anchor="middle">510</text>
+    <text x="75" y="170" font-family="Arial" font-size="12" fill="#666" text-anchor="middle">Conversions</text>
+    
+    <text x="225" y="155" font-family="Arial" font-size="20" font-weight="600" fill="#333" text-anchor="middle">5,000</text>
+    <text x="225" y="170" font-family="Arial" font-size="12" fill="#666" text-anchor="middle">Visitors</text>
+  </g>
+  
+  <!-- Results section -->
+  <rect x="70" y="350" width="660" height="180" fill="white" stroke="#e0e0e0" stroke-width="2" rx="10"/>
+  <text x="400" y="380" font-family="Arial" font-size="22" font-weight="600" fill="#333" text-anchor="middle">Test Results</text>
+  
+  <rect x="340" y="390" width="120" height="35" fill="#d4edda" rx="20"/>
+  <text x="400" y="413" font-family="Arial" font-size="16" font-weight="600" fill="#155724" text-anchor="middle">✓ Significant</text>
+  
+  <!-- Result metrics -->
+  <g transform="translate(100, 440)">
+    <text x="0" y="0" font-family="Arial" font-size="14" fill="#666">Relative Lift</text>
+    <text x="0" y="30" font-family="Arial" font-size="28" font-weight="700" fill="#333">+20%</text>
+  </g>
+  
+  <g transform="translate(250, 440)">
+    <text x="0" y="0" font-family="Arial" font-size="14" fill="#666">P-value</text>
+    <text x="0" y="30" font-family="Arial" font-size="28" font-weight="700" fill="#333">0.012</text>
+  </g>
+  
+  <g transform="translate(400, 440)">
+    <text x="0" y="0" font-family="Arial" font-size="14" fill="#666">Confidence</text>
+    <text x="0" y="30" font-family="Arial" font-size="28" font-weight="700" fill="#333">95%</text>
+  </g>
+  
+  <g transform="translate(550, 440)">
+    <text x="0" y="0" font-family="Arial" font-size="14" fill="#666">Power</text>
+    <text x="0" y="30" font-family="Arial" font-size="28" font-weight="700" fill="#333">82%</text>
+  </g>
+</svg>

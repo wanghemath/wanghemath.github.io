@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f7fafc"/>
+  <text x="200" y="30" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#764ba2">Principal Component Analysis</text>
+  
+  <!-- Original data plot -->
+  <g transform="translate(50, 60)">
+    <rect x="0" y="0" width="140" height="140" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+    <text x="70" y="-5" text-anchor="middle" font-family="Arial" font-size="12" fill="#495057">Original Data</text>
+    
+    <!-- Axes -->
+    <line x1="10" y1="130" x2="130" y2="130" stroke="#dee2e6" stroke-width="1"/>
+    <line x1="10" y1="10" x2="10" y2="130" stroke="#dee2e6" stroke-width="1"/>
+    
+    <!-- Data cloud (elliptical) -->
+    <g transform="translate(70, 70) rotate(-30)">
+      <circle cx="-20" cy="0" r="2" fill="#667eea" opacity="0.6"/>
+      <circle cx="-15" cy="5" r="2" fill="#667eea" opacity="0.6"/>
+      <circle cx="-10" cy="-3" r="2" fill="#667eea" opacity="0.6"/>
+      <circle cx="-5" cy="2" r="2" fill="#667eea" opacity="0.6"/>
+      <circle cx="0" cy="-1" r="2" fill="#667eea" opacity="0.6"/>
+      <circle cx="5" cy="3" r="2" fill="#667eea" opacity="0.6"/>
+      <circle cx="10" cy="-2" r="2" fill="#667eea" opacity="0.6"/>
+      <circle cx="15" cy="1" r="2" fill="#667eea" opacity="0.6"/>
+      <circle cx="20" cy="0" r="2" fill="#667eea" opacity="0.6"/>
+      <circle cx="-18" cy="-8" r="2" fill="#667eea" opacity="0.6"/>
+      <circle cx="-12" cy="7" r="2" fill="#667eea" opacity="0.6"/>
+      <circle cx="8" cy="-6" r="2" fill="#667eea" opacity="0.6"/>
+      <circle cx="18" cy="5" r="2" fill="#667eea" opacity="0.6"/>
+      <circle cx="-8" cy="-5" r="2" fill="#667eea" opacity="0.6"/>
+      <circle cx="12" cy="6" r="2" fill="#667eea" opacity="0.6"/>
+    </g>
+    
+    <!-- Principal components -->
+    <line x1="35" y1="95" x2="105" y2="45" stroke="#dc3545" stroke-width="3"/>
+    <line x1="50" y1="50" x2="90" y2="90" stroke="#28a745" stroke-width="3"/>
+    
+    <!-- Center point -->
+    <circle cx="70" cy="70" r="4" fill="#ffc107"/>
+    
+    <!-- Labels -->
+    <text x="120" y="135" font-family="Arial" font-size="10" fill="#495057">X</text>
+    <text x="5" y="15" font-family="Arial" font-size="10" fill="#495057">Y</text>
+  </g>
+  
+  <!-- Transformed data plot -->
+  <g transform="translate(210, 60)">
+    <rect x="0" y="0" width="140" height="140" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+    <text x="70" y="-5" text-anchor="middle" font-family="Arial" font-size="12" fill="#495057">PC Space</text>
+    
+    <!-- Axes -->
+    <line x1="10" y1="70" x2="130" y2="70" stroke="#dc3545" stroke-width="2"/>
+    <line x1="70" y1="10" x2="70" y2="130" stroke="#28a745" stroke-width="2"/>
+    
+    <!-- Transformed data (aligned with axes) -->
+    <circle cx="30" cy="70" r="2" fill="#667eea" opacity="0.6"/>
+    <circle cx="40" cy="72" r="2" fill="#667eea" opacity="0.6"/>
+    <circle cx="50" cy="68" r="2" fill="#667eea" opacity="0.6"/>
+    <circle cx="60" cy="71" r="2" fill="#667eea" opacity="0.6"/>
+    <circle cx="70" cy="69" r="2" fill="#667eea" opacity="0.6"/>
+    <circle cx="80" cy="70" r="2" fill="#667eea" opacity="0.6"/>
+    <circle cx="90" cy="72" r="2" fill="#667eea" opacity="0.6"/>
+    <circle cx="100" cy="68" r="2" fill="#667eea" opacity="0.6"/>
+    <circle cx="110" cy="71" r="2" fill="#667eea" opacity="0.6"/>
+    <circle cx="35" cy="65" r="2" fill="#667eea" opacity="0.6"/>
+    <circle cx="55" cy="75" r="2" fill="#667eea" opacity="0.6"/>
+    <circle cx="85" cy="66" r="2" fill="#667eea" opacity="0.6"/>
+    <circle cx="105" cy="74" r="2" fill="#667eea" opacity="0.6"/>
+    <circle cx="45" cy="73" r="2" fill="#667eea" opacity="0.6"/>
+    <circle cx="95" cy="67" r="2" fill="#667eea" opacity="0.6"/>
+    
+    <!-- Labels -->
+    <text x="120" y="65" font-family="Arial" font-size="10" fill="#dc3545">PC1</text>
+    <text x="75" y="15" font-family="Arial" font-size="10" fill="#28a745">PC2</text>
+  </g>
+  
+  <!-- Eigenvalues display -->
+  <g transform="translate(50, 220)">
+    <rect x="0" y="0" width="300" height="60" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="5"/>
+    
+    <text x="150" y="20" text-anchor="middle" font-family="Arial" font-size="12" fill="#495057" font-weight="bold">Eigenvalues & Variance Explained</text>
+    
+    <text x="50" y="40" font-family="Arial" font-size="11" fill="#dc3545">PC1: λ₁ = 3.24 (81.2%)</text>
+    <text x="200" y="40" font-family="Arial" font-size="11" fill="#28a745">PC2: λ₂ = 0.75 (18.8%)</text>
+    
+    <text x="150" y="55" text-anchor="middle" font-family="Courier New" font-size="10" fill="#666">v₁ = [0.707, -0.707]  v₂ = [0.707, 0.707]</text>
+  </g>
+</svg>

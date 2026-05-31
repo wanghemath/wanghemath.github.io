@@ -1,0 +1,86 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f5f5f5"/>
+  
+  <!-- Header -->
+  <rect width="800" height="80" fill="#333"/>
+  <text x="400" y="50" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">Confidence Interval Simulation</text>
+  
+  <!-- Main visualization area -->
+  <rect x="40" y="120" width="720" height="300" fill="white" stroke="#ddd" stroke-width="2" rx="8"/>
+  
+  <!-- Population mean line -->
+  <line x1="400" y1="140" x2="400" y2="400" stroke="#007bff" stroke-width="3" stroke-dasharray="8,4"/>
+  <text x="400" y="130" font-family="Arial" font-size="14" font-weight="bold" fill="#007bff" text-anchor="middle">μ = 50</text>
+  
+  <!-- Confidence intervals -->
+  <g opacity="0.8">
+    <!-- CI 1 - Contains true mean -->
+    <line x1="320" y1="180" x2="480" y2="180" stroke="#28a745" stroke-width="3"/>
+    <line x1="320" y1="175" x2="320" y2="185" stroke="#28a745" stroke-width="3"/>
+    <line x1="480" y1="175" x2="480" y2="185" stroke="#28a745" stroke-width="3"/>
+    <circle cx="400" cy="180" r="4" fill="#28a745"/>
+    
+    <!-- CI 2 - Contains true mean -->
+    <line x1="350" y1="220" x2="510" y2="220" stroke="#28a745" stroke-width="3"/>
+    <line x1="350" y1="215" x2="350" y2="225" stroke="#28a745" stroke-width="3"/>
+    <line x1="510" y1="215" x2="510" y2="225" stroke="#28a745" stroke-width="3"/>
+    <circle cx="430" cy="220" r="4" fill="#28a745"/>
+    
+    <!-- CI 3 - Does not contain true mean -->
+    <line x1="450" y1="260" x2="610" y2="260" stroke="#dc3545" stroke-width="3"/>
+    <line x1="450" y1="255" x2="450" y2="265" stroke="#dc3545" stroke-width="3"/>
+    <line x1="610" y1="255" x2="610" y2="265" stroke="#dc3545" stroke-width="3"/>
+    <circle cx="530" cy="260" r="4" fill="#dc3545"/>
+    
+    <!-- CI 4 - Contains true mean -->
+    <line x1="280" y1="300" x2="440" y2="300" stroke="#28a745" stroke-width="3"/>
+    <line x1="280" y1="295" x2="280" y2="305" stroke="#28a745" stroke-width="3"/>
+    <line x1="440" y1="295" x2="440" y2="305" stroke="#28a745" stroke-width="3"/>
+    <circle cx="360" cy="300" r="4" fill="#28a745"/>
+    
+    <!-- CI 5 - Contains true mean -->
+    <line x1="340" y1="340" x2="500" y2="340" stroke="#28a745" stroke-width="3"/>
+    <line x1="340" y1="335" x2="340" y2="345" stroke="#28a745" stroke-width="3"/>
+    <line x1="500" y1="335" x2="500" y2="345" stroke="#28a745" stroke-width="3"/>
+    <circle cx="420" cy="340" r="4" fill="#28a745"/>
+  </g>
+  
+  <!-- X-axis -->
+  <line x1="60" y1="400" x2="740" y2="400" stroke="#333" stroke-width="2"/>
+  <text x="400" y="430" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Value</text>
+  
+  <!-- Stats display -->
+  <g transform="translate(40, 460)">
+    <rect width="170" height="100" fill="#e9ecef" rx="5"/>
+    <text x="85" y="30" font-family="Arial" font-size="14" fill="#666" text-anchor="middle">Sample Mean</text>
+    <text x="85" y="55" font-family="Arial" font-size="24" font-weight="bold" fill="#333" text-anchor="middle">49.8</text>
+  </g>
+  
+  <g transform="translate(225, 460)">
+    <rect width="170" height="100" fill="#e9ecef" rx="5"/>
+    <text x="85" y="30" font-family="Arial" font-size="14" fill="#666" text-anchor="middle">Confidence Level</text>
+    <text x="85" y="55" font-family="Arial" font-size="24" font-weight="bold" fill="#333" text-anchor="middle">95%</text>
+  </g>
+  
+  <g transform="translate(410, 460)">
+    <rect width="170" height="100" fill="#e9ecef" rx="5"/>
+    <text x="85" y="30" font-family="Arial" font-size="14" fill="#666" text-anchor="middle">Coverage Rate</text>
+    <text x="85" y="55" font-family="Arial" font-size="24" font-weight="bold" fill="#333" text-anchor="middle">80%</text>
+  </g>
+  
+  <g transform="translate(595, 460)">
+    <rect width="165" height="100" fill="#e9ecef" rx="5"/>
+    <text x="82.5" y="30" font-family="Arial" font-size="14" fill="#666" text-anchor="middle">Sample Size</text>
+    <text x="82.5" y="55" font-family="Arial" font-size="24" font-weight="bold" fill="#333" text-anchor="middle">30</text>
+  </g>
+  
+  <!-- Legend -->
+  <g transform="translate(620, 140)">
+    <rect x="0" y="0" width="120" height="80" fill="white" stroke="#ddd" rx="5"/>
+    <circle cx="15" cy="25" r="5" fill="#28a745"/>
+    <text x="30" y="30" font-family="Arial" font-size="12" fill="#333">Contains μ</text>
+    <circle cx="15" cy="55" r="5" fill="#dc3545"/>
+    <text x="30" y="60" font-family="Arial" font-size="12" fill="#333">Misses μ</text>
+  </g>
+</svg>

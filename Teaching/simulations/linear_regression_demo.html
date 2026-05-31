@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Regression: OLS vs Gradient Descent</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .control-group {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .control-group h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+        
+        label {
+            display: block;
+            margin: 10px 0 5px 0;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        input, select, button {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .visualization {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .plot-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+        }
+        
+        canvas {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            background: white;
+        }
+        
+        .info {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #007bff;
+            margin: 20px 0;
+        }
+        
+        .results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .result-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .result-box h4 {
+            margin-top: 0;
+            color: #495057;
+        }
+        
+        .step-info {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        
+        @media (max-width: 768px) {
+            .visualization, .results {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Interactive Linear Regression</h1>
+        
+        <div class="controls">
+            <div class="control-group">
+                <h3>📊 Data Generation</h3>
+                <label>Number of Points:</label>
+                <input type="range" id="numPoints" min="10" max="100" value="50">
+                <span id="numPointsValue">50</span>
+                
+                <label>Noise Level:</label>
+                <input type="range" id="noise" min="0" max="3" step="0.1" value="1">
+                <span id="noiseValue">1.0</span>
+                
+                <button onclick="generateData()">🎲 Generate New Data</button>
+            </div>
+            
+            <div class="control-group">
+                <h3>⚙️ Algorithm Settings</h3>
+                <label>Method:</label>
+                <select id="method" onchange="onMethodChange()">
+                    <option value="ols">Ordinary Least Squares (OLS)</option>
+                    <option value="gd">Gradient Descent (GD)</option>
+                </select>
+                
+                <div id="gdControls" style="display: none;">
+                    <label>Learning Rate:</label>
+                    <input type="range" id="learningRate" min="0.001" max="0.1" step="0.001" value="0.01">
+                    <span id="learningRateValue">0.01</span>
+                    
+                    <label>Max Iterations:</label>
+                    <input type="range" id="maxIter" min="10" max="1000" step="10" value="100">
+                    <span id="maxIterValue">100</span>
+                    
+                    <label>Animation Speed (ms):</label>
+                    <input type="range" id="animSpeed" min="10" max="500" step="10" value="100">
+                    <span id="animSpeedValue">100</span>
+                </div>
+                
+                <button id="runBtn" onclick="runRegression()">🚀 Run Regression</button>
+                <button id="resetBtn" onclick="resetGD()" style="display: none;">🔄 Reset GD</button>
+            </div>
+        </div>
+        
+        <div class="visualization">
+            <div class="plot-container">
+                <h4>📈 Data & Regression Line</h4>
+                <canvas id="dataCanvas" width="400" height="300"></canvas>
+            </div>
+            
+            <div class="plot-container">
+                <h4>📉 Cost Function (Gradient Descent Only)</h4>
+                <canvas id="costCanvas" width="400" height="300"></canvas>
+            </div>
+        </div>
+        
+        <div class="info">
+            <strong>How it works:</strong>
+            <br><strong>OLS:</strong> Calculates the optimal line analytically using the formula: slope = (n∑xy - ∑x∑y)/(n∑x² - (∑x)²)
+            <br><strong>Gradient Descent:</strong> Iteratively adjusts slope and intercept by following the negative gradient of the cost function
+        </div>
+        
+        <div id="stepInfo" class="step-info" style="display: none;"></div>
+        
+        <div class="results">
+            <div class="result-box">
+                <h4>📊 Current Results</h4>
+                <div id="results"></div>
+            </div>
+            
+            <div class="result-box">
+                <h4>📈 Statistics</h4>
+                <div id="stats"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let dataPoints = [];
+        let currentSlope = 0;
+        let currentIntercept = 0;
+        let gdSteps = [];
+        let gdRunning = false;
+        let gdStep = 0;
+        let animationId = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setupRangeInputs();
+            generateData();
+        });
+        
+        function setupRangeInputs() {
+            const ranges = ['numPoints', 'noise', 'learningRate', 'maxIter', 'animSpeed'];
+            ranges.forEach(id => {
+                const input = document.getElementById(id);
+                const output = document.getElementById(id + 'Value');
+                if (input && output) {
+                    input.oninput = function() {
+                        output.textContent = this.value;
+                    };
+                }
+            });
+        }
+        
+        function generateData() {
+            const n = parseInt(document.getElementById('numPoints').value);
+            const noiseLevel = parseFloat(document.getElementById('noise').value);
+            
+            dataPoints = [];
+            const trueSlope = 2 + Math.random() * 2; // Random slope between 2-4
+            const trueIntercept = -5 + Math.random() * 10; // Random intercept between -5 to 5
+            
+            for (let i = 0; i < n; i++) {
+                const x = (i / n) * 10; // x from 0 to 10
+                const trueY = trueSlope * x + trueIntercept;
+                const noise = (Math.random() - 0.5) * noiseLevel * 10;
+                const y = trueY + noise;
+                dataPoints.push({x, y});
+            }
+            
+            resetGD();
+            drawData();
+            clearResults();
+        }
+        
+        function onMethodChange() {
+            const method = document.getElementById('method').value;
+            const gdControls = document.getElementById('gdControls');
+            const resetBtn = document.getElementById('resetBtn');
+            const stepInfo = document.getElementById('stepInfo');
+            
+            if (method === 'gd') {
+                gdControls.style.display = 'block';
+                resetBtn.style.display = 'inline-block';
+            } else {
+                gdControls.style.display = 'none';
+                resetBtn.style.display = 'none';
+                stepInfo.style.display = 'none';
+            }
+            
+            clearResults();
+            drawData();
+            drawCost();
+        }
+        
+        function runRegression() {
+            const method = document.getElementById('method').value;
+            
+            if (method === 'ols') {
+                runOLS();
+            } else {
+                runGradientDescent();
+            }
+        }
+        
+        function runOLS() {
+            const n = dataPoints.length;
+            const sumX = dataPoints.reduce((sum, p) => sum + p.x, 0);
+            const sumY = dataPoints.reduce((sum, p) => sum + p.y, 0);
+            const sumXY = dataPoints.reduce((sum, p) => sum + p.x * p.y, 0);
+            const sumXX = dataPoints.reduce((sum, p) => sum + p.x * p.x, 0);
+            
+            currentSlope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+            currentIntercept = (sumY - currentSlope * sumX) / n;
+            
+            drawData();
+            showResults(1);
+        }
+        
+        function runGradientDescent() {
+            if (gdRunning) return;
+            
+            gdRunning = true;
+            gdStep = 0;
+            gdSteps = [];
+            
+            const learningRate = parseFloat(document.getElementById('learningRate').value);
+            const maxIter = parseInt(document.getElementById('maxIter').value);
+            
+            document.getElementById('runBtn').disabled = true;
+            document.getElementById('stepInfo').style.display = 'block';
+            
+            performGDStep(learningRate, maxIter);
+        }
+        
+        function performGDStep(learningRate, maxIter) {
+            if (gdStep >= maxIter || !gdRunning) {
+                gdRunning = false;
+                document.getElementById('runBtn').disabled = false;
+                document.getElementById('stepInfo').innerHTML += '<br><strong>🎉 Gradient Descent Complete!</strong>';
+                return;
+            }
+            
+            const n = dataPoints.length;
+            let slopeGradient = 0;
+            let interceptGradient = 0;
+            let cost = 0;
+            
+            // Calculate gradients and cost
+            for (let point of dataPoints) {
+                const prediction = currentSlope * point.x + currentIntercept;
+                const error = prediction - point.y;
+                
+                slopeGradient += error * point.x;
+                interceptGradient += error;
+                cost += error * error;
+            }
+            
+            slopeGradient = (2 / n) * slopeGradient;
+            interceptGradient = (2 / n) * interceptGradient;
+            cost = cost / n;
+            
+            // Update parameters
+            currentSlope -= learningRate * slopeGradient;
+            currentIntercept -= learningRate * interceptGradient;
+            
+            gdSteps.push({
+                iteration: gdStep,
+                slope: currentSlope,
+                intercept: currentIntercept,
+                cost: cost,
+                slopeGrad: slopeGradient,
+                interceptGrad: interceptGradient
+            });
+            
+            // Update visualization
+            drawData();
+            drawCost();
+            
+            // Update step info
+            document.getElementById('stepInfo').innerHTML = 
+                `<strong>Step ${gdStep + 1}:</strong><br>` +
+                `Cost: ${cost.toFixed(6)}<br>` +
+                `Slope: ${currentSlope.toFixed(4)} (gradient: ${slopeGradient.toFixed(6)})<br>` +
+                `Intercept: ${currentIntercept.toFixed(4)} (gradient: ${interceptGradient.toFixed(6)})<br>` +
+                `Learning Rate: ${learningRate}`;
+            
+            showResults(gdStep + 1);
+            
+            gdStep++;
+            
+            const animSpeed = parseInt(document.getElementById('animSpeed').value);
+            setTimeout(() => performGDStep(learningRate, maxIter), animSpeed);
+        }
+        
+        function resetGD() {
+            gdRunning = false;
+            gdStep = 0;
+            gdSteps = [];
+            currentSlope = Math.random() * 4 - 2; // Random initial slope
+            currentIntercept = Math.random() * 10 - 5; // Random initial intercept
+            
+            if (animationId) {
+                clearTimeout(animationId);
+                animationId = null;
+            }
+            
+            document.getElementById('runBtn').disabled = false;
+            document.getElementById('stepInfo').style.display = 'none';
+            
+            drawData();
+            drawCost();
+            clearResults();
+        }
+        
+        function drawData() {
+            const canvas = document.getElementById('dataCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (dataPoints.length === 0) return;
+            
+            // Find data bounds
+            const xMin = Math.min(...dataPoints.map(p => p.x));
+            const xMax = Math.max(...dataPoints.map(p => p.x));
+            const yMin = Math.min(...dataPoints.map(p => p.y));
+            const yMax = Math.max(...dataPoints.map(p => p.y));
+            
+            const padding = 40;
+            const width = canvas.width - 2 * padding;
+            const height = canvas.height - 2 * padding;
+            
+            function scaleX(x) {
+                return padding + (x - xMin) / (xMax - xMin) * width;
+            }
+            
+            function scaleY(y) {
+                return canvas.height - padding - (y - yMin) / (yMax - yMin) * height;
+            }
+            
+            // Draw axes
+            ctx.strokeStyle = '#ddd';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.stroke();
+            
+            // Draw data points
+            ctx.fillStyle = '#007bff';
+            for (let point of dataPoints) {
+                ctx.beginPath();
+                ctx.arc(scaleX(point.x), scaleY(point.y), 4, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+            
+            // Draw regression line
+            if (currentSlope !== 0 || currentIntercept !== 0) {
+                ctx.strokeStyle = '#dc3545';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                
+                const y1 = currentSlope * xMin + currentIntercept;
+                const y2 = currentSlope * xMax + currentIntercept;
+                
+                ctx.moveTo(scaleX(xMin), scaleY(y1));
+                ctx.lineTo(scaleX(xMax), scaleY(y2));
+                ctx.stroke();
+            }
+            
+            // Draw labels
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            ctx.fillText('X', canvas.width - 20, canvas.height - 10);
+            ctx.fillText('Y', 10, 20);
+        }
+        
+        function drawCost() {
+            const canvas = document.getElementById('costCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (gdSteps.length === 0) return;
+            
+            const costs = gdSteps.map(step => step.cost);
+            const minCost = Math.min(...costs);
+            const maxCost = Math.max(...costs);
+            
+            const padding = 40;
+            const width = canvas.width - 2 * padding;
+            const height = canvas.height - 2 * padding;
+            
+            function scaleX(i) {
+                return padding + (i / Math.max(gdSteps.length - 1, 1)) * width;
+            }
+            
+            function scaleY(cost) {
+                return canvas.height - padding - (cost - minCost) / Math.max(maxCost - minCost, 0.001) * height;
+            }
+            
+            // Draw axes
+            ctx.strokeStyle = '#ddd';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.stroke();
+            
+            // Draw cost curve
+            ctx.strokeStyle = '#28a745';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            
+            for (let i = 0; i < gdSteps.length; i++) {
+                const x = scaleX(i);
+                const y = scaleY(gdSteps[i].cost);
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.stroke();
+            
+            // Draw current point
+            if (gdSteps.length > 0) {
+                const lastStep = gdSteps[gdSteps.length - 1];
+                ctx.fillStyle = '#dc3545';
+                ctx.beginPath();
+                ctx.arc(scaleX(gdSteps.length - 1), scaleY(lastStep.cost), 5, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+            
+            // Draw labels
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            ctx.fillText('Iteration', canvas.width - 60, canvas.height - 10);
+            ctx.save();
+            ctx.translate(15, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Cost', 0, 0);
+            ctx.restore();
+        }
+        
+        function showResults(iterations) {
+            const mse = calculateMSE();
+            const r2 = calculateR2();
+            
+            document.getElementById('results').innerHTML = 
+                `<strong>Slope:</strong> ${currentSlope.toFixed(4)}<br>` +
+                `<strong>Intercept:</strong> ${currentIntercept.toFixed(4)}<br>` +
+                `<strong>Equation:</strong> y = ${currentSlope.toFixed(4)}x + ${currentIntercept.toFixed(4)}`;
+            
+            document.getElementById('stats').innerHTML = 
+                `<strong>Iterations:</strong> ${iterations}<br>` +
+                `<strong>Mean Squared Error:</strong> ${mse.toFixed(6)}<br>` +
+                `<strong>R²:</strong> ${r2.toFixed(4)}<br>` +
+                `<strong>Data Points:</strong> ${dataPoints.length}`;
+        }
+        
+        function calculateMSE() {
+            let sumSquaredErrors = 0;
+            for (let point of dataPoints) {
+                const prediction = currentSlope * point.x + currentIntercept;
+                const error = prediction - point.y;
+                sumSquaredErrors += error * error;
+            }
+            return sumSquaredErrors / dataPoints.length;
+        }
+        
+        function calculateR2() {
+            const yMean = dataPoints.reduce((sum, p) => sum + p.y, 0) / dataPoints.length;
+            
+            let totalSumSquares = 0;
+            let residualSumSquares = 0;
+            
+            for (let point of dataPoints) {
+                const prediction = currentSlope * point.x + currentIntercept;
+                totalSumSquares += (point.y - yMean) ** 2;
+                residualSumSquares += (point.y - prediction) ** 2;
+            }
+            
+            return 1 - (residualSumSquares / totalSumSquares);
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = 'Run regression to see results...';
+            document.getElementById('stats').innerHTML = 'Statistics will appear here...';
+        }
+    </script>
+</body>
+</html>

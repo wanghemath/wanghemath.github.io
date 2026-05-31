@@ -1,0 +1,233 @@
+---
+title: "He Wang"
+description: "Personal academic website of He Wang, Associate Teaching Professor in Mathematics at Northeastern University."
+page-layout: full
+toc: false
+---
+
+::: {.hero}
+::: {.container .hero-grid}
+::: {.hero-text} 
+
+# Welcome!
+
+I am an Associate Teaching Professor in the Department of Mathematics at Northeastern University. My academic background is in algebraic topology, group theory, and their connections with algebra, geometry, data science and AI.
+
+Before joining Northeastern as a faculty member, I was a Postdoctoral Fellow at the University of Nevada, Reno from 2016 to 2019. I received my Ph.D. in Mathematics from Northeastern University in 2016, my M.S. in Mathematics from Nankai University in 2010, and my B.S. in Mathematics and Applied Mathematics from Hebei Normal University in 2007.
+
+My research and teaching connect algebraic topology, group theory, applied mathematics, linear algebra, machine learning, stochastic processes, topological data analysis, and AI-enhanced mathematics education.
+ 
+:::
+
+::: {.profile-card}
+<div class="profile-placeholder"><img class="profile-photo" src="images/hewang-600x600.jpg" alt="He Wang profile photo"></div>
+ 
+## He Wang
+
+**Associate Teaching Professor**   
+**Director for MS Programs**   
+Department of Mathematics  
+Northeastern University 
+:::
+
+:::
+:::
+ 
+  
+::: {.section #research}
+::: {.container}
+
+## Research and Scholarly Interests
+
+My research interests are in algebraic topology and group theory, together with their connects with algebra, geometry, data science and AI. I am also interested in applications to machine learning, deep learning, and topological data analysis.
+
+::: {.grid}
+::: {.card}
+### Algebraic Topology and Homotopy Theory
+
+Rational homotopy theory, moduli spaces of $C_\infty$-structures, formality properties, Massey products, spectral sequences, and stable homotopy computations.
+:::
+
+::: {.card}
+### Groups, Lie Algebras, and Jumping Loci
+
+Cohomology jumping loci, characteristic varieties, resonance varieties, Chen ranks, lower central series ranks, holonomy Lie algebras, and formality properties of finitely generated groups.
+:::
+
+::: {.card}
+### Configuration Spaces and Braid-Type Groups
+
+Configuration spaces, pure virtual braid groups, pure welded braid groups, McCool groups, fundamental groups of algebraic varieties, and related combinatorial structures.
+:::
+
+::: {.card}
+### Topological Data Analysis
+
+Persistent homology, simplicial complexes, shape of data, computational topology, and the use of algebraic-topological ideas in data science.
+:::
+
+::: {.card}
+### Random Graphs and RAAGs
+
+Random right-angled Artin groups, clique complexes, Betti numbers, resonance varieties, Chen ranks, and probabilistic algebraic topology.
+:::
+
+::: {.card}
+### Mathematics of AI
+
+Linear algebra, probability, optimization, and geometry as foundations for machine learning and artificial intelligence.
+:::
+:::
+
+:::
+:::
+
+::: {.section #teaching}
+::: {.container}
+
+## Teaching
+
+My teaching combines mathematical structure, computational experimentation, real data, and project-based learning. The materials on this website are mainly lecture notes, syllabi, course pages, and public resources. Full course sites, assignments, computer labs, exams, and projects are usually hosted on Northeastern Canvas.
+
+::: {.grid}
+::: {.card}
+### Graduate Courses
+
+- MATH 5010 Foundations of Statistical Theory and Probability
+- MATH 5110 Applied Linear Algebra and Matrix Analysis
+- MATH 6241 Stochastic Processes
+- MATH 7243 Machine Learning and Statistical Learning Theory I
+- MATH 7339 Machine Learning and Statistical Learning Theory II
+- MATH 7741 Readings in Probability and Statistics
+- MATH 7978 Independent Study
+- Math 8984 Research
+- Rational Homotopy Theory
+:::
+
+::: {.card}
+### Undergraduate Courses
+- MATH 4971. Junior/Senior Honors Project 2.
+- MATH 4970. Junior/Senior Honors Project 1.
+- MATH 4570 Matrix Methods in Data Analysis and Machine Learning
+- MATH 3081 Probability and Statistics
+- MATH 2331 Linear Algebra
+- MATH 2321 Calculus 3 for Science and Engineering
+- MATH 182 Calculus 2
+- MATH 1231 Calculus for Business and Economics
+:::
+
+::: {.card}
+### Teaching Projects
+
+- [E-book for Applied Linear Algebra](https://wanghemath.github.io/MATH5110Book/)
+- Interactive simulations and AI-assisted coding activities
+- Machine learning and applied mathematics labs
+- Teaching showcases on using ChatGPT and AI tools to support coding, simulation, and mathematical learning
+:::
+:::
+
+:::
+:::
+
+::: {.section #programs}
+::: {.container}
+
+::: {}
+## Program Leadership
+
+I serve as a program director for graduate programs in the Department of Mathematics at Northeastern University. My work includes curriculum development, student advising, interdisciplinary program planning, experiential learning, industry connections, and support for graduate student success.
+:::
+
+
+
+
+::: {.card}
+### Graduate programs in Department of Mathematics
+- MS Applied Mathematics
+- MS Mathematics
+- MS Statistics
+- MS Statistics-Connect
+
+:::
+
+:::
+:::
+
+::: {.section #seminars}
+::: {.container}
+
+## Seminars, Student Activities, and Outreach
+
+::: {.grid}
+::: {.card}
+### AIM Seminar
+
+I organize the Northeastern Applied and Interdisciplinary Mathematics seminar, which supports conversations across mathematics, computation, modeling, and applications.
+:::
+
+::: {.card}
+### Data Club
+
+I organize the Data Club for MS students in the mathematics department. The club supports student learning in Python, SQL, data science, machine learning, projects, career preparation, and peer collaboration.
+:::
+
+::: {.card}
+### Talks and Teaching Innovation
+
+My talks and posters include topics in algebraic topology, group theory, matrix methods, AI in mathematics education, and machine learning in the applied mathematics curriculum.
+:::
+:::
+
+:::
+:::
+
+::: {.section #links}
+::: {.container}
+
+## Selected Links
+
+Course materials, projects, and professional links.
+
+::: {.grid}
+::: {.card}
+### Scholar Accounts
+  
+-  
+[Google Scholar](https://scholar.google.com/citations?user=woYNpf8AAAAJ&hl=en)
+-  
+[MathSciNet](http://www.ams.org/mathscinet/search/author.html?mrauthid=887022)
+-  
+[arXiv](https://arxiv.org/a/wang_h_2.html) 
+:::
+
+::: {.card}
+### Seminars
+   
+- 
+[AIM Seminar](https://aimath.sites.northeastern.edu/)
+-  
+[Data Club](https://aimc.sites.northeastern.edu/)
+:::
+
+::: {.card}
+### Professional
+
+-
+[GitHub](https://github.com/wanghemath)
+-  
+[LinkedIn](https://www.linkedin.com/in/he-wang-b48b49229/)
+ 
+ 
+:::
+:::
+ 
+## Contacts
+
+::: {.card}
+### Mailing Address 
+567 Lake Hall, Department of Mathematics, Northeastern University, 360 Huntington Ave, Boston, MA 02115
+:::
+ 
+
+:::
+:::

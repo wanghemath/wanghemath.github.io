@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One-Way ANOVA Assumptions</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.5/jstat.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="range"] {
+            width: 100%;
+        }
+        .value-display {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .chart-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .chart-box {
+            position: relative;
+            height: 300px;
+        }
+        .results {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 4px solid #ddd;
+        }
+        .pass {
+            border-left-color: #4CAF50;
+            background-color: #e8f5e9;
+        }
+        .fail {
+            border-left-color: #f44336;
+            background-color: #ffebee;
+        }
+        .assumption-section {
+            margin: 20px 0;
+        }
+        h2 {
+            color: #444;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+        h3 {
+            color: #666;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>One-Way ANOVA Assumptions Demonstration</h1>
+    
+    <div class="container">
+        <h2>Data Generation Controls</h2>
+        <div class="control-panel">
+            <div class="control-group">
+                <label for="sampleSize">Sample Size per Group:</label>
+                <input type="range" id="sampleSize" min="10" max="100" value="30">
+                <div class="value-display" id="sampleSizeDisplay">30</div>
+            </div>
+            
+            <div class="control-group">
+                <label for="group1Mean">Group 1 Mean:</label>
+                <input type="range" id="group1Mean" min="40" max="60" value="50" step="0.5">
+                <div class="value-display" id="group1MeanDisplay">50</div>
+            </div>
+            
+            <div class="control-group">
+                <label for="group2Mean">Group 2 Mean:</label>
+                <input type="range" id="group2Mean" min="40" max="60" value="52" step="0.5">
+                <div class="value-display" id="group2MeanDisplay">52</div>
+            </div>
+            
+            <div class="control-group">
+                <label for="group3Mean">Group 3 Mean:</label>
+                <input type="range" id="group3Mean" min="40" max="60" value="54" step="0.5">
+                <div class="value-display" id="group3MeanDisplay">54</div>
+            </div>
+            
+            <div class="control-group">
+                <label for="group1Std">Group 1 Std Dev:</label>
+                <input type="range" id="group1Std" min="1" max="10" value="3" step="0.1">
+                <div class="value-display" id="group1StdDisplay">3.0</div>
+            </div>
+            
+            <div class="control-group">
+                <label for="group2Std">Group 2 Std Dev:</label>
+                <input type="range" id="group2Std" min="1" max="10" value="3" step="0.1">
+                <div class="value-display" id="group2StdDisplay">3.0</div>
+            </div>
+            
+            <div class="control-group">
+                <label for="group3Std">Group 3 Std Dev:</label>
+                <input type="range" id="group3Std" min="1" max="10" value="3" step="0.1">
+                <div class="value-display" id="group3StdDisplay">3.0</div>
+            </div>
+            
+            <div class="control-group">
+                <label for="distribution">Distribution Type:</label>
+                <select id="distribution">
+                    <option value="normal">Normal</option>
+                    <option value="skewed">Skewed</option>
+                    <option value="heavyTailed">Heavy-tailed</option>
+                </select>
+            </div>
+        </div>
+        
+        <button onclick="generateData()">Generate New Data</button>
+        <button onclick="runANOVA()">Run ANOVA Analysis</button>
+    </div>
+    
+    <div class="container assumption-section">
+        <h2>Assumption 1: Normality</h2>
+        <div class="chart-container">
+            <div class="chart-box">
+                <canvas id="histogramChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <canvas id="qqChart"></canvas>
+            </div>
+        </div>
+        <div class="results" id="normalityResults"></div>
+    </div>
+    
+    <div class="container assumption-section">
+        <h2>Assumption 2: Homogeneity of Variance</h2>
+        <div class="chart-container">
+            <div class="chart-box">
+                <canvas id="boxplotChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <canvas id="residualChart"></canvas>
+            </div>
+        </div>
+        <div class="results" id="varianceResults"></div>
+    </div>
+    
+    <div class="container assumption-section">
+        <h2>Assumption 3: Independence</h2>
+        <div class="chart-container">
+            <div class="chart-box">
+                <canvas id="sequenceChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <canvas id="acfChart"></canvas>
+            </div>
+        </div>
+        <div class="results" id="independenceResults"></div>
+    </div>
+    
+    <div class="container">
+        <h2>ANOVA Results</h2>
+        <div class="results" id="anovaResults"></div>
+    </div>
+
+    <script>
+        // Global variables
+        let data = {
+            group1: [],
+            group2: [],
+            group3: []
+        };
+        let charts = {};
+
+        // Initialize charts
+        function initCharts() {
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            };
+
+            // Histogram
+            charts.histogram = new Chart(document.getElementById('histogramChart'), {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: []
+                },
+                options: {
+                    ...chartOptions,
+                    plugins: {
+                        ...chartOptions.plugins,
+                        title: {
+                            display: true,
+                            text: 'Distribution by Group'
+                        }
+                    }
+                }
+            });
+
+            // Q-Q Plot
+            charts.qq = new Chart(document.getElementById('qqChart'), {
+                type: 'scatter',
+                data: {
+                    datasets: []
+                },
+                options: {
+                    ...chartOptions,
+                    plugins: {
+                        ...chartOptions.plugins,
+                        title: {
+                            display: true,
+                            text: 'Q-Q Plots'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Theoretical Quantiles'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Sample Quantiles'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Boxplot (simulated with bar chart)
+            charts.boxplot = new Chart(document.getElementById('boxplotChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Group 1', 'Group 2', 'Group 3'],
+                    datasets: []
+                },
+                options: {
+                    ...chartOptions,
+                    plugins: {
+                        ...chartOptions.plugins,
+                        title: {
+                            display: true,
+                            text: 'Group Distributions'
+                        }
+                    }
+                }
+            });
+
+            // Residual plot
+            charts.residual = new Chart(document.getElementById('residualChart'), {
+                type: 'scatter',
+                data: {
+                    datasets: []
+                },
+                options: {
+                    ...chartOptions,
+                    plugins: {
+                        ...chartOptions.plugins,
+                        title: {
+                            display: true,
+                            text: 'Residuals vs Fitted Values'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Fitted Values'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Residuals'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Sequence plot
+            charts.sequence = new Chart(document.getElementById('sequenceChart'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: []
+                },
+                options: {
+                    ...chartOptions,
+                    plugins: {
+                        ...chartOptions.plugins,
+                        title: {
+                            display: true,
+                            text: 'Observation Sequence'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Observation Order'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Value'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // ACF plot
+            charts.acf = new Chart(document.getElementById('acfChart'), {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: []
+                },
+                options: {
+                    ...chartOptions,
+                    plugins: {
+                        ...chartOptions.plugins,
+                        title: {
+                            display: true,
+                            text: 'Autocorrelation Function'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Lag'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'ACF'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update display values
+        function updateDisplays() {
+            document.getElementById('sampleSizeDisplay').textContent = document.getElementById('sampleSize').value;
+            document.getElementById('group1MeanDisplay').textContent = document.getElementById('group1Mean').value;
+            document.getElementById('group2MeanDisplay').textContent = document.getElementById('group2Mean').value;
+            document.getElementById('group3MeanDisplay').textContent = document.getElementById('group3Mean').value;
+            document.getElementById('group1StdDisplay').textContent = parseFloat(document.getElementById('group1Std').value).toFixed(1);
+            document.getElementById('group2StdDisplay').textContent = parseFloat(document.getElementById('group2Std').value).toFixed(1);
+            document.getElementById('group3StdDisplay').textContent = parseFloat(document.getElementById('group3Std').value).toFixed(1);
+        }
+
+        // Generate data based on distribution type
+        function generateDistribution(n, mean, std, type) {
+            let samples = [];
+            
+            if (type === 'normal') {
+                for (let i = 0; i < n; i++) {
+                    samples.push(jStat.normal.sample(mean, std));
+                }
+            } else if (type === 'skewed') {
+                // Generate skewed data using chi-square
+                for (let i = 0; i < n; i++) {
+                    let x = jStat.chisquare.sample(3);
+                    samples.push((x - 3) * std / Math.sqrt(6) + mean);
+                }
+            } else if (type === 'heavyTailed') {
+                // Generate heavy-tailed data using t-distribution
+                for (let i = 0; i < n; i++) {
+                    let x = jStat.studentt.sample(3);
+                    samples.push(x * std * Math.sqrt(3/1) + mean);
+                }
+            }
+            
+            return samples;
+        }
+
+        // Generate new data
+        function generateData() {
+            const n = parseInt(document.getElementById('sampleSize').value);
+            const distType = document.getElementById('distribution').value;
+            
+            data.group1 = generateDistribution(
+                n,
+                parseFloat(document.getElementById('group1Mean').value),
+                parseFloat(document.getElementById('group1Std').value),
+                distType
+            );
+            
+            data.group2 = generateDistribution(
+                n,
+                parseFloat(document.getElementById('group2Mean').value),
+                parseFloat(document.getElementById('group2Std').value),
+                distType
+            );
+            
+            data.group3 = generateDistribution(
+                n,
+                parseFloat(document.getElementById('group3Mean').value),
+                parseFloat(document.getElementById('group3Std').value),
+                distType
+            );
+            
+            updateCharts();
+        }
+
+        // Calculate histogram bins
+        function getHistogramData(values, bins = 10) {
+            const min = Math.min(...values);
+            const max = Math.max(...values);
+            const binWidth = (max - min) / bins;
+            const binCounts = new Array(bins).fill(0);
+            const binLabels = [];
+            
+            for (let i = 0; i < bins; i++) {
+                const binStart = min + i * binWidth;
+                const binEnd = binStart + binWidth;
+                binLabels.push(binStart.toFixed(1));
+                
+                values.forEach(v => {
+                    if (v >= binStart && v < binEnd) {
+                        binCounts[i]++;
+                    }
+                });
+            }
+            
+            return { labels: binLabels, counts: binCounts };
+        }
+
+        // Calculate Q-Q plot points
+        function getQQPoints(values) {
+            const sorted = [...values].sort((a, b) => a - b);
+            const n = sorted.length;
+            const points = [];
+            
+            for (let i = 0; i < n; i++) {
+                const p = (i + 0.5) / n;
+                const theoretical = jStat.normal.inv(p, 0, 1);
+                const standardized = (sorted[i] - jStat.mean(values)) / jStat.stdev(values);
+                points.push({ x: theoretical, y: standardized });
+            }
+            
+            return points;
+        }
+
+        // Jarque-Bera test for normality
+        function jarqueBeraTest(values) {
+            const n = values.length;
+            const mean = jStat.mean(values);
+            const std = jStat.stdev(values);
+            
+            let skewness = 0;
+            let kurtosis = 0;
+            
+            values.forEach(v => {
+                const z = (v - mean) / std;
+                skewness += Math.pow(z, 3);
+                kurtosis += Math.pow(z, 4);
+            });
+            
+            skewness = skewness / n;
+            kurtosis = kurtosis / n - 3;
+            
+            const jb = n / 6 * (Math.pow(skewness, 2) + Math.pow(kurtosis, 2) / 4);
+            const pValue = 1 - jStat.chisquare.cdf(jb, 2);
+            
+            return { statistic: jb, pValue: pValue, skewness: skewness, kurtosis: kurtosis };
+        }
+
+        // Levene's test for homogeneity of variance
+        function leveneTest(group1, group2, group3) {
+            const groups = [group1, group2, group3];
+            const medians = groups.map(g => jStat.median(g));
+            
+            const deviations = groups.map((group, i) => 
+                group.map(v => Math.abs(v - medians[i]))
+            );
+            
+            // Perform ANOVA on absolute deviations
+            const allDeviations = deviations.flat();
+            const groupLabels = deviations.map((g, i) => new Array(g.length).fill(i)).flat();
+            
+            const groupMeans = deviations.map(g => jStat.mean(g));
+            const grandMean = jStat.mean(allDeviations);
+            
+            let ssb = 0;
+            let ssw = 0;
+            
+            deviations.forEach((group, i) => {
+                ssb += group.length * Math.pow(groupMeans[i] - grandMean, 2);
+                group.forEach(v => {
+                    ssw += Math.pow(v - groupMeans[i], 2);
+                });
+            });
+            
+            const dfb = groups.length - 1;
+            const dfw = allDeviations.length - groups.length;
+            const msb = ssb / dfb;
+            const msw = ssw / dfw;
+            const f = msb / msw;
+            const pValue = 1 - jStat.centralF.cdf(f, dfb, dfw);
+            
+            return { statistic: f, pValue: pValue };
+        }
+
+        // Durbin-Watson test for independence
+        function durbinWatsonTest(values) {
+            const mean = jStat.mean(values);
+            const residuals = values.map(v => v - mean);
+            
+            let numerator = 0;
+            let denominator = 0;
+            
+            for (let i = 1; i < residuals.length; i++) {
+                numerator += Math.pow(residuals[i] - residuals[i-1], 2);
+            }
+            
+            residuals.forEach(r => {
+                denominator += Math.pow(r, 2);
+            });
+            
+            const dw = numerator / denominator;
+            
+            // Approximate p-value (simplified)
+            let interpretation = "";
+            if (dw < 1.5) {
+                interpretation = "Positive autocorrelation likely";
+            } else if (dw > 2.5) {
+                interpretation = "Negative autocorrelation likely";
+            } else {
+                interpretation = "No significant autocorrelation";
+            }
+            
+            return { statistic: dw, interpretation: interpretation };
+        }
+
+        // Calculate ACF
+        function calculateACF(values, maxLag = 10) {
+            const mean = jStat.mean(values);
+            const n = values.length;
+            const c0 = values.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / n;
+            
+            const acf = [];
+            for (let k = 0; k <= maxLag; k++) {
+                let ck = 0;
+                for (let i = 0; i < n - k; i++) {
+                    ck += (values[i] - mean) * (values[i + k] - mean);
+                }
+                ck = ck / n;
+                acf.push(ck / c0);
+            }
+            
+            return acf;
+        }
+
+        // Update all charts
+        function updateCharts() {
+            // Combine all data for overall statistics
+            const allData = [...data.group1, ...data.group2, ...data.group3];
+            const colors = ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(75, 192, 192, 0.6)'];
+            
+            // Update histogram
+            const histData1 = getHistogramData(data.group1);
+            const histData2 = getHistogramData(data.group2);
+            const histData3 = getHistogramData(data.group3);
+            
+            charts.histogram.data = {
+                labels: histData1.labels,
+                datasets: [
+                    {
+                        label: 'Group 1',
+                        data: histData1.counts,
+                        backgroundColor: colors[0]
+                    },
+                    {
+                        label: 'Group 2',
+                        data: histData2.counts,
+                        backgroundColor: colors[1]
+                    },
+                    {
+                        label: 'Group 3',
+                        data: histData3.counts,
+                        backgroundColor: colors[2]
+                    }
+                ]
+            };
+            charts.histogram.update();
+            
+            // Update Q-Q plot
+            charts.qq.data = {
+                datasets: [
+                    {
+                        label: 'Group 1',
+                        data: getQQPoints(data.group1),
+                        backgroundColor: colors[0],
+                        showLine: true,
+                        borderColor: colors[0]
+                    },
+                    {
+                        label: 'Group 2',
+                        data: getQQPoints(data.group2),
+                        backgroundColor: colors[1],
+                        showLine: true,
+                        borderColor: colors[1]
+                    },
+                    {
+                        label: 'Group 3',
+                        data: getQQPoints(data.group3),
+                        backgroundColor: colors[2],
+                        showLine: true,
+                        borderColor: colors[2]
+                    }
+                ]
+            };
+            charts.qq.update();
+            
+            // Update boxplot (simplified using bar chart)
+            const stats = [data.group1, data.group2, data.group3].map(group => ({
+                mean: jStat.mean(group),
+                std: jStat.stdev(group),
+                min: Math.min(...group),
+                max: Math.max(...group),
+                q1: jStat.percentile(group, 0.25),
+                q3: jStat.percentile(group, 0.75)
+            }));
+            
+            charts.boxplot.data = {
+                labels: ['Group 1', 'Group 2', 'Group 3'],
+                datasets: [
+                    {
+                        label: 'Mean',
+                        data: stats.map(s => s.mean),
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)'
+                    },
+                    {
+                        label: 'Std Dev',
+                        data: stats.map(s => s.std),
+                        backgroundColor: 'rgba(255, 206, 86, 0.6)'
+                    }
+                ]
+            };
+            charts.boxplot.update();
+            
+            // Update residual plot
+            const groupMeans = [
+                jStat.mean(data.group1),
+                jStat.mean(data.group2),
+                jStat.mean(data.group3)
+            ];
+            
+            const residualData = [];
+            [data.group1, data.group2, data.group3].forEach((group, i) => {
+                group.forEach(value => {
+                    residualData.push({
+                        x: groupMeans[i],
+                        y: value - groupMeans[i]
+                    });
+                });
+            });
+            
+            charts.residual.data = {
+                datasets: [{
+                    label: 'Residuals',
+                    data: residualData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)'
+                }]
+            };
+            charts.residual.update();
+            
+            // Update sequence plot
+            const sequenceLabels = Array.from({length: allData.length}, (_, i) => i + 1);
+            charts.sequence.data = {
+                labels: sequenceLabels,
+                datasets: [{
+                    label: 'Observations',
+                    data: allData,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: false
+                }]
+            };
+            charts.sequence.update();
+            
+            // Update ACF plot
+            const acfValues = calculateACF(allData);
+            charts.acf.data = {
+                labels: Array.from({length: acfValues.length}, (_, i) => i),
+                datasets: [{
+                    label: 'ACF',
+                    data: acfValues,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                }]
+            };
+            charts.acf.update();
+        }
+
+        // Run ANOVA analysis
+        function runANOVA() {
+            // Normality tests
+            const jb1 = jarqueBeraTest(data.group1);
+            const jb2 = jarqueBeraTest(data.group2);
+            const jb3 = jarqueBeraTest(data.group3);
+            
+            let normalityHTML = '<h3>Jarque-Bera Test for Normality</h3>';
+            
+            [
+                { name: 'Group 1', test: jb1 },
+                { name: 'Group 2', test: jb2 },
+                { name: 'Group 3', test: jb3 }
+            ].forEach(({ name, test }) => {
+                const pass = test.pValue > 0.05;
+                normalityHTML += `
+                    <div class="test-result ${pass ? 'pass' : 'fail'}">
+                        <strong>${name}:</strong> JB = ${test.statistic.toFixed(3)}, 
+                        p-value = ${test.pValue.toFixed(4)}
+                        ${pass ? '✓ Normal' : '✗ Not Normal'}<br>
+                        Skewness = ${test.skewness.toFixed(3)}, Kurtosis = ${test.kurtosis.toFixed(3)}
+                    </div>
+                `;
+            });
+            
+            document.getElementById('normalityResults').innerHTML = normalityHTML;
+            
+            // Homogeneity of variance test
+            const levene = leveneTest(data.group1, data.group2, data.group3);
+            const variancePass = levene.pValue > 0.05;
+            
+            document.getElementById('varianceResults').innerHTML = `
+                <h3>Levene's Test for Homogeneity of Variance</h3>
+                <div class="test-result ${variancePass ? 'pass' : 'fail'}">
+                    F = ${levene.statistic.toFixed(3)}, p-value = ${levene.pValue.toFixed(4)}
+                    ${variancePass ? '✓ Equal variances' : '✗ Unequal variances'}
+                </div>
+            `;
+            
+            // Independence test
+            const allData = [...data.group1, ...data.group2, ...data.group3];
+            const dw = durbinWatsonTest(allData);
+            
+            document.getElementById('independenceResults').innerHTML = `
+                <h3>Durbin-Watson Test for Independence</h3>
+                <div class="test-result ${dw.statistic > 1.5 && dw.statistic < 2.5 ? 'pass' : 'fail'}">
+                    DW = ${dw.statistic.toFixed(3)}<br>
+                    ${dw.interpretation}
+                </div>
+            `;
+            
+            // Perform ANOVA
+            const groups = [data.group1, data.group2, data.group3];
+            const groupMeans = groups.map(g => jStat.mean(g));
+            const grandMean = jStat.mean(allData);
+            
+            let ssb = 0;
+            let ssw = 0;
+            
+            groups.forEach((group, i) => {
+                ssb += group.length * Math.pow(groupMeans[i] - grandMean, 2);
+                group.forEach(value => {
+                    ssw += Math.pow(value - groupMeans[i], 2);
+                });
+            });
+            
+            const sst = ssb + ssw;
+            const dfb = groups.length - 1;
+            const dfw = allData.length - groups.length;
+            const dft = allData.length - 1;
+            const msb = ssb / dfb;
+            const msw = ssw / dfw;
+            const f = msb / msw;
+            const pValue = 1 - jStat.centralF.cdf(f, dfb, dfw);
+            
+            document.getElementById('anovaResults').innerHTML = `
+                <h3>One-Way ANOVA Results</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="border-bottom: 2px solid #ddd;">
+                        <th style="text-align: left; padding: 8px;">Source</th>
+                        <th style="text-align: center; padding: 8px;">SS</th>
+                        <th style="text-align: center; padding: 8px;">df</th>
+                        <th style="text-align: center; padding: 8px;">MS</th>
+                        <th style="text-align: center; padding: 8px;">F</th>
+                        <th style="text-align: center; padding: 8px;">p-value</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px;">Between Groups</td>
+                        <td style="text-align: center; padding: 8px;">${ssb.toFixed(2)}</td>
+                        <td style="text-align: center; padding: 8px;">${dfb}</td>
+                        <td style="text-align: center; padding: 8px;">${msb.toFixed(2)}</td>
+                        <td style="text-align: center; padding: 8px;">${f.toFixed(3)}</td>
+                        <td style="text-align: center; padding: 8px;">${pValue.toFixed(4)}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px;">Within Groups</td>
+                        <td style="text-align: center; padding: 8px;">${ssw.toFixed(2)}</td>
+                        <td style="text-align: center; padding: 8px;">${dfw}</td>
+                        <td style="text-align: center; padding: 8px;">${msw.toFixed(2)}</td>
+                        <td style="text-align: center; padding: 8px;">-</td>
+                        <td style="text-align: center; padding: 8px;">-</td>
+                    </tr>
+                    <tr style="border-top: 1px solid #ddd;">
+                        <td style="padding: 8px;">Total</td>
+                        <td style="text-align: center; padding: 8px;">${sst.toFixed(2)}</td>
+                        <td style="text-align: center; padding: 8px;">${dft}</td>
+                        <td style="text-align: center; padding: 8px;">-</td>
+                        <td style="text-align: center; padding: 8px;">-</td>
+                        <td style="text-align: center; padding: 8px;">-</td>
+                    </tr>
+                </table>
+                <div class="test-result ${pValue < 0.05 ? 'fail' : 'pass'}" style="margin-top: 15px;">
+                    ${pValue < 0.05 ? '✗ Reject H₀: Groups have different means' : '✓ Fail to reject H₀: No significant difference between groups'}
+                </div>
+                <div style="margin-top: 10px;">
+                    <strong>Group Means:</strong><br>
+                    Group 1: ${groupMeans[0].toFixed(2)}<br>
+                    Group 2: ${groupMeans[1].toFixed(2)}<br>
+                    Group 3: ${groupMeans[2].toFixed(2)}
+                </div>
+            `;
+        }
+
+        // Event listeners
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            input.addEventListener('input', updateDisplays);
+        });
+
+        // Initialize on load
+        window.onload = function() {
+            initCharts();
+            updateDisplays();
+            generateData();
+            runANOVA();
+        };
+    </script>
+</body>
+</html>

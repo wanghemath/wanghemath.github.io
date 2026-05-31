@@ -1,0 +1,320 @@
+---
+title: "Talks"
+description: "Conference talks, posters, seminar talks, and workshops by He Wang."
+page-layout: full
+toc: true
+toc-depth: 3
+---
+
+
+
+::: {.section #talks-overview}
+::: {.container}
+
+ <div></div>
+    
+## Talks, Posters, and Seminar Presentations
+
+This page collects selected conference talks, posters, seminar talks, and workshops. The talks are centered around **algebraic topology**, **group theory**, **Lie algebras associated to groups**, **formality properties**, **resonance varieties**, **Chen ranks**, **configuration spaces**, and related topics.
+ 
+ 
+
+:::
+:::
+
+::: {.section #featured-topics}
+::: {.container}
+
+## Featured Topic Areas
+
+::: {.grid}
+
+::: {.card}
+### Formality Properties
+
+Talks on 1-formality, graded-formality, filtered-formality, rational homotopy theory, Malcev Lie algebras, and their applications to finitely generated groups.
+:::
+
+::: {.card}
+### Resonance and Chen Ranks
+
+Presentations on resonance varieties, Chen ranks, Alexander invariants, cohomology jumping loci, and resonance--Chen rank formulas.
+:::
+
+::: {.card}
+### Braid-Like Groups
+
+Talks involving pure braid groups, welded braid groups, McCool groups, configuration spaces, and algebraic invariants of braid-type groups.
+:::
+
+:::
+
+:::
+:::
+
+::: {.section #conference-talks}
+::: {.container}
+
+## Conference Talks
+
+::: {.links-list}
+
+::: {.link-row}
+<div>
+<strong>The 8th International Conference on Matrix Analysis and Applications (ICMAA 2019)</strong><br>
+University of Nevada, Reno, NV, July 15--18, 2019<br>
+<em>Title:</em> Matrix methods in algebraic topology
+</div>
+<div>[Conference](https://wolfweb.unr.edu/homepage/ttam/2019-ICMAA.html)</div>
+:::
+
+::: {.link-row}
+<div>
+<strong>AMS 2017 Fall Western Sectional Meeting</strong><br>
+Special Session on Homotopy Theory, University of California, Riverside, November 4--5, 2017<br>
+<em>Title:</em> Formality properties: generalizations and applications
+</div>
+<div>[Abstract](https://hewang.sites.northeastern.edu/files/2023/05/2017AMSabstract.pdf) · [Slides](https://hewang.sites.northeastern.edu/files/2023/05/2017AMSslides.pdf)</div>
+:::
+
+::: {.link-row}
+<div>
+<strong>AMS 2016 Spring Eastern Sectional Meeting</strong><br>
+Special Session on Topology and Combinatorics of Arrangements in honor of Mike Falk, Stony Brook University, March 19--20, 2016<br>
+<em>Title:</em> Towards a new resonance--Chen ranks formula: the case of welded braids
+</div>
+<div>[Abstract](https://hewang.sites.northeastern.edu/files/2023/05/2016abstract.pdf) · [Slides](https://hewang.sites.northeastern.edu/files/2023/05/2016AMSslides.pdf)</div>
+:::
+
+::: {.link-row}
+<div>
+<strong>Combinatorial Constructions in Topology</strong><br>
+University of Regina, Canada, August 17--21, 2015<br>
+<em>Title:</em> Resonance varieties and Chen ranks of braid-like groups
+</div>
+<div>[Slides](https://hewang.sites.northeastern.edu/files/2023/05/2015Regina.pdf)</div>
+:::
+
+::: {.link-row}
+<div>
+<strong>Computational Geometric Topology in Arrangement Theory</strong><br>
+ICERM, Brown University, July 6--10, 2015<br>
+<em>Title:</em> Formality properties, resonance varieties, and Chen ranks
+</div>
+<div>[Slides](https://hewang.sites.northeastern.edu/files/2023/05/2015ICERMtalk.pdf)</div>
+:::
+
+::: {.link-row}
+<div>
+<strong>Maurice Auslander Distinguished Lectures and International Conference 2015</strong><br>
+Woods Hole, MA, April 29--May 4, 2015<br>
+<em>Title:</em> Resonance varieties, Hilbert series and Chen ranks
+</div>
+<div>[Slides](https://hewang.sites.northeastern.edu/files/2023/05/2015AuslanderConference.pdf)</div>
+:::
+
+::: {.link-row}
+<div>
+<strong>AMS 2015 Spring Eastern Sectional Meeting</strong><br>
+Special Session on Algebraic Structures Motivated by and Applied to Knot Theory, Georgetown University, Washington, D.C., March 7--8, 2015<br>
+<em>Title:</em> Cohomology jump loci of configuration spaces
+</div>
+<div>[Slides](https://hewang.sites.northeastern.edu/files/2023/05/2015AMS.pdf)</div>
+:::
+
+::: {.link-row}
+<div>
+<strong>Maurice Auslander Distinguished Lectures and International Conference 2014</strong><br>
+Woods Hole, MA, May 1--6, 2014<br>
+<em>Title:</em> Lie algebras of finitely generated groups and their formality properties
+</div>
+<div>[Slides](https://hewang.sites.northeastern.edu/files/2023/05/TALK201405.pdf)</div>
+:::
+
+:::
+
+:::
+:::
+
+::: {.section #conference-posters}
+::: {.container}
+
+## Conference Posters
+
+::: {.grid}
+
+::: {.card}
+### Conference for Advancing Evidence-Based Learning
+
+CATLR, April 30, 2024  
+**Poster title:** Undergraduate and Graduate Mathematics Education in the Era of AI
+:::
+
+::: {.card}
+### MathWorks Day at Northeastern University
+
+March 1, 2023  
+**Poster title:** Machine Learning in Applied Math Curriculum using MATLAB  
+[Poster download](https://hewang.sites.northeastern.edu/files/2023/05/MathWorksDayPoster.pdf)
+:::
+
+::: {.card}
+### Computational Geometric Topology in Arrangement Theory
+
+ICERM, Brown University, July 6--10, 2015  
+**Poster title:** Formality properties of finitely generated groups  
+[Poster download](https://hewang.sites.northeastern.edu/files/2023/05/2015ICERMposter.pdf)
+:::
+
+:::
+
+:::
+:::
+
+::: {.section #seminar-talks}
+::: {.container}
+
+## Seminar Talks
+
+::: {.links-list}
+
+::: {.link-row}
+<div>
+<strong>The Algebra Seminar, Department of Mathematics, Temple University</strong><br>
+Philadelphia, October 22, 2018<br>
+<em>Title:</em> Moduli spaces in rational homotopy theory
+</div>
+<div>[Seminar](https://math.temple.edu/events/seminars/algebra-seminar/)</div>
+:::
+
+::: {.link-row}
+<div>
+<strong>Department of Mathematics & Statistics Colloquium</strong><br>
+University of Nevada, Reno, October 20, 2016<br>
+<em>Title:</em> Formality properties in topology and group theory
+</div>
+<div>[Colloquium](https://www.unr.edu/math)</div>
+:::
+
+::: {.link-row}
+<div>
+<strong>PhD Thesis Defense</strong><br>
+Northeastern University, April 21, 2016<br>
+<em>Title:</em> Resonance varieties, Chen ranks and formality properties of finitely generated groups
+</div>
+<div>[Slides](https://hewang.sites.northeastern.edu/files/2023/05/DefenseSlides.pdf)</div>
+:::
+
+::: {.link-row}
+<div>
+<strong>Graduate Student Seminar</strong><br>
+Northeastern University, Spring 2016<br>
+<em>Title:</em> Algebraic and geometric invariants of finitely generated groups
+</div>
+<div></div>
+:::
+
+::: {.link-row}
+<div>
+<strong>Geometry, Algebra, Singularities, Combinatorics Seminar</strong><br>
+Northeastern University, Boston, November 9, 2015<br>
+<em>Title:</em> Algebraic invariants of pure braid-like groups
+</div>
+<div></div>
+:::
+
+::: {.link-row}
+<div>
+<strong>Graduate Student Seminar</strong><br>
+Northeastern University, Spring 2015<br>
+<em>Title:</em> Some functors from topological spaces to Lie algebras and varieties
+</div>
+<div>[Notes](https://hewang.sites.northeastern.edu/files/2023/05/Functors.pdf)</div>
+:::
+
+::: {.link-row}
+<div>
+<strong>Graduate Student Seminar</strong><br>
+Northeastern University, Fall 2013<br>
+<em>Title:</em> The computation of the holonomy Lie algebra of a discrete group
+</div>
+<div></div>
+:::
+
+::: {.link-row}
+<div>
+<strong>Graduate Student Seminar</strong><br>
+Northeastern University, Spring 2013<br>
+<em>Title:</em> A new application of Toda brackets
+</div>
+<div></div>
+:::
+
+::: {.link-row}
+<div>
+<strong>Algebraic Topology Seminar</strong><br>
+Nankai University, Fall 2012<br>
+<em>Title:</em> (Co)homology jump loci and algebraic invariants
+</div>
+<div></div>
+:::
+
+::: {.link-row}
+<div>
+<strong>Graduate Student Seminar</strong><br>
+Northeastern University, Spring 2012<br>
+<em>Title:</em> Massey Products and Its Applications
+</div>
+<div></div>
+:::
+
+:::
+
+:::
+:::
+
+::: {.section #conferences-and-workshops-attended}
+::: {.container}
+
+## Conferences and Workshops Attended
+
+The following list records selected conferences, workshops, summer schools, and meetings attended.
+
+<details>
+<summary><strong>Show conference and workshop list</strong></summary>
+
+1. West Coast Algebraic Topology Summer School: Homotopy Theory of Moduli Spaces, 2010
+2. The 9th Annual Graduate Student Topology and Geometry Conference, 2011
+3. 2012 Joint Mathematics Meetings
+4. 2012 Texas Geometry and Topology Conference
+5. The 38th International Symposium on Symbolic and Algebraic Computation, 2013
+6. Maurice Auslander Distinguished Lectures and International Conference, 2014
+7. AMS 2015 Spring Eastern Sectional Meeting, Special Session on Algebraic Structures Motivated by and Applied to Knot Theory
+8. Maurice Auslander Distinguished Lectures and International Conference, 2015
+9. Computational Geometric Topology in Arrangement Theory, ICERM, 2015
+10. Combinatorial Constructions in Topology, 2015
+11. AMS 2016 Spring Eastern Sectional Meeting, Special Session on Topology and Combinatorics of Arrangements
+12. Second Annual Graduate Student Conference in Algebra, Geometry, and Topology, 2016
+13. 2017 Joint Mathematics Meetings
+14. Homotopy Theory: Tools and Applications, University of Illinois at Urbana-Champaign, 2017
+15. GAP XV: Quantization, Pennsylvania State University, 2017
+16. 2019 Joint Mathematics Meetings
+
+</details>
+
+:::
+:::
+
+::: {.section #archive-note}
+::: {.container}
+
+## Archive Note
+
+Some older talk files and seminar abstracts may be hosted on legacy Northeastern or external conference pages. The button below links to the original archive page.
+
+::: {.buttons}
+[Original Talks Archive](https://hewang.sites.northeastern.edu/links/){.button .primary}
+:::
+
+:::
+:::

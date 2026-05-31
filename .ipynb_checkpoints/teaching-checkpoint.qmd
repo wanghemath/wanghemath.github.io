@@ -1,0 +1,205 @@
+---
+title: "Teaching"
+description: "Teaching page for He Wang, Department of Mathematics, Northeastern University."
+page-layout: full
+toc: true
+---
+ 
+
+::: {.section #teaching-overview}
+::: {.container}
+
+## Courses I Have Taught
+
+Here is a list of courses I have taught at Northeastern University and related public teaching resources. The main purpose of this page is to help students learn about course topics and make informed registration decisions.
+
+The links below include public course pages, selected lecture notes, syllabi, interactive demonstrations, and course-related resources. Full teaching materials such as assignments, computer labs, exams, final projects, solutions, and active course communication are hosted on [Canvas](https://canvas.northeastern.edu/) for enrolled Northeastern students.
+
+ 
+
+:::
+:::
+
+::: {.section #graduate-courses}
+::: {.container}
+
+## Graduate Courses
+
+::: {.grid}
+
+::: {.card}
+### [MATH 5010 Foundations of Statistical Theory and Probability](https://hewang.sites.northeastern.edu/math5010/)
+
+A graduate-level course on probability and statistical theory, with emphasis on mathematical foundations, models of uncertainty, estimation, inference, and computational techniques.
+:::
+
+::: {.card}
+### [MATH 5110 Applied Linear Algebra and Matrix Analysis](https://hewang.sites.northeastern.edu/math5110/)
+
+A rigorous treatment of linear algebra and matrix analysis, emphasizing computation, geometry, matrix factorizations, spectral theory, least squares, SVD, PCA, optimization, and applications to data science and AI.
+
+[Course e-book](https://wanghemath.github.io/MATH5110Book/)
+:::
+
+::: {.card}
+### MATH 6241 Stochastic Processes
+
+A graduate course on stochastic processes and probabilistic modeling, including Markov chains, renewal processes, Poisson processes, continuous-time Markov chains, Brownian motion, queueing models, simulations, and applications.
+:::
+
+::: {.card}
+### [MATH 7243 Machine Learning and Statistical Learning Theory I](https://hewang.sites.northeastern.edu/math7243/)
+
+Introduces the mathematical and statistical theory of learning together with implementation of modern machine learning algorithms for data science.
+:::
+
+::: {.card}
+### [MATH 7339 Machine Learning and Statistical Learning Theory II](https://hewang.sites.northeastern.edu/math7339/)
+
+Continues MATH 7243 with advanced topics in regression, classification, statistical learning, machine learning, deep learning, computational experiments, and data-driven projects.
+:::
+
+::: {.card}
+### [MATH 7741 Readings in Probability and Statistics](https://hewang.sites.northeastern.edu/math7741/)
+
+A reading course arranged between an individual student and instructor on a mutually chosen topic in probability, statistics, stochastic processes, data science, or related areas.
+:::
+
+::: {.card}
+### [MATH 7978 Independent Study](https://hewang.sites.northeastern.edu/math7978/)
+
+Independent work under faculty supervision. Previous topics have included generative adversarial networks, image style transfer using convolutional neural networks, and student-designed applied mathematics projects.
+:::
+
+::: {.card}
+### [Rational Homotopy Theory](https://hewang.sites.northeastern.edu/mathrht/)
+
+A graduate summer course on rational homotopy theory, Sullivan models, differential graded algebras, spectral sequences, and connections between topology and algebra.
+:::
+
+::: {.card}
+### Research and Reading Projects
+
+Graduate reading and research projects may include algebraic topology, topological data analysis, right-angled Artin groups, random graphs, stochastic modeling, machine learning, and mathematical foundations of AI.
+:::
+
+:::
+
+:::
+:::
+
+::: {.section #undergraduate-courses}
+::: {.container}
+
+## Undergraduate Courses
+
+::: {.grid}
+
+::: {.card}
+### [MATH 4570 Matrix Methods in Data Analysis and Machine Learning](https://hewang.sites.northeastern.edu/math4570/)
+
+A course on linear algebra, matrix methods, data analysis, and machine learning. Topics include matrix algebra, vector spaces, inner products, least squares, regression, gradient descent, PCA, SVD, and neural-network-related matrix computations.
+:::
+
+::: {.card}
+### [MATH 2331 Linear Algebra](https://hewang.sites.northeastern.edu/math2331/)
+
+Covers matrices, systems of linear equations, Gaussian elimination, determinants, vector spaces, linear transformations, eigenvalues, eigenspaces, orthogonality, symmetric matrices, and singular value decomposition.
+:::
+
+::: {.card}
+### [MATH 3081 Probability and Statistics](https://hewang.sites.northeastern.edu/math3081/)
+
+A calculus-based course in probability and statistics, developing mathematical tools for modeling uncertainty, analyzing data, and solving real-world problems.
+:::
+
+::: {.card}
+### [MATH 2321 Calculus 3 for Science and Engineering](https://hewang.sites.northeastern.edu/math2321/)
+
+Extends calculus to functions of several variables and vector fields. Topics include lines and planes, partial derivatives, gradients, optimization, multiple integrals, line and surface integrals, Green's theorem, Stokes' theorem, and the divergence theorem.
+:::
+
+::: {.card}
+### [MATH 182 Calculus 2](https://hewang.sites.northeastern.edu/math181/)
+
+Covers techniques and applications of integration, sequences, series, power series, Taylor series, differential equations, arc length, work, improper integrals, and approximation methods.
+:::
+
+::: {.card}
+### [MATH 1231 Calculus for Business and Economics](https://hewang.sites.northeastern.edu/math1231/)
+
+Introduces derivatives and integrals through applications in business and economics, including optimization, marginal analysis, average value, accumulated change, and future value of income streams.
+:::
+
+::: {.card}
+### MATH 4970 Junior/Senior Honors Project 1
+
+An undergraduate honors project course supporting independent mathematical study, writing, and research under faculty guidance.
+:::
+
+::: {.card}
+### MATH 4971 Junior/Senior Honors Project 2
+
+Continuation of undergraduate honors project work, typically involving deeper reading, computation, presentation, and written exposition.
+:::
+
+:::
+
+:::
+:::
+
+::: {.section #teaching-projects}
+::: {.container}
+
+## Teaching Projects and Public Resources
+
+::: {.grid}
+
+::: {.card}
+### [Interactive Simulations Page by AI](https://wanghemath.github.io/Simulations.html)
+
+A collection of interactive simulations in probability, statistics, linear algebra, and machine learning. These pages help students visualize concepts such as the central limit theorem, Monte Carlo simulation, confidence intervals, hypothesis testing, matrix transformations, PCA, SVD image compression, PageRank, linear regression, gradient descent, clustering, and neural networks.
+:::
+
+::: {.card}
+### [Linear Algebra in the AI Age](https://wanghemath.github.io/MATH5110Book/)
+
+An online book for MATH 5110: Applied Linear Algebra and Matrix Analysis. The book presents linear algebra as a language for geometry, computation, data, algorithms, modeling, and artificial intelligence.
+:::
+
+::: {.card}
+### Computational Labs
+
+Many courses include Python-based labs, simulations, notebooks, and applied projects. These labs help students connect theory with computation, data analysis, visualization, and algorithmic thinking.
+:::
+
+::: {.card}
+### Project-Based Learning
+
+Graduate and undergraduate projects often involve real data, mathematical modeling, machine learning, stochastic simulation, optimization, linear algebra, and interdisciplinary applications.
+:::
+
+::: {.card}
+### AI-Assisted Learning
+
+Some public teaching resources explore how AI tools can support coding, visualization, debugging, simulation, mathematical explanation, and independent study while preserving mathematical rigor.
+:::
+
+::: {.card}
+### Student Advising and Independent Study
+
+I supervise reading courses, independent studies, honors projects, and student research projects in applied mathematics, statistics, probability, machine learning, topology, and data science.
+:::
+
+:::
+
+
+::: {.highlight}
+### Teaching Philosophy
+
+My teaching connects mathematical structure, computation, real data, and modern applications. In my courses, students learn not only definitions and theorems, but also how mathematical ideas become algorithms, models, simulations, and tools for data science, machine learning, probability, statistics, optimization, and artificial intelligence.
+:::
+
+:::
+:::
+ 

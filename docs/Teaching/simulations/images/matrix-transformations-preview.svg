@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f7fafc"/>
+  <text x="200" y="30" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#764ba2">2D Matrix Transformations</text>
+  
+  <!-- Original shape -->
+  <g transform="translate(100, 150)">
+    <text x="0" y="-70" text-anchor="middle" font-family="Arial" font-size="12" fill="#495057">Original</text>
+    
+    <!-- Coordinate axes -->
+    <line x1="-60" y1="0" x2="60" y2="0" stroke="#dee2e6" stroke-width="1"/>
+    <line x1="0" y1="-60" x2="0" y2="60" stroke="#dee2e6" stroke-width="1"/>
+    
+    <!-- Unit vectors -->
+    <line x1="0" y1="0" x2="40" y2="0" stroke="#dc3545" stroke-width="3" marker-end="url(#arrowRed)"/>
+    <line x1="0" y1="0" x2="0" y2="-40" stroke="#28a745" stroke-width="3" marker-end="url(#arrowGreen)"/>
+    
+    <!-- Square -->
+    <rect x="-30" y="-30" width="60" height="60" fill="rgba(102, 126, 234, 0.2)" stroke="#667eea" stroke-width="2"/>
+  </g>
+  
+  <!-- Transformed shape -->
+  <g transform="translate(300, 150)">
+    <text x="0" y="-70" text-anchor="middle" font-family="Arial" font-size="12" fill="#495057">Transformed</text>
+    
+    <!-- Coordinate axes -->
+    <line x1="-60" y1="0" x2="60" y2="0" stroke="#dee2e6" stroke-width="1"/>
+    <line x1="0" y1="-60" x2="0" y2="60" stroke="#dee2e6" stroke-width="1"/>
+    
+    <!-- Transformed unit vectors -->
+    <line x1="0" y1="0" x2="28" y2="-28" stroke="#dc3545" stroke-width="3" marker-end="url(#arrowRed)"/>
+    <line x1="0" y1="0" x2="28" y2="28" stroke="#28a745" stroke-width="3" marker-end="url(#arrowGreen)"/>
+    
+    <!-- Transformed square (rotation + scale) -->
+    <path d="M 0,-42 L 42,0 L 0,42 L -42,0 Z" fill="rgba(102, 126, 234, 0.2)" stroke="#667eea" stroke-width="2"/>
+  </g>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#dc3545"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#28a745"/>
+    </marker>
+  </defs>
+  
+  <!-- Matrix display -->
+  <g transform="translate(200, 180)">
+    <rect x="-50" y="-15" width="100" height="50" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="5"/>
+    <text x="0" y="-20" text-anchor="middle" font-family="Arial" font-size="11" fill="#495057">A =</text>
+    <text x="-20" y="5" text-anchor="middle" font-family="Courier New" font-size="14" fill="#667eea">0.7</text>
+    <text x="20" y="5" text-anchor="middle" font-family="Courier New" font-size="14" fill="#667eea">-0.7</text>
+    <text x="-20" y="25" text-anchor="middle" font-family="Courier New" font-size="14" fill="#667eea">0.7</text>
+    <text x="20" y="25" text-anchor="middle" font-family="Courier New" font-size="14" fill="#667eea">0.7</text>
+    
+    <!-- Matrix brackets -->
+    <path d="M -35,-10 L -40,-10 L -40,30 L -35,30" stroke="#667eea" stroke-width="2" fill="none"/>
+    <path d="M 35,-10 L 40,-10 L 40,30 L 35,30" stroke="#667eea" stroke-width="2" fill="none"/>
+  </g>
+  
+  <!-- Properties -->
+  <text x="200" y="250" text-anchor="middle" font-family="Arial" font-size="11" fill="#666">Rotation 45° | det(A) = 1 | λ = 0.7 ± 0.7i</text>
+  
+  <!-- Animation hint -->
+  <circle cx="200" cy="270" r="15" fill="#667eea" opacity="0.2">
+    <animate attributeName="r" values="15;20;15" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.2;0.1;0.2" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <text x="200" y="275" text-anchor="middle" font-family="Arial" font-size="10" fill="#667eea" font-weight="bold">Animated</text>
+</svg>

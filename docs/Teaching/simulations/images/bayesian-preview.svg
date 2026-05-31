@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f7fafc"/>
+  <text x="200" y="30" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#2d3748">Bayesian Coin Flip</text>
+  
+  <!-- Coin -->
+  <circle cx="200" cy="100" r="40" fill="#ffd700" stroke="#5a4a00" stroke-width="3"/>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial" font-size="30" font-weight="bold" fill="#5a4a00">?</text>
+  
+  <!-- Prior belief bar -->
+  <rect x="50" y="170" width="300" height="30" stroke="#4a5568" stroke-width="2" fill="none"/>
+  <rect x="50" y="170" width="150" height="30" fill="#667eea" opacity="0.6"/>
+  <text x="200" y="190" text-anchor="middle" font-family="Arial" font-size="14" fill="white">Prior: 50% Fair</text>
+  
+  <!-- Posterior belief bar -->
+  <rect x="50" y="220" width="300" height="30" stroke="#4a5568" stroke-width="2" fill="none"/>
+  <rect x="50" y="220" width="210" height="30" fill="#667eea" opacity="0.8"/>
+  <text x="200" y="240" text-anchor="middle" font-family="Arial" font-size="14" fill="white">Posterior: 70% Fair</text>
+  
+  <!-- Flip results -->
+  <text x="30" y="195" text-anchor="start" font-family="Arial" font-size="12" fill="#4a5568">Prior</text>
+  <text x="30" y="245" text-anchor="start" font-family="Arial" font-size="12" fill="#4a5568">After</text>
+  
+  <!-- Small coins showing flips -->
+  <circle cx="100" cy="280" r="15" fill="#48bb78"/>
+  <text x="100" y="285" text-anchor="middle" font-family="Arial" font-size="12" fill="white">H</text>
+  
+  <circle cx="140" cy="280" r="15" fill="#48bb78"/>
+  <text x="140" y="285" text-anchor="middle" font-family="Arial" font-size="12" fill="white">H</text>
+  
+  <circle cx="180" cy="280" r="15" fill="#f56565"/>
+  <text x="180" y="285" text-anchor="middle" font-family="Arial" font-size="12" fill="white">T</text>
+  
+  <circle cx="220" cy="280" r="15" fill="#48bb78"/>
+  <text x="220" y="285" text-anchor="middle" font-family="Arial" font-size="12" fill="white">H</text>
+  
+  <text x="270" y="285" text-anchor="start" font-family="Arial" font-size="14" fill="#4a5568">...</text>
+</svg>

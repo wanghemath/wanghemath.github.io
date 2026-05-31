@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f7fafc"/>
+  <text x="200" y="30" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#333">Linear Regression: OLS vs GD</text>
+  
+  <!-- Left plot: Data & Regression -->
+  <g transform="translate(20, 60)">
+    <rect x="0" y="0" width="160" height="160" fill="#f8f9fa" stroke="#e9ecef" stroke-width="2" rx="5"/>
+    <text x="80" y="-5" text-anchor="middle" font-family="Arial" font-size="12" fill="#495057">Data & Regression Line</text>
+    
+    <!-- Axes -->
+    <line x1="20" y1="140" x2="140" y2="140" stroke="#ddd" stroke-width="1"/>
+    <line x1="20" y1="20" x2="20" y2="140" stroke="#ddd" stroke-width="1"/>
+    
+    <!-- Data points -->
+    <circle cx="30" cy="120" r="3" fill="#007bff"/>
+    <circle cx="50" cy="100" r="3" fill="#007bff"/>
+    <circle cx="70" cy="85" r="3" fill="#007bff"/>
+    <circle cx="90" cy="70" r="3" fill="#007bff"/>
+    <circle cx="110" cy="60" r="3" fill="#007bff"/>
+    <circle cx="130" cy="45" r="3" fill="#007bff"/>
+    <circle cx="40" cy="110" r="3" fill="#007bff"/>
+    <circle cx="80" cy="75" r="3" fill="#007bff"/>
+    <circle cx="100" cy="65" r="3" fill="#007bff"/>
+    <circle cx="120" cy="50" r="3" fill="#007bff"/>
+    
+    <!-- Regression line -->
+    <line x1="25" y1="125" x2="135" y2="40" stroke="#dc3545" stroke-width="3"/>
+  </g>
+  
+  <!-- Right plot: Cost Function -->
+  <g transform="translate(210, 60)">
+    <rect x="0" y="0" width="160" height="160" fill="#f8f9fa" stroke="#e9ecef" stroke-width="2" rx="5"/>
+    <text x="80" y="-5" text-anchor="middle" font-family="Arial" font-size="12" fill="#495057">Cost Function (GD)</text>
+    
+    <!-- Axes -->
+    <line x1="20" y1="140" x2="140" y2="140" stroke="#ddd" stroke-width="1"/>
+    <line x1="20" y1="20" x2="20" y2="140" stroke="#ddd" stroke-width="1"/>
+    
+    <!-- Cost curve -->
+    <path d="M 20 40 Q 50 120, 80 130 T 140 135" stroke="#28a745" stroke-width="2" fill="none"/>
+    
+    <!-- Current point -->
+    <circle cx="120" cy="133" r="4" fill="#dc3545"/>
+    
+    <!-- Iterations label -->
+    <text x="80" y="155" text-anchor="middle" font-family="Arial" font-size="10" fill="#333">Iteration</text>
+  </g>
+  
+  <!-- Method comparison -->
+  <rect x="50" y="240" width="130" height="50" fill="#e7f3ff" rx="5"/>
+  <text x="115" y="255" text-anchor="middle" font-family="Arial" font-size="11" fill="#007bff" font-weight="bold">OLS</text>
+  <text x="115" y="270" text-anchor="middle" font-family="Arial" font-size="10" fill="#495057">Analytical solution</text>
+  <text x="115" y="283" text-anchor="middle" font-family="Arial" font-size="10" fill="#495057">Instant result</text>
+  
+  <rect x="220" y="240" width="130" height="50" fill="#fff3cd" rx="5"/>
+  <text x="285" y="255" text-anchor="middle" font-family="Arial" font-size="11" fill="#ffc107" font-weight="bold">Gradient Descent</text>
+  <text x="285" y="270" text-anchor="middle" font-family="Arial" font-size="10" fill="#495057">Iterative approach</text>
+  <text x="285" y="283" text-anchor="middle" font-family="Arial" font-size="10" fill="#495057">Animated steps</text>
+</svg>
