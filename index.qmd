@@ -119,14 +119,25 @@ My teaching combines mathematical structure, computational experimentation, real
 :::
 
 ::: {.card}
-### Teaching Projects
-
-- [E-book](https://wanghemath.github.io/MATH5110Book/) for Applied Linear Algebra and Matrix Analysis
-- [Interactive simulations and AI-assisted coding activities](Teaching/simulations.qmd) 
-- [Teaching showcase in AI Gallery](https://learning.northeastern.edu/ai-gallery-post-leveraging-chatgpt-to-support-coding-in-applied-math/)
-- Machine learning and applied mathematics labs
+### Teaching Projects  
 - Teaching showcases on using ChatGPT and AI tools to support coding, simulation, and mathematical learning
+- [Interactive simulations and AI-assisted coding activities](Teaching/simulations.qmd) 
+- [Teaching showcase in AI Gallery](https://learning.northeastern.edu/ai-gallery-post-leveraging-chatgpt-to-support-coding-in-applied-math/) 
 :::
+:::
+
+#### [Quarto](https://quarto.org/) Book Project: E-books on [GitHub](https://github.com/wanghemath):
+
+::: {.card}
+
+- E-book: [Advanced Linear Algebra in the AI Age: Geometry, Computation, and Data](https://wanghemath.github.io/MATH5110Book/) (graduate book)
+- E-book: [Linear Algebra Language in the AI Age](https://wanghemath.github.io/Book-LinearAlgebraLanguage/) (story book)
+- E-book: [Probability and Statistics Book]   (undergraduate)
+- E-book: [Foundations of Probability and Statistical Theory](https://wanghemath.github.io/Book-ProbabilityStatisticalTheory/) (graduate book)
+- E-book: [Stochastic Processes]
+- E-book: [Machine Learning and Statistical Learning] 
+- E-book: [Advanced Machine Learning and Statistical Learning Theory] 
+ 
 :::
 
 :::

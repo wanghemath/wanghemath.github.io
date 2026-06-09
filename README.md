@@ -3,11 +3,7 @@
 
 This repository contains the source files for my personal academic website:
 
-<<<<<<< HEAD
 **Website:** [https://wanghemath.github.io/](https://wanghemath.github.io/)
-=======
-**Website:** [https://wanghemath.github.io/](https://wanghemath.github.io/)  
->>>>>>> f8cd44d (Update Quarto website)
 
 **GitHub Repository:** [https://github.com/wanghemath/wanghemath.github.io](https://github.com/wanghemath/wanghemath.github.io)
 
