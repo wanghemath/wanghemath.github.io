@@ -137,7 +137,7 @@ Study sampling without replacement from a finite population and compare simulate
 
 Use conditional expectation and Monte Carlo simulation to analyze the expected time for a rat to exit a three-door maze.
 
-[View Simulation](simulations/rat_three_door_maze_with_visual.html){.button .primary}
+[View Simulation](simulations/rat_three_door_maze.html){.button .primary}
 :::
 
 ::: {.card .sim-card}
